@@ -24,6 +24,7 @@ from ._mathtext_data import (
 from .afm import AFM
 from .font_manager import FontProperties, findfont, get_font
 from .ft2font import KERNING_DEFAULT
+from .coverage import Coverage
 
 
 ParserElement.enablePackrat()
@@ -2603,6 +2604,7 @@ class Parser:
         return False
 
     def subsuper(self, s, loc, toks):
+        cov = Coverage(52, "subsuper")
         assert len(toks) == 1
 
         nucleus = None
@@ -2614,46 +2616,79 @@ class Parser:
         napostrophes = 0
         new_toks = []
         for tok in toks[0]:
+            cov.log(0)
             if isinstance(tok, str) and tok not in ('^', '_'):
+                cov.log(1)
                 napostrophes += len(tok)
             elif isinstance(tok, Char) and tok.c == "'":
+                cov.log(2)
                 napostrophes += 1
             else:
+                cov.log(3)
                 new_toks.append(tok)
         toks = new_toks
 
         if len(toks) == 0:
+            cov.log(4)
             assert napostrophes
             nucleus = Hbox(0.0)
         elif len(toks) == 1:
+            cov.log(5)
             if not napostrophes:
+                cov.log(6)
                 return toks[0]  # .asList()
             else:
+                cov.log(7)
                 nucleus = toks[0]
         elif len(toks) in (2, 3):
+            cov.log(8)
             # single subscript or superscript
-            nucleus = toks[0] if len(toks) == 3 else Hbox(0.0)
+            if len(toks) == 3:
+                cov.log(9)
+                nucleus = toks[0]
+            else:
+                cov.log(10)
+                nucleus = Hbox(0.0)
+            # nucleus = toks[0] if len(toks) == 3 else Hbox(0.0)
             op, next = toks[-2:]
             if op == '_':
+                cov.log(11)
                 sub = next
             else:
+                cov.log(12)
                 super = next
         elif len(toks) in (4, 5):
+            cov.log(13)
             # subscript and superscript
-            nucleus = toks[0] if len(toks) == 5 else Hbox(0.0)
+            if len(toks) == 5:
+                cov.log(14)
+                nucleus = toks[0]
+            else:
+                cov.log(15)
+                nucleus = Hbox(0.0)
+            # nucleus = toks[0] if len(toks) == 5 else Hbox(0.0)
             op1, next1, op2, next2 = toks[-4:]
             if op1 == op2:
+                cov.log(16)
                 if op1 == '_':
+                    cov.log(17)
+                    cov.report()
                     raise ParseFatalException("Double subscript")
                 else:
+                    cov.log(18)
+                    cov.report()
                     raise ParseFatalException("Double superscript")
             if op1 == '_':
+                cov.log(19)
                 sub = next1
                 super = next2
             else:
+                cov.log(20)
                 super = next1
                 sub = next2
         else:
+            cov.log(21)
+            cov.report()
             raise ParseFatalException(
                 "Subscript/superscript sequence is too long. "
                 "Use braces { } to remove ambiguity.")
@@ -2665,9 +2700,12 @@ class Parser:
             state.font, state.fontsize, state.dpi)
 
         if napostrophes:
+            cov.log(22)
             if super is None:
+                cov.log(23)
                 super = Hlist([])
             for i in range(napostrophes):
+                cov.log(24)
                 super.children.extend(self.symbol(s, loc, ['\\prime']))
             # kern() and hpack() needed to get the metrics right after
             # extending
@@ -2676,18 +2714,22 @@ class Parser:
 
         # Handle over/under symbols, such as sum or prod
         if self.is_overunder(nucleus):
+            cov.log(25)
             vlist = []
             shift = 0.
             width = nucleus.width
             if super is not None:
+                cov.log(26)
                 super.shrink()
                 width = max(width, super.width)
             if sub is not None:
+                cov.log(27)
                 sub.shrink()
                 width = max(width, sub.width)
 
             vgap = rule_thickness * 3.0
             if super is not None:
+                cov.log(28)
                 hlist = HCentered([super])
                 hlist.hpack(width, 'exactly')
                 vlist.extend([hlist, Vbox(0, vgap)])
@@ -2695,6 +2737,7 @@ class Parser:
             hlist.hpack(width, 'exactly')
             vlist.append(hlist)
             if sub is not None:
+                cov.log(29)
                 hlist = HCentered([sub])
                 hlist.hpack(width, 'exactly')
                 vlist.extend([Vbox(0, vgap), hlist])
@@ -2702,6 +2745,7 @@ class Parser:
             vlist = Vlist(vlist)
             vlist.shift_amount = shift + nucleus.depth
             result = Hlist([vlist])
+            cov.report()
             return [result]
 
         # We remove kerning on the last character for consistency (otherwise
@@ -2713,19 +2757,25 @@ class Parser:
         # the superscript at the advance
         last_char = nucleus
         if isinstance(nucleus, Hlist):
+            cov.log(30)
             new_children = nucleus.children
             if len(new_children):
+                cov.log(31)
                 # remove last kern
                 if (isinstance(new_children[-1], Kern) and
                         hasattr(new_children[-2], '_metrics')):
+                    cov.log(32)
                     new_children = new_children[:-1]
                 last_char = new_children[-1]
                 if hasattr(last_char, '_metrics'):
+                    cov.log(33)
                     last_char.width = last_char._metrics.advance
             # create new Hlist without kerning
             nucleus = Hlist(new_children, do_kern=False)
         else:
+            cov.log(34)
             if isinstance(nucleus, Char):
+                cov.log(35)
                 last_char.width = last_char._metrics.advance
             nucleus = Hlist([nucleus])
 
@@ -2734,52 +2784,67 @@ class Parser:
         lc_height   = last_char.height
         lc_baseline = 0
         if self.is_dropsub(last_char):
+            cov.log(36)
             lc_baseline = last_char.depth
 
         # Compute kerning for sub and super
         superkern = constants.delta * xHeight
         subkern = constants.delta * xHeight
         if self.is_slanted(last_char):
+            cov.log(37)
             superkern += constants.delta * xHeight
             superkern += (constants.delta_slanted *
                           (lc_height - xHeight * 2. / 3.))
             if self.is_dropsub(last_char):
+                cov.log(38)
                 subkern = (3 * constants.delta -
                            constants.delta_integral) * lc_height
                 superkern = (3 * constants.delta +
                              constants.delta_integral) * lc_height
             else:
+                cov.log(39)
                 subkern = 0
 
         if super is None:
+            cov.log(40)
             # node757
             x = Hlist([Kern(subkern), sub])
             x.shrink()
             if self.is_dropsub(last_char):
+                cov.log(41)
                 shift_down = lc_baseline + constants.subdrop * xHeight
             else:
+                cov.log(42)
                 shift_down = constants.sub1 * xHeight
             x.shift_amount = shift_down
         else:
+            cov.log(43)
             x = Hlist([Kern(superkern), super])
             x.shrink()
             if self.is_dropsub(last_char):
+                cov.log(44)
                 shift_up = lc_height - constants.subdrop * xHeight
             else:
+                cov.log(45)
                 shift_up = constants.sup1 * xHeight
             if sub is None:
+                cov.log(46)
                 x.shift_amount = -shift_up
             else:  # Both sub and superscript
+                cov.log(47)
                 y = Hlist([Kern(subkern), sub])
                 y.shrink()
                 if self.is_dropsub(last_char):
+                    cov.log(48)
                     shift_down = lc_baseline + constants.subdrop * xHeight
                 else:
+                    cov.log(49)
                     shift_down = constants.sub2 * xHeight
                 # If sub and superscript collide, move super up
                 clr = (2.0 * rule_thickness -
                        ((shift_up - x.depth) - (y.height - shift_down)))
                 if clr > 0.:
+                    cov.log(50)
                     shift_up += clr
                 x = Vlist([
                     x,
@@ -2788,9 +2853,11 @@ class Parser:
                 x.shift_amount = shift_down
 
         if not self.is_dropsub(last_char):
+            cov.log(51)
             x.width += constants.script_space * xHeight
         result = Hlist([nucleus, x])
 
+        cov.report()
         return [result]
 
     def _genfrac(self, ldelim, rdelim, rule, style, num, den):
