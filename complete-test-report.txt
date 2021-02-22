@@ -1,0 +1,501 @@
+========================================================================== FAILURES ===========================================================================
+_____________________________________________________________________ test_pdflatex[pdf] ______________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_backend_pgf/pgf_pdflatex-expected.pdf'
+actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_backend_pgf/pgf_pdflatex.pdf'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 11.669):
+E               result_images/test_backend_pgf/pgf_pdflatex_pdf.png
+E               result_images/test_backend_pgf/pgf_pdflatex-expected_pdf.png
+E               result_images/test_backend_pgf/pgf_pdflatex_pdf-failed-diff.png
+
+__tracebackhide__ = True
+actual     = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_backend_pgf/pgf_pdflatex.pdf')
+err        = {'actual': 'result_images/test_backend_pgf/pgf_pdflatex_pdf.png', 'diff': 'result_images/test_backend_pgf/pgf_pdflatex...-diff.png', 'expected': 'result_images/test_backend_pgf/pgf_pdflatex-expected_pdf.png', 'rms': 11.668765219697008, ...}
+expected   = '/Users/mwesslen/Repos/matplotlib/result_images/test_backend_pgf/pgf_pdflatex-expected.pdf'
+key        = 'diff'
+tol        = 0
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+________________________________________________________________________ test_rcupdate ________________________________________________________________________
+
+    @needs_xelatex
+    @needs_pdflatex
+    @pytest.mark.style('default')
+    @pytest.mark.backend('pgf')
+    def test_rcupdate():
+        rc_sets = [{'font.family': 'sans-serif',
+                    'font.size': 30,
+                    'figure.subplot.left': .2,
+                    'lines.markersize': 10,
+                    'pgf.rcfonts': False,
+                    'pgf.texsystem': 'xelatex'},
+                   {'font.family': 'monospace',
+                    'font.size': 10,
+                    'figure.subplot.left': .1,
+                    'lines.markersize': 20,
+                    'pgf.rcfonts': False,
+                    'pgf.texsystem': 'pdflatex',
+                    'pgf.preamble': ('\\usepackage[utf8x]{inputenc}'
+                                     '\\usepackage[T1]{fontenc}'
+                                     '\\usepackage{sfmath}')}]
+        tol = [6, 0]
+        for i, rc_set in enumerate(rc_sets):
+            with mpl.rc_context(rc_set):
+                for substring, pkg in [('sfmath', 'sfmath'), ('utf8x', 'ucs')]:
+                    if (substring in mpl.rcParams['pgf.preamble']
+                            and not _has_tex_package(pkg)):
+                        pytest.skip(f'needs {pkg}.sty')
+                create_figure()
+>               compare_figure('pgf_rcupdate%d.pdf' % (i + 1), tol=tol[i])
+
+i          = 1
+pkg        = 'ucs'
+rc_set     = {'figure.subplot.left': 0.1, 'font.family': 'monospace', 'font.size': 10, 'lines.markersize': 20, ...}
+rc_sets    = [{'figure.subplot.left': 0.2, 'font.family': 'sans-serif', 'font.size': 30, 'lines.markersize': 10, ...}, {'figure.subplot.left': 0.1, 'font.family': 'monospace', 'font.size': 10, 'lines.markersize': 20, ...}]
+substring  = 'utf8x'
+tol        = [6, 0]
+
+lib/matplotlib/tests/test_backend_pgf.py:138:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+fname = 'pgf_rcupdate2.pdf', savefig_kwargs = {}, tol = 0
+
+    def compare_figure(fname, savefig_kwargs={}, tol=0):
+        actual = os.path.join(result_dir, fname)
+        plt.savefig(actual, **savefig_kwargs)
+
+        expected = os.path.join(result_dir, "expected_%s" % fname)
+        shutil.copyfile(os.path.join(baseline_dir, fname), expected)
+        err = compare_images(expected, actual, tol=tol)
+        if err:
+>           raise ImageComparisonFailure(err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: Error: Image files did not match.
+E             RMS Value: 13.166575390337284
+E             Expected:
+E               /Users/mwesslen/Repos/matplotlib/result_images/test_backend_pgf/expected_pgf_rcupdate2_pdf.png
+E             Actual:
+E               /Users/mwesslen/Repos/matplotlib/result_images/test_backend_pgf/pgf_rcupdate2_pdf.png
+E             Difference:
+E               /Users/mwesslen/Repos/matplotlib/result_images/test_backend_pgf/pgf_rcupdate2_pdf-failed-diff.png
+E             Tolerance:
+E               0
+
+actual     = '/Users/mwesslen/Repos/matplotlib/result_images/test_backend_pgf/pgf_rcupdate2.pdf'
+err        = 'Error: Image files did not match.\n  RMS Value: 13.166575390337284\n  Expected:  \n    /Users/mwesslen/Repos/matplotl...Users/mwesslen/Repos/matplotlib/result_images/test_backend_pgf/pgf_rcupdate2_pdf-failed-diff.png\n  Tolerance: \n    0'
+expected   = '/Users/mwesslen/Repos/matplotlib/result_images/test_backend_pgf/expected_pgf_rcupdate2.pdf'
+fname      = 'pgf_rcupdate2.pdf'
+savefig_kwargs = {}
+tol        = 0
+
+lib/matplotlib/tests/test_backend_pgf.py:39: ImageComparisonFailure
+_____________________________________________________________________ test_mixedmode[pdf] _____________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_backend_pgf/pgf_mixedmode-expected.pdf'
+actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_backend_pgf/pgf_mixedmode.pdf'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 0.867):
+E               result_images/test_backend_pgf/pgf_mixedmode_pdf.png
+E               result_images/test_backend_pgf/pgf_mixedmode-expected_pdf.png
+E               result_images/test_backend_pgf/pgf_mixedmode_pdf-failed-diff.png
+
+__tracebackhide__ = True
+actual     = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_backend_pgf/pgf_mixedmode.pdf')
+err        = {'actual': 'result_images/test_backend_pgf/pgf_mixedmode_pdf.png', 'diff': 'result_images/test_backend_pgf/pgf_mixedmo...diff.png', 'expected': 'result_images/test_backend_pgf/pgf_mixedmode-expected_pdf.png', 'rms': 0.8674955293680767, ...}
+expected   = '/Users/mwesslen/Repos/matplotlib/result_images/test_backend_pgf/pgf_mixedmode-expected.pdf'
+key        = 'diff'
+tol        = 0
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+__________________________________________________________ test_interactive_backend[toolbar2-tkagg] ___________________________________________________________
+
+backend = 'tkagg', toolbar = 'toolbar2'
+
+    @pytest.mark.parametrize("backend", _get_testable_interactive_backends())
+    @pytest.mark.parametrize("toolbar", ["toolbar2", "toolmanager"])
+    @pytest.mark.flaky(reruns=3)
+    def test_interactive_backend(backend, toolbar):
+        if backend == "macosx":
+            if toolbar == "toolmanager":
+                pytest.skip("toolmanager is not implemented for macosx.")
+
+        proc = subprocess.run(
+            [sys.executable, "-c",
+             inspect.getsource(_test_interactive_impl)
+             + "\n_test_interactive_impl()",
+             json.dumps({"toolbar": toolbar})],
+            env={**os.environ, "MPLBACKEND": backend, "SOURCE_DATE_EPOCH": "0"},
+            timeout=_test_timeout,
+            stdout=subprocess.PIPE, universal_newlines=True)
+        if proc.returncode:
+>           pytest.fail("The subprocess returned with non-zero exit status "
+                        f"{proc.returncode}.")
+E           Failed: The subprocess returned with non-zero exit status -11.
+
+backend    = 'tkagg'
+proc       = CompletedProcess(args=['/usr/local/opt/python@3.9/bin/python3.9', '-c', 'def _test_interactive_impl():\n    import imp...tvalue(), result_after.getvalue())\n\n_test_interactive_impl()', '{"toolbar": "toolbar2"}'], returncode=-11, stdout='')
+toolbar    = 'toolbar2'
+
+lib/matplotlib/tests/test_backends_interactive.py:174: Failed
+__________________________________________________________ test_interactive_backend[toolbar2-macosx] __________________________________________________________
+
+backend = 'macosx', toolbar = 'toolbar2'
+
+    @pytest.mark.parametrize("backend", _get_testable_interactive_backends())
+    @pytest.mark.parametrize("toolbar", ["toolbar2", "toolmanager"])
+    @pytest.mark.flaky(reruns=3)
+    def test_interactive_backend(backend, toolbar):
+        if backend == "macosx":
+            if toolbar == "toolmanager":
+                pytest.skip("toolmanager is not implemented for macosx.")
+
+        proc = subprocess.run(
+            [sys.executable, "-c",
+             inspect.getsource(_test_interactive_impl)
+             + "\n_test_interactive_impl()",
+             json.dumps({"toolbar": toolbar})],
+            env={**os.environ, "MPLBACKEND": backend, "SOURCE_DATE_EPOCH": "0"},
+            timeout=_test_timeout,
+            stdout=subprocess.PIPE, universal_newlines=True)
+        if proc.returncode:
+>           pytest.fail("The subprocess returned with non-zero exit status "
+                        f"{proc.returncode}.")
+E           Failed: The subprocess returned with non-zero exit status 1.
+
+backend    = 'macosx'
+proc       = CompletedProcess(args=['/usr/local/opt/python@3.9/bin/python3.9', '-c', 'def _test_interactive_impl():\n    import imp...l()', '{"toolbar": "toolbar2"}'], returncode=1, stdout='<matplotlib.backend_bases.CloseEvent object at 0x11c6d1580>\n')
+toolbar    = 'toolbar2'
+
+lib/matplotlib/tests/test_backends_interactive.py:174: Failed
+-------------------------------------------------------------------- Captured stderr call ---------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<string>", line 82, in <module>
+  File "<string>", line 80, in _test_interactive_impl
+  File "/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 831, in assertEqual
+    assertion_func(first, second, msg=msg)
+  File "/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 824, in _baseAssertEqual
+    raise self.failureException(msg)
+AssertionError: b'\x8[38 chars]00\x02\x80\x00\x00\x01\xe0\x08\x06\x00\x00\x00[50352 chars]\x82' != b'\x8[38 chars]00\x05\x00\x00\x00\x03\xc0\x08\x06\x00\x00\x00[120289 chars]\x82'
+-------------------------------------------------------------------- Captured stderr call ---------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<string>", line 82, in <module>
+  File "<string>", line 80, in _test_interactive_impl
+  File "/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 831, in assertEqual
+    assertion_func(first, second, msg=msg)
+  File "/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 824, in _baseAssertEqual
+    raise self.failureException(msg)
+AssertionError: b'\x8[38 chars]00\x02\x80\x00\x00\x01\xe0\x08\x06\x00\x00\x00[50352 chars]\x82' != b'\x8[38 chars]00\x05\x00\x00\x00\x03\xc0\x08\x06\x00\x00\x00[120289 chars]\x82'
+-------------------------------------------------------------------- Captured stderr call ---------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<string>", line 82, in <module>
+  File "<string>", line 80, in _test_interactive_impl
+  File "/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 831, in assertEqual
+    assertion_func(first, second, msg=msg)
+  File "/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 824, in _baseAssertEqual
+    raise self.failureException(msg)
+AssertionError: b'\x8[38 chars]00\x02\x80\x00\x00\x01\xe0\x08\x06\x00\x00\x00[50352 chars]\x82' != b'\x8[38 chars]00\x05\x00\x00\x00\x03\xc0\x08\x06\x00\x00\x00[120289 chars]\x82'
+_________________________________________________________ test_interactive_backend[toolmanager-tkagg] _________________________________________________________
+
+backend = 'tkagg', toolbar = 'toolmanager'
+
+    @pytest.mark.parametrize("backend", _get_testable_interactive_backends())
+    @pytest.mark.parametrize("toolbar", ["toolbar2", "toolmanager"])
+    @pytest.mark.flaky(reruns=3)
+    def test_interactive_backend(backend, toolbar):
+        if backend == "macosx":
+            if toolbar == "toolmanager":
+                pytest.skip("toolmanager is not implemented for macosx.")
+
+        proc = subprocess.run(
+            [sys.executable, "-c",
+             inspect.getsource(_test_interactive_impl)
+             + "\n_test_interactive_impl()",
+             json.dumps({"toolbar": toolbar})],
+            env={**os.environ, "MPLBACKEND": backend, "SOURCE_DATE_EPOCH": "0"},
+            timeout=_test_timeout,
+            stdout=subprocess.PIPE, universal_newlines=True)
+        if proc.returncode:
+>           pytest.fail("The subprocess returned with non-zero exit status "
+                        f"{proc.returncode}.")
+E           Failed: The subprocess returned with non-zero exit status -11.
+
+backend    = 'tkagg'
+proc       = CompletedProcess(args=['/usr/local/opt/python@3.9/bin/python3.9', '-c', 'def _test_interactive_impl():\n    import imp...lue(), result_after.getvalue())\n\n_test_interactive_impl()', '{"toolbar": "toolmanager"}'], returncode=-11, stdout='')
+toolbar    = 'toolmanager'
+
+lib/matplotlib/tests/test_backends_interactive.py:174: Failed
+-------------------------------------------------------------------- Captured stderr call ---------------------------------------------------------------------
+/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/_collections_abc.py:856: UserWarning: Treat the new Tool classes introduced in v1.5 as experimental for now; the API and rcParam may change in future versions.
+  self[key] = other[key]
+-------------------------------------------------------------------- Captured stderr call ---------------------------------------------------------------------
+/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/_collections_abc.py:856: UserWarning: Treat the new Tool classes introduced in v1.5 as experimental for now; the API and rcParam may change in future versions.
+  self[key] = other[key]
+-------------------------------------------------------------------- Captured stderr call ---------------------------------------------------------------------
+/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/_collections_abc.py:856: UserWarning: Treat the new Tool classes introduced in v1.5 as experimental for now; the API and rcParam may change in future versions.
+  self[key] = other[key]
+-------------------------------------------------------------------- Captured stderr call ---------------------------------------------------------------------
+/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/_collections_abc.py:856: UserWarning: Treat the new Tool classes introduced in v1.5 as experimental for now; the API and rcParam may change in future versions.
+  self[key] = other[key]
+
+---------- coverage: platform darwin, python 3.9.1-final-0 -----------
+Name                                                    Stmts   Miss Branch BrPart  Cover
+-----------------------------------------------------------------------------------------
+lib/matplotlib/__init__.py                                515    135    207     27    72%
+lib/matplotlib/_animation_data.py                           4      0      0      0   100%
+lib/matplotlib/_api/__init__.py                            64      5     33      6    89%
+lib/matplotlib/_api/deprecation.py                        157     14     61     10    86%
+lib/matplotlib/_cm.py                                     141      0     94     22    91%
+lib/matplotlib/_cm_listed.py                               11      0      2      0   100%
+lib/matplotlib/_color_data.py                               7      0      4      0   100%
+lib/matplotlib/_constrained_layout.py                     289      5    152      6    98%
+lib/matplotlib/_enums.py                                   72     41     18      1    40%
+lib/matplotlib/_internal_utils.py                          31     31     12      0     0%
+lib/matplotlib/_layoutgrid.py                             209     43     74      0    81%
+lib/matplotlib/_mathtext.py                              1495    194    464     52    85%
+lib/matplotlib/_mathtext_data.py                            7      0      2      0   100%
+lib/matplotlib/_pylab_helpers.py                           70      0     25      4    96%
+lib/matplotlib/_text_layout.py                             14      0      2      0   100%
+lib/matplotlib/_version.py                                264    142    136     23    37%
+lib/matplotlib/afm.py                                     242     36     86     15    82%
+lib/matplotlib/animation.py                               687    157    270     48    71%
+lib/matplotlib/artist.py                                  631     98    261     29    81%
+lib/matplotlib/axes/__init__.py                             2      0      0      0   100%
+lib/matplotlib/axes/_axes.py                             2331    242   1094    165    86%
+lib/matplotlib/axes/_base.py                             1716    208    771     94    86%
+lib/matplotlib/axes/_secondary_axes.py                    119     20     44      5    82%
+lib/matplotlib/axes/_subplots.py                           94     16     18      3    81%
+lib/matplotlib/axis.py                                   1179    144    446     47    86%
+lib/matplotlib/backend_bases.py                          1307    364    464     58    68%
+lib/matplotlib/backend_managers.py                        174     57     72     20    63%
+lib/matplotlib/backend_tools.py                           538    253    168     10    44%
+lib/matplotlib/backends/__init__.py                         0      0      0      0   100%
+lib/matplotlib/backends/_backend_pdf_ps.py                 78      8     12      1    86%
+lib/matplotlib/backends/_backend_tk.py                    533    231    150     15    52%
+lib/matplotlib/backends/backend_agg.py                    269     39     48     10    82%
+lib/matplotlib/backends/backend_cairo.py                  319    309     92      0     2%
+lib/matplotlib/backends/backend_gtk3.py                   530    530    140      0     0%
+lib/matplotlib/backends/backend_gtk3agg.py                 56     50     10      0     9%
+lib/matplotlib/backends/backend_gtk3cairo.py               20     20      2      0     0%
+lib/matplotlib/backends/backend_macosx.py                  86     20     16      5    74%
+lib/matplotlib/backends/backend_mixed.py                   41      0      8      1    98%
+lib/matplotlib/backends/backend_nbagg.py                  138     42     40      6    62%
+lib/matplotlib/backends/backend_pdf.py                   1380     53    451     47    94%
+lib/matplotlib/backends/backend_pgf.py                    548     56    137     20    86%
+lib/matplotlib/backends/backend_ps.py                     653    109    244     40    81%
+lib/matplotlib/backends/backend_qt4.py                      7      7      2      0     0%
+lib/matplotlib/backends/backend_qt4agg.py                   7      7      2      0     0%
+lib/matplotlib/backends/backend_qt4cairo.py                 7      7      2      0     0%
+lib/matplotlib/backends/backend_qt5.py                    600    600    188      0     0%
+lib/matplotlib/backends/backend_qt5agg.py                  39     39      6      0     0%
+lib/matplotlib/backends/backend_qt5cairo.py                35     35      8      0     0%
+lib/matplotlib/backends/backend_svg.py                    725     30    277     27    94%
+lib/matplotlib/backends/backend_template.py                47     47      2      0     0%
+lib/matplotlib/backends/backend_tkagg.py                   12      0      2      0   100%
+lib/matplotlib/backends/backend_tkcairo.py                 21     21      2      0     0%
+lib/matplotlib/backends/backend_webagg.py                 162     58     34      7    59%
+lib/matplotlib/backends/backend_webagg_core.py            272    122     78      7    50%
+lib/matplotlib/backends/backend_wx.py                     864    864    246      0     0%
+lib/matplotlib/backends/backend_wxagg.py                   47     47      6      0     0%
+lib/matplotlib/backends/backend_wxcairo.py                 25     25      2      0     0%
+lib/matplotlib/backends/qt_compat.py                      125     73     54     13    41%
+lib/matplotlib/backends/qt_editor/__init__.py               0      0      0      0   100%
+lib/matplotlib/backends/qt_editor/_formlayout.py          311    311    116      0     0%
+lib/matplotlib/backends/qt_editor/_formsubplottool.py      28     28      6      0     0%
+lib/matplotlib/backends/qt_editor/figureoptions.py        137    137     60      0     0%
+lib/matplotlib/backends/qt_editor/formsubplottool.py        4      4      0      0     0%
+lib/matplotlib/bezier.py                                  236     22     52      6    89%
+lib/matplotlib/blocking_input.py                          143    101     42      0    23%
+lib/matplotlib/category.py                                 87      3     27      3    95%
+lib/matplotlib/cbook/__init__.py                          886    165    390     44    79%
+lib/matplotlib/cbook/deprecation.py                         2      2      0      0     0%
+lib/matplotlib/cm.py                                      191     21     68      8    88%
+lib/matplotlib/collections.py                             870    112    309     38    84%
+lib/matplotlib/colorbar.py                                669     64    238     22    89%
+lib/matplotlib/colors.py                                  900     45    330     40    93%
+lib/matplotlib/compat/__init__.py                           2      2      0      0     0%
+lib/matplotlib/container.py                                42      0      9      0   100%
+lib/matplotlib/contour.py                                 693    111    337     47    81%
+lib/matplotlib/dates.py                                   700    128    266     40    78%
+lib/matplotlib/docstring.py                                27      4      6      1    85%
+lib/matplotlib/dviread.py                                 481     53    165     25    86%
+lib/matplotlib/figure.py                                  904     67    374     53    90%
+lib/matplotlib/font_manager.py                            547    100    222     35    79%
+lib/matplotlib/fontconfig_pattern.py                       70      5     18      2    90%
+lib/matplotlib/gridspec.py                                324     31    133     17    89%
+lib/matplotlib/hatch.py                                   145      4     30      2    97%
+lib/matplotlib/image.py                                   725    132    290     36    80%
+lib/matplotlib/legend.py                                  416     45    179     22    86%
+lib/matplotlib/legend_handler.py                          334     24     76     17    90%
+lib/matplotlib/lines.py                                   661     74    238     31    86%
+lib/matplotlib/markers.py                                 388      4     58      3    98%
+lib/matplotlib/mathtext.py                                237     45     35      2    82%
+lib/matplotlib/mlab.py                                    270      2    148      7    98%
+lib/matplotlib/offsetbox.py                               718    133    212     27    80%
+lib/matplotlib/patches.py                                1597    179    372     51    88%
+lib/matplotlib/path.py                                    379     48    126     15    86%
+lib/matplotlib/patheffects.py                             186      7     36      8    93%
+lib/matplotlib/projections/__init__.py                     28      2      4      0    94%
+lib/matplotlib/projections/geo.py                         274     54     10      0    80%
+lib/matplotlib/projections/polar.py                       751     93    242     39    84%
+lib/matplotlib/pylab.py                                    14      0      0      0   100%
+lib/matplotlib/pyplot.py                                  865    133    250     50    82%
+lib/matplotlib/quiver.py                                  452     45    140     21    87%
+lib/matplotlib/rcsetup.py                                 479     75    212     22    83%
+lib/matplotlib/sankey.py                                  320    101    190     42    65%
+lib/matplotlib/scale.py                                   262     15     38      8    92%
+lib/matplotlib/sphinxext/__init__.py                        0      0      0      0   100%
+lib/matplotlib/sphinxext/mathmpl.py                        78     78      8      0     0%
+lib/matplotlib/sphinxext/plot_directive.py                360     82    162     33    73%
+lib/matplotlib/spines.py                                  314     40    126     15    85%
+lib/matplotlib/stackplot.py                                42      1     12      2    94%
+lib/matplotlib/streamplot.py                              379     15    142     15    94%
+lib/matplotlib/style/__init__.py                            1      0      0      0   100%
+lib/matplotlib/style/core.py                               83      5     32      3    93%
+lib/matplotlib/table.py                                   331     44    149     20    85%
+lib/matplotlib/testing/__init__.py                         38      7      0      0    82%
+lib/matplotlib/testing/compare.py                         242     56     78     14    72%
+lib/matplotlib/testing/conftest.py                         80     27     24      3    63%
+lib/matplotlib/testing/decorators.py                      244     34     76     11    84%
+lib/matplotlib/testing/exceptions.py                        1      0      0      0   100%
+lib/matplotlib/testing/jpl_units/Duration.py               49     20      4      0    55%
+lib/matplotlib/testing/jpl_units/Epoch.py                  86     38     24      4    51%
+lib/matplotlib/testing/jpl_units/EpochConverter.py         39      7     12      3    80%
+lib/matplotlib/testing/jpl_units/StrConverter.py           48     38     20      0    15%
+lib/matplotlib/testing/jpl_units/UnitDbl.py                64     25     10      2    58%
+lib/matplotlib/testing/jpl_units/UnitDblConverter.py       44     12     24      2    68%
+lib/matplotlib/testing/jpl_units/UnitDblFormatter.py       11      3      2      1    69%
+lib/matplotlib/testing/jpl_units/__init__.py               25      0      0      0   100%
+lib/matplotlib/testing/widgets.py                          24      0      0      0   100%
+lib/matplotlib/tests/__init__.py                            3      1      2      1    60%
+lib/matplotlib/tests/conftest.py                            1      0      0      0   100%
+lib/matplotlib/tests/test_afm.py                           39      0      0      0   100%
+lib/matplotlib/tests/test_agg.py                          148      1      4      0    99%
+lib/matplotlib/tests/test_agg_filter.py                    17      0      0      0   100%
+lib/matplotlib/tests/test_animation.py                    194      1     24      1    99%
+lib/matplotlib/tests/test_api.py                           46      0      2      0   100%
+lib/matplotlib/tests/test_arrow_patches.py                 86      0     18      0   100%
+lib/matplotlib/tests/test_artist.py                       200      1      2      0    99%
+lib/matplotlib/tests/test_axes.py                        4352      7    395      2    99%
+lib/matplotlib/tests/test_backend_bases.py                138      0     28      0   100%
+lib/matplotlib/tests/test_backend_cairo.py                 25     18      0      0    28%
+lib/matplotlib/tests/test_backend_gtk3.py                  19     16      4      0    13%
+lib/matplotlib/tests/test_backend_nbagg.py                 15      0      2      0   100%
+lib/matplotlib/tests/test_backend_pdf.py                  200      0     12      2    99%
+lib/matplotlib/tests/test_backend_pgf.py                  172      3     22      5    96%
+lib/matplotlib/tests/test_backend_ps.py                   104      0     14      0   100%
+lib/matplotlib/tests/test_backend_qt.py                   141    111     16      0    19%
+lib/matplotlib/tests/test_backend_svg.py                  334      0     78      1    99%
+lib/matplotlib/tests/test_backend_tk.py                    60     18     10      2    63%
+lib/matplotlib/tests/test_backend_tools.py                  5      0      0      0   100%
+lib/matplotlib/tests/test_backend_webagg.py                16      0      4      1    95%
+lib/matplotlib/tests/test_backends_interactive.py         152     70     48      6    54%
+lib/matplotlib/tests/test_basic.py                         15      0      2      0   100%
+lib/matplotlib/tests/test_bbox_tight.py                    88      0      4      0   100%
+lib/matplotlib/tests/test_category.py                     201      0     14      0   100%
+lib/matplotlib/tests/test_cbook.py                        494      6     66      3    98%
+lib/matplotlib/tests/test_collections.py                  568      1     40      1    99%
+lib/matplotlib/tests/test_colorbar.py                     390      0     10      0   100%
+lib/matplotlib/tests/test_colors.py                       780      2     44      1    99%
+lib/matplotlib/tests/test_compare_images.py                18      0      4      1    95%
+lib/matplotlib/tests/test_constrainedlayout.py            357      0     58      0   100%
+lib/matplotlib/tests/test_container.py                     17      0      0      0   100%
+lib/matplotlib/tests/test_contour.py                      231      0     22      0   100%
+lib/matplotlib/tests/test_cycles.py                       111      0     42      0   100%
+lib/matplotlib/tests/test_dates.py                        511      4     64      3    98%
+lib/matplotlib/tests/test_determinism.py                   55      0     16      1    99%
+lib/matplotlib/tests/test_dviread.py                       45      0     14      0   100%
+lib/matplotlib/tests/test_figure.py                       646      2     84      0    99%
+lib/matplotlib/tests/test_font_manager.py                 128     30     28      3    70%
+lib/matplotlib/tests/test_fontconfig_pattern.py            34      0     10      0   100%
+lib/matplotlib/tests/test_gridspec.py                      17      0      0      0   100%
+lib/matplotlib/tests/test_image.py                        781      5     50      3    99%
+lib/matplotlib/tests/test_legend.py                       494      0     32      0   100%
+lib/matplotlib/tests/test_lines.py                        153      0     16      0   100%
+lib/matplotlib/tests/test_marker.py                        92      0      4      0   100%
+lib/matplotlib/tests/test_mathtext.py                     136      0     20      0   100%
+lib/matplotlib/tests/test_matplotlib.py                    28      0      6      1    97%
+lib/matplotlib/tests/test_mlab.py                         577      2     96      2    99%
+lib/matplotlib/tests/test_offsetbox.py                    166      1     14      1    99%
+lib/matplotlib/tests/test_patches.py                      353      0     26      0   100%
+lib/matplotlib/tests/test_path.py                         243      0     18      0   100%
+lib/matplotlib/tests/test_patheffects.py                  100      0      6      0   100%
+lib/matplotlib/tests/test_pickle.py                       136      3      2      0    98%
+lib/matplotlib/tests/test_png.py                           37      0      4      0   100%
+lib/matplotlib/tests/test_polar.py                        221      0     16      0   100%
+lib/matplotlib/tests/test_preprocess_data.py              129      1      8      4    96%
+lib/matplotlib/tests/test_pyplot.py                       215      4      6      2    97%
+lib/matplotlib/tests/test_quiver.py                       162      0      4      0   100%
+lib/matplotlib/tests/test_rcparams.py                     153      3     24      0    98%
+lib/matplotlib/tests/test_sankey.py                        12      0      0      0   100%
+lib/matplotlib/tests/test_scale.py                        152      1      2      0    99%
+lib/matplotlib/tests/test_simplification.py               183      0      6      0   100%
+lib/matplotlib/tests/test_skew.py                          83      2      6      1    97%
+lib/matplotlib/tests/test_sphinxext.py                     36      1      4      1    95%
+lib/matplotlib/tests/test_spines.py                        95      0      2      0   100%
+lib/matplotlib/tests/test_streamplot.py                   103      0      0      0   100%
+lib/matplotlib/tests/test_style.py                        127      1      8      1    99%
+lib/matplotlib/tests/test_subplots.py                     103      0     20      0   100%
+lib/matplotlib/tests/test_table.py                         99      0     12      0   100%
+lib/matplotlib/tests/test_testing.py                       25      1      0      0    96%
+lib/matplotlib/tests/test_texmanager.py                    10      0      0      0   100%
+lib/matplotlib/tests/test_text.py                         405      0     34      0   100%
+lib/matplotlib/tests/test_ticker.py                       587      0     78      3    99%
+lib/matplotlib/tests/test_tightlayout.py                  198      0     14      0   100%
+lib/matplotlib/tests/test_transforms.py                   402      0     16      0   100%
+lib/matplotlib/tests/test_triangulation.py                681      0     54      1    99%
+lib/matplotlib/tests/test_ttconv.py                        11      0      0      0   100%
+lib/matplotlib/tests/test_type1font.py                     31      0      8      0   100%
+lib/matplotlib/tests/test_units.py                        146      5     26      4    94%
+lib/matplotlib/tests/test_usetex.py                        67      1     12      1    97%
+lib/matplotlib/tests/test_widgets.py                      233      0     16      1    99%
+lib/matplotlib/texmanager.py                              161     40     52     15    69%
+lib/matplotlib/text.py                                    791    107    276     41    84%
+lib/matplotlib/textpath.py                                202     11     56      5    94%
+lib/matplotlib/ticker.py                                 1256    156    535     83    86%
+lib/matplotlib/tight_bbox.py                               48      2     14      2    94%
+lib/matplotlib/tight_layout.py                            163     20     91     17    85%
+lib/matplotlib/transforms.py                             1143    116    328     50    88%
+lib/matplotlib/tri/__init__.py                              8      0      0      0   100%
+lib/matplotlib/tri/triangulation.py                        88     10     42     11    84%
+lib/matplotlib/tri/tricontour.py                           65      5     22      3    89%
+lib/matplotlib/tri/trifinder.py                            26      3      2      1    86%
+lib/matplotlib/tri/triinterpolate.py                      539     36     84     13    90%
+lib/matplotlib/tri/tripcolor.py                            56     12     24      8    70%
+lib/matplotlib/tri/triplot.py                              25      2      8      2    88%
+lib/matplotlib/tri/trirefine.py                            93      2     18      3    95%
+lib/matplotlib/tri/tritools.py                             77      0     12      0   100%
+lib/matplotlib/ttconv.py                                    3      3      0      0     0%
+lib/matplotlib/type1font.py                               179     25     91     12    83%
+lib/matplotlib/units.py                                    77      5     26      3    92%
+lib/matplotlib/widgets.py                                1437    471    620     95    60%
+-----------------------------------------------------------------------------------------
+TOTAL                                                   65929  10266  18378   2180    82%
+
+=================================================================== short test summary info ===================================================================
+FAILED lib/matplotlib/tests/test_backend_pgf.py::test_pdflatex[pdf] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 11.669):
+FAILED lib/matplotlib/tests/test_backend_pgf.py::test_rcupdate - matplotlib.testing.exceptions.ImageComparisonFailure: Error: Image files did not match.
+FAILED lib/matplotlib/tests/test_backend_pgf.py::test_mixedmode[pdf] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 0.867):
+FAILED lib/matplotlib/tests/test_backends_interactive.py::test_interactive_backend[toolbar2-tkagg] - Failed: The subprocess returned with non-zero exit stat...
+FAILED lib/matplotlib/tests/test_backends_interactive.py::test_interactive_backend[toolbar2-macosx] - Failed: The subprocess returned with non-zero exit sta...
+FAILED lib/matplotlib/tests/test_backends_interactive.py::test_interactive_backend[toolmanager-tkagg] - Failed: The subprocess returned with non-zero exit s...
+======================================== 6 failed, 7860 passed, 182 skipped, 13 xfailed, 9 rerun in 1399.02s (0:23:19) ========================================
