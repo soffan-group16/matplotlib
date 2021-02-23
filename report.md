@@ -52,12 +52,12 @@ function: subsuper, file: lib/matplotlib/\_mathtext.py <!--jt: counted 41, de: c
 
 function: \_to_rgba_no_colorcycle, file: lib/matplotlib/colors.py <!-- de: counted 35, supposed to be 36 , jt: counted 36-->
 
-function: run, file: lib/matplotlib/sphinxext\plot_directive.py <!-- jt: counted 33, JA: counted 33 -->
+<!-- function: _run_, file: lib/matplotlib/sphinxext\plot_directive.py jt: counted 33, JA: counted 33 -->
 
 <!-- Use at least two group members to count the complexity separately, to get a reliable results. Use a
 third member if the two counts differ. -->
 
-function: _plot_args, file: lib/matplotlib/axes\_base.py <!--JA: counted 27 -->
+function: _plot_args, file: lib/matplotlib/axes\_base.py <!--JA: counted 27 --><!--jt: i count 27-->
 
 
 1. What are your results? Did everyone get the same result? Is there something that is unclear? If you have a tool, is its result the same as yours?
@@ -95,7 +95,7 @@ function: _plot_args, file: lib/matplotlib/axes\_base.py <!--JA: counted 27 -->
 
 ### Tools
 
-**Document your experience in using a "new"/different coverage tool.**
+**Document your experience in using a coverage tool.**
 > We used the Coverage module for python which was very convenient to use.
 
 **How well was the tool documented? Was it possible/easy/difficult to integrate it with your build environment?**
@@ -115,11 +115,17 @@ We found the coverage for matplotlib to be  ~80%, it varied a bit depending upon
 
 ### Evaluation
 
-1. How detailed is your coverage measurement?
+1. What is the quality of your own coverage measurement? Does it take into account ternary operators (condition ? yes : no) and exceptions, if available in your language?
 
-2. What are the limitations of your own tool?
+    > Our coverage tool shows the ID of the branches which are covered, branches that are not covered, and the percentage of the coverage. Our coverage tool does not handle conditions within lambda functions or conditional assignements i.e. (a = 1 if b else 2) statements.
 
-3. Are the results of your tool consistent with existing coverage tools?
+2. What are the limitations of your tool? How would the instrumentation change if you modify the program?
+
+    > One limitation is that the ID of the branches have to be manually added into the source code itself. There are no options for it. For example to run it silent or only showing branch hits.
+
+3. If you have an automated tool, are your results consistent with the ones produced by existing tool(s)?
+
+    > There is no way of getting the branch coverage percentage for a single function in the tool `Coverage.py` but looking at what lines of code where run acording to this tool, the results seem to be consistent with out tool.
 
 ## Coverage improvement
 
@@ -143,9 +149,39 @@ Number of test cases added: two per team member (P) or at least four (P+).
 
 **Carried out refactoring (optional, P+):**
 
-**git diff ...**
+        git diff ...
 
 ## Self-assessment: Way of working
+
+|State|Checklist|Status|
+|-----|---------|------|
+|Principles Established|Principles and constraints are committed to by the team.||
+| ^ |Principles and constraints are agreed to by the stakeholders.||
+| ^ |The tool needs of the work and its stakeholders are agreed.||
+| ^ |A recommendation for the approach to be taken is available.||
+| ^ |The context within which the team will operate is understood.||
+| ^ |The constraints that apply to the selection, acquisition, and use of practices and tools are known.||
+|Foundation Established|The key practices and tools that form the foundation of the way-of-working are selected.||
+| ^ |Enough practices for work to start are agreed to by the team.||
+| ^ |All non-negotiable practices and tools have been identified.||
+| ^ |The gaps that exist between the practices and tools that are needed and the practices and tools that are available have been analyzed and understood.||
+| ^ |The capability gaps that exist between what is needed to execute the desired way of working and the capability levels of the team have been analyzed and understood.||
+| ^ |The selected practices and tools have been integrated to form a usable way-of-working.||
+|In Use|The practices and tools are being used to do real work.||
+| ^ |The use of the practices and tools selected are regularly inspected.||
+| ^ |The practices and tools are being adapted to the team’s context||
+| ^ |The use of the practices and tools is supported by the team.||
+| ^ |Procedures are in place to handle feedback on the team’s way of working.||
+| ^ |The practices and tools support team communication and collaboration.||
+|In Place|The practices and tools are being used by the whole team to perform their work||
+| ^ |All team members have access to the practices and tools required to do their work.||
+| ^ |The whole team is involved in the inspection and adaptation of the way-of-working.||
+|Working Well|Team members are making progress as planned by using and adapting the way-of-working to suit their current context.||
+| ^ |The team naturally applies the practices without thinking about them.||
+| ^ |The tools naturally support the way that the team works.||
+| ^ |The team continually tunes their use of the practices and tools.||
+|Retired|The team's way of working is no longer being used.||
+| ^ |Lessons learned are shared for future use.||
 
 Current state according to the Essence standard: ...
 
