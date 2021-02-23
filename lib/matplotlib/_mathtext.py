@@ -2636,6 +2636,7 @@ class Parser:
             cov.log(5)
             if not napostrophes:
                 cov.log(6)
+                cov.report()
                 return toks[0]  # .asList()
             else:
                 cov.log(7)

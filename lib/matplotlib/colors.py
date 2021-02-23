@@ -80,6 +80,7 @@ from PIL.PngImagePlugin import PngInfo
 import matplotlib as mpl
 import numpy as np
 from matplotlib import _api, cbook, scale
+from matplotlib.coverage import Coverage
 from ._color_data import BASE_COLORS, TABLEAU_COLORS, CSS4_COLORS, XKCD_COLORS
 
 
@@ -203,6 +204,7 @@ def to_rgba(c, alpha=None):
 
 
 def _to_rgba_no_colorcycle(c, alpha=None):
+    cov = Coverage(27, "_to_rgba_no_colorcycle")
     """
     Convert *c* to an RGBA color, with no support for color-cycle syntax.
 
@@ -211,82 +213,123 @@ def _to_rgba_no_colorcycle(c, alpha=None):
     """
     orig_c = c
     if c is np.ma.masked:
+        cov.log(0)
+        cov.report()
         return (0., 0., 0., 0.)
     if isinstance(c, str):
+        cov.log(1)
         if c.lower() == "none":
+            cov.log(2)
+            cov.report()
             return (0., 0., 0., 0.)
         # Named color.
         try:
+            cov.log(3)
             # This may turn c into a non-string, so we check again below.
             c = _colors_full_map[c]
         except KeyError:
+            cov.log(4)
             if len(orig_c) != 1:
+                cov.log(5)
                 try:
+                    cov.log(6)
                     c = _colors_full_map[c.lower()]
                 except KeyError:
+                    cov.log(7)
                     pass
     if isinstance(c, str):
+        cov.log(8)
         # hex color in #rrggbb format.
         match = re.match(r"\A#[a-fA-F0-9]{6}\Z", c)
         if match:
+            cov.log(9)
+            cov.report()
             return (tuple(int(n, 16) / 255
                           for n in [c[1:3], c[3:5], c[5:7]])
                     + (alpha if alpha is not None else 1.,))
         # hex color in #rgb format, shorthand for #rrggbb.
         match = re.match(r"\A#[a-fA-F0-9]{3}\Z", c)
         if match:
+            cov.log(10)
+            cov.report()
             return (tuple(int(n, 16) / 255
                           for n in [c[1]*2, c[2]*2, c[3]*2])
                     + (alpha if alpha is not None else 1.,))
         # hex color with alpha in #rrggbbaa format.
         match = re.match(r"\A#[a-fA-F0-9]{8}\Z", c)
         if match:
+            cov.log(11)
             color = [int(n, 16) / 255
                      for n in [c[1:3], c[3:5], c[5:7], c[7:9]]]
             if alpha is not None:
+                cov.log(12)
                 color[-1] = alpha
+            cov.report()
             return tuple(color)
         # hex color with alpha in #rgba format, shorthand for #rrggbbaa.
         match = re.match(r"\A#[a-fA-F0-9]{4}\Z", c)
         if match:
+            cov.log(13)
             color = [int(n, 16) / 255
                      for n in [c[1]*2, c[2]*2, c[3]*2, c[4]*2]]
             if alpha is not None:
+                cov.log(14)
                 color[-1] = alpha
+            cov.report()
             return tuple(color)
         # string gray.
         try:
+            cov.log(15)
             c = float(c)
         except ValueError:
+            cov.log(16)
             pass
         else:
+            cov.log(17)
             if not (0 <= c <= 1):
+                cov.log(18)
+                cov.report()
                 raise ValueError(
                     f"Invalid string grayscale value {orig_c!r}. "
                     f"Value must be within 0-1 range")
+            cov.report()
             return c, c, c, alpha if alpha is not None else 1.
+        cov.report()
         raise ValueError(f"Invalid RGBA argument: {orig_c!r}")
     # turn 2-D array into 1-D array
     if isinstance(c, np.ndarray):
+        cov.log(19)
         if c.ndim == 2 and c.shape[0] == 1:
+            cov.log(20)
             c = c.reshape(-1)
     # tuple color.
     if not np.iterable(c):
+        cov.log(21)
+        cov.report()
         raise ValueError(f"Invalid RGBA argument: {orig_c!r}")
     if len(c) not in [3, 4]:
+        cov.log(22)
+        cov.report()
         raise ValueError("RGBA sequence should have length 3 or 4")
     if not all(isinstance(x, Number) for x in c):
+        cov.log(23)
         # Checks that don't work: `map(float, ...)`, `np.array(..., float)` and
         # `np.array(...).astype(float)` would all convert "0.5" to 0.5.
+        cov.report()
         raise ValueError(f"Invalid RGBA argument: {orig_c!r}")
     # Return a tuple to prevent the cached value from being modified.
     c = tuple(map(float, c))
     if len(c) == 3 and alpha is None:
+        cov.log(24)
         alpha = 1
     if alpha is not None:
+        cov.log(25)
         c = c[:3] + (alpha,)
     if any(elem < 0 or elem > 1 for elem in c):
+        cov.log(26)
+        cov.report()
         raise ValueError("RGBA values should be within 0-1 range")
+    cov.report()
     return c
 
 

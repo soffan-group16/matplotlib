@@ -27,6 +27,7 @@ import matplotlib.text as mtext
 import matplotlib.image as mimage
 import matplotlib.path as mpath
 from matplotlib.rcsetup import cycler, validate_axisbelow
+from matplotlib.coverage import Coverage
 
 _log = logging.getLogger(__name__)
 
@@ -446,29 +447,38 @@ class _process_plot_var_args:
             The Artist is either `.Line2D` (if called from ``plot()``) or
             `.Polygon` otherwise.
         """
+        cov = Coverage(22, "_plot_args")
         if len(tup) > 1 and isinstance(tup[-1], str):
+            cov.log(0)
             # xy is tup with fmt stripped (could still be (y,) only)
             *xy, fmt = tup
             linestyle, marker, color = _process_plot_format(fmt)
         elif len(tup) == 3:
+            cov.log(1)
+            cov.report()
             raise ValueError('third arg must be a format string')
         else:
+            cov.log(2)
             xy = tup
             linestyle, marker, color = None, None, None
 
         # Don't allow any None value; these would be up-converted to one
         # element array of None which causes problems downstream.
         if any(v is None for v in tup):
+            cov.log(3)
+            cov.report()
             raise ValueError("x, y, and format string must not be None")
 
         kw = {}
         for prop_name, val in zip(('linestyle', 'marker', 'color'),
                                   (linestyle, marker, color)):
             if val is not None:
+                cov.log(4)
                 # check for conflicts between fmt and kwargs
                 if (fmt.lower() != 'none'
                         and prop_name in kwargs
                         and val != 'None'):
+                    cov.log(5)
                     # Technically ``plot(x, y, 'o', ls='--')`` is a conflict
                     # because 'o' implicitly unsets the linestyle
                     # (linestyle='None').
@@ -487,46 +497,64 @@ class _process_plot_var_args:
                 kw[prop_name] = val
 
         if len(xy) == 2:
+            cov.log(6)
             x = _check_1d(xy[0])
             y = _check_1d(xy[1])
         else:
+            cov.log(7)
             x, y = index_of(xy[-1])
 
         if self.axes.xaxis is not None:
+            cov.log(8)
             self.axes.xaxis.update_units(x)
         if self.axes.yaxis is not None:
+            cov.log(9)
             self.axes.yaxis.update_units(y)
 
         if x.shape[0] != y.shape[0]:
+            cov.log(10)
+            cov.report()
             raise ValueError(f"x and y must have same first dimension, but "
                              f"have shapes {x.shape} and {y.shape}")
         if x.ndim > 2 or y.ndim > 2:
+            cov.log(11)
+            cov.report()
             raise ValueError(f"x and y can be no greater than 2D, but have "
                              f"shapes {x.shape} and {y.shape}")
         if x.ndim == 1:
+            cov.log(12)
             x = x[:, np.newaxis]
         if y.ndim == 1:
+            cov.log(13)
             y = y[:, np.newaxis]
 
         if self.command == 'plot':
+            cov.log(14)
             make_artist = self._makeline
         else:
+            cov.log(15)
             kw['closed'] = kwargs.get('closed', True)
             make_artist = self._makefill
 
         ncx, ncy = x.shape[1], y.shape[1]
         if ncx > 1 and ncy > 1 and ncx != ncy:
+            cov.log(16)
+            cov.report()
             raise ValueError(f"x has {ncx} columns but y has {ncy} columns")
 
         label = kwargs.get('label')
         n_datasets = max(ncx, ncy)
         if n_datasets > 1 and not cbook.is_scalar_or_string(label):
+            cov.log(17)
             if len(label) != n_datasets:
+                cov.log(18)
+                cov.report()
                 raise ValueError(f"label must be scalar or have the same "
                                  f"length as the input data, but found "
                                  f"{len(label)} for {n_datasets} datasets.")
             labels = label
         else:
+            cov.log(19)
             labels = [label] * n_datasets
 
         result = (make_artist(x[:, j % ncx], y[:, j % ncy], kw,
@@ -534,8 +562,12 @@ class _process_plot_var_args:
                   for j, label in enumerate(labels))
 
         if return_kwargs:
+            cov.log(20)
+            cov.report()
             return list(result)
         else:
+            cov.log(21)
+            cov.report()
             return [l[0] for l in result]
 
 

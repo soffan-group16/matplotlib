@@ -52,6 +52,7 @@ from matplotlib.cbook import _setattr_cm
 from matplotlib.path import Path
 from matplotlib.transforms import Affine2D
 from matplotlib._enums import JoinStyle, CapStyle
+from .coverage import Coverage
 
 
 _log = logging.getLogger(__name__)
@@ -2491,11 +2492,17 @@ def key_press_handler(event, canvas=None, toolbar=None):
     """
     # these bindings happen whether you are over an axes or not
 
+    cov = Coverage(43, "key_press_handler")
+
     if event.key is None:
+        cov.log(0)
+        cov.report()
         return
     if canvas is None:
+        cov.log(1)
         canvas = event.canvas
     if toolbar is None:
+        cov.log(2)
         toolbar = canvas.toolbar
 
     # Load key-mappings from rcParams.
@@ -2516,41 +2523,56 @@ def key_press_handler(event, canvas=None, toolbar=None):
 
     # toggle fullscreen mode ('f', 'ctrl + f')
     if event.key in fullscreen_keys:
+        cov.log(3)
         try:
+            cov.log(4)
             canvas.manager.full_screen_toggle()
         except AttributeError:
+            cov.log(5)
             pass
+
 
     # quit the figure (default key 'ctrl+w')
     if event.key in quit_keys:
+        cov.log(6)
         Gcf.destroy_fig(canvas.figure)
     if event.key in quit_all_keys:
+        cov.log(7)
         Gcf.destroy_all()
 
     if toolbar is not None:
+        cov.log(8)
         # home or reset mnemonic  (default key 'h', 'home' and 'r')
         if event.key in home_keys:
+            cov.log(9)
             toolbar.home()
         # forward / backward keys to enable left handed quick navigation
         # (default key for backward: 'left', 'backspace' and 'c')
         elif event.key in back_keys:
+            cov.log(10)
             toolbar.back()
         # (default key for forward: 'right' and 'v')
         elif event.key in forward_keys:
+            cov.log(11)
             toolbar.forward()
         # pan mnemonic (default key 'p')
         elif event.key in pan_keys:
+            cov.log(12)
             toolbar.pan()
             toolbar._update_cursor(event)
         # zoom mnemonic (default key 'o')
         elif event.key in zoom_keys:
+            cov.log(13)
             toolbar.zoom()
             toolbar._update_cursor(event)
         # saving current figure (default key 's')
         elif event.key in save_keys:
+            cov.log(14)
             toolbar.save_figure()
 
     if event.inaxes is None:
+        cov.log(15)
+        cov.report()
         return
 
     # these bindings require the mouse to be over an axes to trigger
@@ -2573,87 +2595,123 @@ def key_press_handler(event, canvas=None, toolbar=None):
             # Exclude minor grids not in a uniform state.
             and None not in [_get_uniform_gridstate(ax.xaxis.minorTicks),
                              _get_uniform_gridstate(ax.yaxis.minorTicks)]):
+        cov.log(16)
         x_state = _get_uniform_gridstate(ax.xaxis.majorTicks)
         y_state = _get_uniform_gridstate(ax.yaxis.majorTicks)
         cycle = [(False, False), (True, False), (True, True), (False, True)]
         try:
+            cov.log(17)
             x_state, y_state = (
                 cycle[(cycle.index((x_state, y_state)) + 1) % len(cycle)])
         except ValueError:
+            cov.log(18)
             # Exclude major grids not in a uniform state.
             pass
         else:
             # If turning major grids off, also turn minor grids off.
-            ax.grid(x_state, which="major" if x_state else "both", axis="x")
-            ax.grid(y_state, which="major" if y_state else "both", axis="y")
+            if (x_state):
+                cov.log(19)
+                ax.grid(x_state, which="major", axis="x")
+            else:
+                cov.log(20)
+                ax.grid(x_state, which="both", axis="x")
+            # ax.grid(x_state, which="major" if x_state else "both", axis="x")
+            if (y_state):
+                cov.log(21)
+                ax.grid(y_state, which="major", axis="y")
+            else:
+                cov.log(22)
+                ax.grid(y_state, which="both", axis="y")
+            # ax.grid(y_state, which="major" if y_state else "both", axis="y")
             canvas.draw_idle()
     # toggle major and minor grids in current axes (default key 'G')
     if (event.key in grid_minor_keys
             # Exclude major grids not in a uniform state.
             and None not in [_get_uniform_gridstate(ax.xaxis.majorTicks),
                              _get_uniform_gridstate(ax.yaxis.majorTicks)]):
+        cov.log(23)
         x_state = _get_uniform_gridstate(ax.xaxis.minorTicks)
         y_state = _get_uniform_gridstate(ax.yaxis.minorTicks)
         cycle = [(False, False), (True, False), (True, True), (False, True)]
         try:
+            cov.log(24)
             x_state, y_state = (
                 cycle[(cycle.index((x_state, y_state)) + 1) % len(cycle)])
         except ValueError:
+            cov.log(25)
             # Exclude minor grids not in a uniform state.
             pass
         else:
+            cov.log(26)
             ax.grid(x_state, which="both", axis="x")
             ax.grid(y_state, which="both", axis="y")
             canvas.draw_idle()
     # toggle scaling of y-axes between 'log and 'linear' (default key 'l')
     elif event.key in toggle_yscale_keys:
+        cov.log(27)
         scale = ax.get_yscale()
         if scale == 'log':
+            cov.log(28)
             ax.set_yscale('linear')
             ax.figure.canvas.draw_idle()
         elif scale == 'linear':
             try:
+                cov.log(29)
                 ax.set_yscale('log')
             except ValueError as exc:
+                cov.log(30)
                 _log.warning(str(exc))
                 ax.set_yscale('linear')
             ax.figure.canvas.draw_idle()
     # toggle scaling of x-axes between 'log and 'linear' (default key 'k')
     elif event.key in toggle_xscale_keys:
+        cov.log(31)
         scalex = ax.get_xscale()
         if scalex == 'log':
+            cov.log(32)
             ax.set_xscale('linear')
             ax.figure.canvas.draw_idle()
         elif scalex == 'linear':
+            cov.log(33)
             try:
+                cov.log(34)
                 ax.set_xscale('log')
             except ValueError as exc:
+                cov.log(35)
                 _log.warning(str(exc))
                 ax.set_xscale('linear')
             ax.figure.canvas.draw_idle()
     # enable navigation for all axes that contain the event (default key 'a')
     elif event.key in all_keys:
+        cov.log(36)
         for a in canvas.figure.get_axes():
+            cov.log(37)
             if (event.x is not None and event.y is not None
                     and a.in_axes(event)):  # FIXME: Why only these?
                 _api.warn_deprecated(
                     "3.3", message="Toggling axes navigation from the "
                     "keyboard is deprecated since %(since)s and will be "
                     "removed %(removal)s.")
+                cov.log(38)
                 a.set_navigate(True)
     # enable navigation only for axes with this index (if such an axes exist,
     # otherwise do nothing)
     elif event.key.isdigit() and event.key != '0':
+        cov.log(39)
         n = int(event.key) - 1
         if n < len(canvas.figure.get_axes()):
+            cov.log(40)
             for i, a in enumerate(canvas.figure.get_axes()):
+                cov.log(41)
                 if (event.x is not None and event.y is not None
                         and a.in_axes(event)):  # FIXME: Why only these?
                     _api.warn_deprecated(
                         "3.3", message="Toggling axes navigation from the "
                         "keyboard is deprecated since %(since)s and will be "
                         "removed %(removal)s.")
+                    cov.log(42)
                     a.set_navigate(i == n)
+    cov.report()
 
 
 def button_press_handler(event, canvas=None, toolbar=None):
