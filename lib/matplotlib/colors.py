@@ -204,13 +204,13 @@ def to_rgba(c, alpha=None):
 
 
 def _to_rgba_no_colorcycle(c, alpha=None):
-    cov = Coverage(27, "_to_rgba_no_colorcycle")
     """
     Convert *c* to an RGBA color, with no support for color-cycle syntax.
 
     If *alpha* is not ``None``, it forces the alpha value, except if *c* is
     ``"none"`` (case-insensitive), which always maps to ``(0, 0, 0, 0)``.
     """
+    cov = Coverage(27, "_to_rgba_no_colorcycle")
     orig_c = c
     if c is np.ma.masked:
         cov.log(0)
