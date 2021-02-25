@@ -26,6 +26,15 @@ def test_segment_hits():
     assert_array_equal(mlines.segment_hits(cx, cy, x, y, radius), [0])
 
 
+def test_segment_hits_single_point():
+    """Test a single point"""
+    cx, cy = 0, 100
+    x, y = np.array([0.1]), np.array([1])
+    radius = 5
+
+    assert mlines.segment_hits(cx, cy, x, y, radius).size == 0
+
+
 # Runtimes on a loaded system are inherently flaky. Not so much that a rerun
 # won't help, hopefully.
 @pytest.mark.flaky(reruns=3)
