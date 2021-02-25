@@ -10,7 +10,7 @@ import pytest
 
 import matplotlib as mpl
 from matplotlib import dviread, pyplot as plt, checkdep_usetex, rcParams
-from matplotlib.backends.backend_pdf import PdfPages
+from matplotlib.backends.backend_pdf import PdfPages, pdfRepr
 from matplotlib.testing.decorators import check_figures_equal, image_comparison
 
 
@@ -335,3 +335,24 @@ def test_kerning():
     s = "AVAVAVAVAVAVAVAV€AAVV"
     fig.text(0, .25, s, size=5)
     fig.text(0, .75, s, size=20)
+
+
+def test_pdfrepr_none():
+    assert pdfRepr(None) == b'null'
+
+
+def test_pdfrepr_invalid_object():
+    class Foo:
+        x = None
+
+    with pytest.raises(TypeError):
+        pdfRepr(Foo)
+
+
+def test_pdfrepr_infinite_object():
+    with pytest.raises(ValueError):
+        pdfRepr(np.nan)
+
+
+def test_pdfrepr_invalid_string():
+    pdfRepr("u\042f")
