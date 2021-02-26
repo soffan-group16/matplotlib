@@ -1,0 +1,4 @@
+branch count: 7
+branch hits: {0, 5, 6}
+branch misses: {1, 2, 3, 4}
+branch hit percentage: 0.42857142857142855

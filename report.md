@@ -45,19 +45,19 @@ CCN: 29,    function: to_rgba_array,          file: lib/matplotlib/colors.py
 CCN: 28,    function: _pcolorargs,            file: lib/matplotlib/axes\_axes.py
 CCN: 28,    function: tick_values,            file: lib/matplotlib/ticker.py
 ```
+### Manual CC count ##
+- function: key_press_handler, file: file:lib/matplotlib/backend_bases.py <!-- JA: counted 51 (not sure if counting correctly), jt: counted 44 (excluding the sub method) -->
 
-function: key_press_handler, file: file:lib/matplotlib/backend_bases.py <!-- JA: counted 51 (not sure if counting correctly), jt: counted 44 (excluding the sub method) -->
+- function: subsuper, file: lib/matplotlib/\_mathtext.py <!--jt: counted 41, de: counted 36-->
 
-function: subsuper, file: lib/matplotlib/\_mathtext.py <!--jt: counted 41, de: counted 36-->
-
-function: \_to_rgba_no_colorcycle, file: lib/matplotlib/colors.py <!-- de: counted 35, supposed to be 36 , jt: counted 36-->
+- function: \_to_rgba_no_colorcycle, file: lib/matplotlib/colors.py <!-- de: counted 35, supposed to be 36 , jt: counted 36-->
 
 <!-- function: _run_, file: lib/matplotlib/sphinxext\plot_directive.py jt: counted 33, JA: counted 33 -->
 
 <!-- Use at least two group members to count the complexity separately, to get a reliable results. Use a
 third member if the two counts differ. -->
 
-function: _plot_args, file: lib/matplotlib/axes\_base.py <!--JA: counted 27 --><!--jt: i count 27-->
+- function: _plot_args, file: lib/matplotlib/axes\_base.py <!--JA: counted 27 --><!--jt: i count 27-->
 
 
 1. What are your results? Did everyone get the same result? Is there something that is unclear? If you have a tool, is its result the same as yours?
@@ -86,11 +86,15 @@ function: _plot_args, file: lib/matplotlib/axes\_base.py <!--JA: counted 27 --><
     #### `_plot_args` ####
     > In Matplotlib, multiple data sets can be plotted together. _plot_args is a private method dealing with a single data set. It analyses what the arguments represent because there are a lot of different cases. Thus, there is a high complexity.
 
-    #### to_rgba_array ####
+    #### `to_rgba_array` ####
     > This function changes matplotlib's color interpretation into RGBA colors. The function takes in an array of the colors and returns an array of RGBA translated color.
 
     #### `_pcolorargs` ####
     > This function handles the verification and occasionally creation of the necessary arguments for the `pcolor` function which draws a colored plot, for example a heat map. The user can give the `pcolor` function varying number of arguments to specify the looks of the plot on different levels and `_pcolorargs` fills in what the user is not specifying with default values and veryfining that the arguments are correct. Since users are unpredictable, many cases need to be handled which is the reason to the high CC.
+
+    #### `tick_values` ####
+    > Returns locations of generated ticks within a specified interval.
+
 
 4. If your programming language uses exceptions: Are they taken into account by the tool? If you think of an exception as another possible branch (to the catch block or the end of the function), how is the CC affected?
 
@@ -113,14 +117,12 @@ We found the coverage for matplotlib to be  ~80%, it varied a bit depending upon
 
 ### Your own coverage tool
 
+Our coverage tool can be found on the branch `coverage` in the file [lib/matplotlib/coverage.py](lib/matplotlib/coverage.py). In addition to this tool we have created a parser which can be found on the same branch in the file [covparser.py](covparser.py).
+
 **Show a patch (or link to a branch) that shows the instrumented code to gather coverage measurements.**
-> ...
 
-**The patch is probably too long to be copied here, so please add the git command that is used to obtain the patch instead:**
-
-    git diff ...
-
-**What kinds of constructs does your tool support, and how accurate is its output?**
+This shows an example of instrumented code but not the instrumentation for all functions:
+`git show 073c3a196c2e8abece05e6f5ec0896ddacc29eaf`
 
 ### Evaluation
 
@@ -137,30 +139,67 @@ We found the coverage for matplotlib to be  ~80%, it varied a bit depending upon
     > There is no way of getting the branch coverage percentage for a single function in the tool `Coverage.py` but looking at what lines of code where run acording to this tool, the results seem to be consistent with out tool.
 
 ## Coverage improvement
-
-Show the comments that describe the requirements for the coverage.
-
-Report of old coverage: [link]
-
-Report of new coverage: [link]
-
 Test cases added:
 
-    git diff ...
+### `_to_rgba_no_colorcycle` tests ###
+**Requirement:** The alpha value of the hex color value should be overwritten by the alpha argument value.
 
-Number of test cases added: two per team member (P) or at least four (P+).
+`git show 568c871ea5ce16242c3c0ce817f178d2538c6e3e`
 
-## Refactoring
+[Report of old coverage](coverage-reports/_to_rgba_no_colorcycle.reportparsedold)
 
-**Plan for refactoring complex code:**
+[Report of new coverage](coverage-reports/_to_rgba_no_colorcycle.reportparsed)
 
-**Estimated impact of refactoring (lower CC, but other drawbacks?).**
+### `_create_lookup_table`  tests ###
+**Requirement:** Should raise ValueError when data has the wrong format.
 
-**Carried out refactoring (optional, P+):**
+`git show 20ab107654ba0589c5e4b4d89024d35c8273fff4`
 
-        git diff ...
+[Report of old coverage](coverage-reports/_to_rgba_no_colorcycle.reportparsedold)
 
-Number of test cases added: two per team member (P) or at least four (P+).
+[Report of new coverage](coverage-reports/_to_rgba_no_colorcycle.reportparsed)
+
+### `pdfRepr` tests ###
+**Requirements:**
+- A none argument should return a byte representation of null.
+- An invalid argument object should raise a TypeError.
+- An infinite argument should raise a ValueError.
+
+`git show 5551dc8d4b1cd4542684cc1e99c9e75f86e91d11`
+
+[Report of old coverage](coverage-reports/pdfRepr.reportparsedold)
+
+[Report of new coverage](coverage-reports/pdfRepr.reportparsed)
+
+### `segment_hits` tests ###
+**Requirements:** If x is only 1 element then return all the non zero element of the evaluated function.
+
+`git show 2ee70b3e8f7ae49ef23aa574e21ee24f5a682603`
+
+[Report of old coverage](coverage-reports/segment_hits.reportparsedold)
+
+[Report of new coverage](coverage-reports/segment_hits.reportparsed)
+
+### `key_press_handler` tests ###
+**Requirements:**
+- If the y-axis at the mouse position has a linear scale, then a generated keyEvent with key value "l" should change the scale of that y-axis to logarithmic
+- If the y-axis at the mouse position has a logarithmic scale, then a generated keyEvent with key value "l" should change the scale of that y-axis to linear
+- If the x-axis at the mouse position has a linear scale, then a generated keyEvent with key value "k" should change the scale of that x-axis to logarithmic
+- If the x-axis at the mouse position has a logarithmic scale, then a generated keyEvent with key value "k" should change the scale of that x-axis to linear
+`git show 941c8e89eef8f6cfd572a662d452eed0559da5b2`
+
+[Report of old coverage](coverage-reports/key_press_handler.reportparsedold)
+
+[Report of new coverage](coverage-reports/key_press_handler.reportparsed)
+
+<!-- test: _plot_args() -->
+git show 446956a76dbb4adac210ce193222379b6d5072ca
+<!-- test: version() -->
+implement coverage: git diff a9d34c6d7f54474a6f0747e49e704c66a8a39990 9d6f07033163a610aec7aed429202ce7f3cbe75c
+add test: git show d89b93433d8c2d19c05526cf22f0882f586c61a6
+
+
+Number of test cases added: <!-- TODO -->
 
 ## Refactoring
 
@@ -186,37 +225,39 @@ This function contains a pattern (line 230-234, 236-240...) that is repeating 4 
 ### backend_bases.py - key_press_handler
 lines 2475 - 2714
 
+There are some occurrences of duplicated code. For instance both elif statements with id 31 and 32. The only difference is whether the action should be performed on the x or y axis. This could be abstracted into a separate function taking x or y as an additional parameter. One might also consider moving the function _get_uniform_gridstate outside the function.
+A side effect of that however is that it gets callable from outside the function.
 
-### plot_directive.py - run
-lines 624 - 822
+Another improvement might be to componentize the second half of the function, as some of the functionality might be reusable for other functions.
 
-
+### - _plot_args
+<!-- TODO -->
 
 ## Self-assessment: Way of working
 
 |State|Checklist|Status|
 |-----|---------|------|
-|Principles Established|Principles and constraints are committed to by the team.||
-| ^ |Principles and constraints are agreed to by the stakeholders.||
-| ^ |The tool needs of the work and its stakeholders are agreed.||
-| ^ |A recommendation for the approach to be taken is available.||
-| ^ |The context within which the team will operate is understood.||
-| ^ |The constraints that apply to the selection, acquisition, and use of practices and tools are known.||
-|Foundation Established|The key practices and tools that form the foundation of the way-of-working are selected.||
-| ^ |Enough practices for work to start are agreed to by the team.||
-| ^ |All non-negotiable practices and tools have been identified.||
-| ^ |The gaps that exist between the practices and tools that are needed and the practices and tools that are available have been analyzed and understood.||
-| ^ |The capability gaps that exist between what is needed to execute the desired way of working and the capability levels of the team have been analyzed and understood.||
-| ^ |The selected practices and tools have been integrated to form a usable way-of-working.||
-|In Use|The practices and tools are being used to do real work.||
-| ^ |The use of the practices and tools selected are regularly inspected.||
-| ^ |The practices and tools are being adapted to the team’s context||
-| ^ |The use of the practices and tools is supported by the team.||
-| ^ |Procedures are in place to handle feedback on the team’s way of working.||
-| ^ |The practices and tools support team communication and collaboration.||
-|In Place|The practices and tools are being used by the whole team to perform their work||
-| ^ |All team members have access to the practices and tools required to do their work.||
-| ^ |The whole team is involved in the inspection and adaptation of the way-of-working.||
+|Principles Established|Principles and constraints are committed to by the team.| Yes |
+| ^ |Principles and constraints are agreed to by the stakeholders.| Yes |
+| ^ |The tool needs of the work and its stakeholders are agreed.| Yes |
+| ^ |A recommendation for the approach to be taken is available.| Yes |
+| ^ |The context within which the team will operate is understood.| Yes |
+| ^ |The constraints that apply to the selection, acquisition, and use of practices and tools are known.| Yes |
+|Foundation Established|The key practices and tools that form the foundation of the way-of-working are selected.|Yes|
+| ^ |Enough practices for work to start are agreed to by the team.|Yes|
+| ^ |All non-negotiable practices and tools have been identified.|Yes|
+| ^ |The gaps that exist between the practices and tools that are needed and the practices and tools that are available have been analyzed and understood.|Yes|
+| ^ |The capability gaps that exist between what is needed to execute the desired way of working and the capability levels of the team have been analyzed and understood.|Yes|
+| ^ |The selected practices and tools have been integrated to form a usable way-of-working.|Yes|
+|In Use|The practices and tools are being used to do real work.|Yes|
+| ^ |The use of the practices and tools selected are regularly inspected.|Yes|
+| ^ |The practices and tools are being adapted to the team’s context|Yes|
+| ^ |The use of the practices and tools is supported by the team.|Yes|
+| ^ |Procedures are in place to handle feedback on the team’s way of working.|?|
+| ^ |The practices and tools support team communication and collaboration.|Yes|
+|In Place|The practices and tools are being used by the whole team to perform their work|Yes|
+| ^ |All team members have access to the practices and tools required to do their work.|Yes|
+| ^ |The whole team is involved in the inspection and adaptation of the way-of-working.|Yes|
 |Working Well|Team members are making progress as planned by using and adapting the way-of-working to suit their current context.||
 | ^ |The team naturally applies the practices without thinking about them.||
 | ^ |The tools naturally support the way that the team works.||
@@ -224,16 +265,12 @@ lines 624 - 822
 |Retired|The team's way of working is no longer being used.||
 | ^ |Lessons learned are shared for future use.||
 
-Current state according to the Essence standard: ...
+Current state according to the Essence standard: In Use
 
 Was the self-assessment unanimous? Any doubts about certain items?
+Yes, we thought some of the points where hard to apply to our specific context. It seems like this is mainly directed to groups in the industry and since we are are student it does not always apply perfectly. Since our group is so small and we have the
 
 How have you improved so far?
+We have improved the way that we worked as a team since the first project. One area of improvement is with communication about the assignments. The workflow with git and Github has become smoother and smoother where
 
 Where is potential for improvement?
-
-## Overall experience
-
-What are your main take-aways from this project? What did you learn?
-
-Is there something special you want to mention here?
