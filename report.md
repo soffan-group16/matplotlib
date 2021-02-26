@@ -237,27 +237,27 @@ Another improvement might be to componentize the second half of the function, as
 
 |State|Checklist|Status|
 |-----|---------|------|
-|Principles Established|Principles and constraints are committed to by the team.||
-| ^ |Principles and constraints are agreed to by the stakeholders.||
-| ^ |The tool needs of the work and its stakeholders are agreed.||
-| ^ |A recommendation for the approach to be taken is available.||
-| ^ |The context within which the team will operate is understood.||
-| ^ |The constraints that apply to the selection, acquisition, and use of practices and tools are known.||
-|Foundation Established|The key practices and tools that form the foundation of the way-of-working are selected.||
-| ^ |Enough practices for work to start are agreed to by the team.||
-| ^ |All non-negotiable practices and tools have been identified.||
-| ^ |The gaps that exist between the practices and tools that are needed and the practices and tools that are available have been analyzed and understood.||
-| ^ |The capability gaps that exist between what is needed to execute the desired way of working and the capability levels of the team have been analyzed and understood.||
-| ^ |The selected practices and tools have been integrated to form a usable way-of-working.||
-|In Use|The practices and tools are being used to do real work.||
-| ^ |The use of the practices and tools selected are regularly inspected.||
-| ^ |The practices and tools are being adapted to the team’s context||
-| ^ |The use of the practices and tools is supported by the team.||
-| ^ |Procedures are in place to handle feedback on the team’s way of working.||
-| ^ |The practices and tools support team communication and collaboration.||
-|In Place|The practices and tools are being used by the whole team to perform their work||
-| ^ |All team members have access to the practices and tools required to do their work.||
-| ^ |The whole team is involved in the inspection and adaptation of the way-of-working.||
+|Principles Established|Principles and constraints are committed to by the team.| Yes |
+| ^ |Principles and constraints are agreed to by the stakeholders.| Yes |
+| ^ |The tool needs of the work and its stakeholders are agreed.| Yes |
+| ^ |A recommendation for the approach to be taken is available.| Yes |
+| ^ |The context within which the team will operate is understood.| Yes |
+| ^ |The constraints that apply to the selection, acquisition, and use of practices and tools are known.| Yes |
+|Foundation Established|The key practices and tools that form the foundation of the way-of-working are selected.|Yes|
+| ^ |Enough practices for work to start are agreed to by the team.|Yes|
+| ^ |All non-negotiable practices and tools have been identified.|Yes|
+| ^ |The gaps that exist between the practices and tools that are needed and the practices and tools that are available have been analyzed and understood.|Yes|
+| ^ |The capability gaps that exist between what is needed to execute the desired way of working and the capability levels of the team have been analyzed and understood.|Yes|
+| ^ |The selected practices and tools have been integrated to form a usable way-of-working.|Yes|
+|In Use|The practices and tools are being used to do real work.|Yes|
+| ^ |The use of the practices and tools selected are regularly inspected.|Yes|
+| ^ |The practices and tools are being adapted to the team’s context|Yes|
+| ^ |The use of the practices and tools is supported by the team.|Yes|
+| ^ |Procedures are in place to handle feedback on the team’s way of working.|?|
+| ^ |The practices and tools support team communication and collaboration.|Yes|
+|In Place|The practices and tools are being used by the whole team to perform their work|Yes|
+| ^ |All team members have access to the practices and tools required to do their work.|Yes|
+| ^ |The whole team is involved in the inspection and adaptation of the way-of-working.|Yes|
 |Working Well|Team members are making progress as planned by using and adapting the way-of-working to suit their current context.||
 | ^ |The team naturally applies the practices without thinking about them.||
 | ^ |The tools naturally support the way that the team works.||
@@ -265,10 +265,12 @@ Another improvement might be to componentize the second half of the function, as
 |Retired|The team's way of working is no longer being used.||
 | ^ |Lessons learned are shared for future use.||
 
-Current state according to the Essence standard: ...
+Current state according to the Essence standard: In Use
 
 Was the self-assessment unanimous? Any doubts about certain items?
+Yes, we thought some of the points where hard to apply to our specific context. It seems like this is mainly directed to groups in the industry and since we are are student it does not always apply perfectly. Since our group is so small and we have the
 
 How have you improved so far?
+We have improved the way that we worked as a team since the first project. One area of improvement is with communication about the assignments. The workflow with git and Github has become smoother and smoother where
 
 Where is potential for improvement?
