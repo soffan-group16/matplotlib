@@ -3,7 +3,7 @@ import re
 from matplotlib.testing import check_for_pgf
 from matplotlib.backend_bases import (
     FigureCanvasBase, LocationEvent, MouseButton, MouseEvent,
-    NavigationToolbar2, RendererBase)
+    NavigationToolbar2, RendererBase, KeyEvent, key_press_handler)
 from matplotlib.backend_tools import (ToolZoom, ToolPan, RubberbandBase,
                                       ToolViewsPositions, _views_positions)
 from matplotlib.figure import Figure
@@ -222,3 +222,32 @@ def test_draw(backend):
 
     for ref, test in zip(layed_out_pos_agg, layed_out_pos_test):
         np.testing.assert_allclose(ref, test, atol=0.005)
+
+
+#test default key_press_handler
+def test_default_key_press_handler_change_yscale():
+    rect = 0.0,0.0,2.0,2.0
+    fig = plt.figure()
+    fig.add_axes(rect)
+    canvas = FigureCanvasBase(fig)
+    coord = 1,1
+    ax = canvas.inaxes(coord)
+    assert ax.get_yscale == "linear"
+    cid = canvas.mpl_connect("key_press_event",key_press_handler)
+    start_event = KeyEvent("key_press_event",canvas,"l",coord[0],coord[1])
+    canvas.callbacks.process("key_press_event", start_event)
+    assert ax.get_yscale() == "log"
+
+
+def test_default_key_press_handler_change_xscale():
+    rect = 0.0,0.0,2.0,2.0
+    fig = plt.figure()
+    fig.add_axes(rect)
+    canvas = FigureCanvasBase(fig)
+    coord = 1,1
+    ax = canvas.inaxes(coord)
+    assert ax.get_xscale == "linear"
+    cid = canvas.mpl_connect("key_press_event",key_press_handler)
+    start_event = KeyEvent("key_press_event",canvas,"k",coord[0],coord[1])
+    canvas.callbacks.process("key_press_event", start_event)
+    assert ax.get_xscale() == "log"
