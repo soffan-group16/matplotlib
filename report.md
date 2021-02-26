@@ -297,3 +297,25 @@ We have improved the way that we worked as a team since the first project. One a
 
 Where is potential for improvement?
 We think that there is still room to improve the workflow, the way we work with git could probably be even more effective. 
+
+## What's more
+
+In the `refactor` branch:
+
+### Refactor _plot_args() in axes/_base.py:
+
+**Lizard**: CCN 29 -> 17 (41.4%)
+
+**Pytest** (on Windows10): 2 failed, 6415 passed, 1450 skipped, 13 xfailed in 328.57s (0:05:28)
+
+**diff**:
+`git show 824ccdab595478a0a6ec69563499c9038cc4feb0`
+
+### Refactor _to_rgba_no_colorcycle() in colors.py
+
+**Lizard**: CCN 36 -> 23 (36.1%)
+
+**Pytest** (on Windows10): 2 failed, 6415 passed, 1450 skipped, 13 xfailed in 335.76s (0:05:35)
+
+**diff**:
+`git show 1f3387e22655314abad1575212e0e6aed23936da`
