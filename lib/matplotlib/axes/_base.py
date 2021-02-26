@@ -450,52 +450,97 @@ class _process_plot_var_args:
             # xy is tup with fmt stripped (could still be (y,) only)
             *xy, fmt = tup
             linestyle, marker, color = _process_plot_format(fmt)
+            no_fmt = False
         elif len(tup) == 3:
             raise ValueError('third arg must be a format string')
         else:
             xy = tup
             linestyle, marker, color = None, None, None
+            no_fmt = True
 
         # Don't allow any None value; these would be up-converted to one
         # element array of None which causes problems downstream.
         if any(v is None for v in tup):
             raise ValueError("x, y, and format string must not be None")
 
-        kw = {}
-        for prop_name, val in zip(('linestyle', 'marker', 'color'),
-                                  (linestyle, marker, color)):
-            if val is not None:
-                # check for conflicts between fmt and kwargs
-                if (fmt.lower() != 'none'
-                        and prop_name in kwargs
-                        and val != 'None'):
-                    # Technically ``plot(x, y, 'o', ls='--')`` is a conflict
-                    # because 'o' implicitly unsets the linestyle
-                    # (linestyle='None').
-                    # We'll gracefully not warn in this case because an
-                    # explicit set via kwargs can be seen as intention to
-                    # override an implicit unset.
-                    # Note: We don't val.lower() != 'none' because val is not
-                    # necessarily a string (can be a tuple for colors). This
-                    # is safe, because *val* comes from _process_plot_format()
-                    # which only returns 'None'.
-                    _api.warn_external(
-                        f"{prop_name} is redundantly defined by the "
-                        f"'{prop_name}' keyword argument and the fmt string "
-                        f'"{fmt}" (-> {prop_name}={val!r}). The keyword '
-                        f"argument will take precedence.")
-                kw[prop_name] = val
 
-        if len(xy) == 2:
-            x = _check_1d(xy[0])
-            y = _check_1d(xy[1])
+        def check_conflicts(_linestyle, _marker, _color, _fmt, _kwargs):
+            kw = {}
+            for prop_name, val in zip(('linestyle', 'marker', 'color'),
+                            (_linestyle, _marker, _color)):
+                if val is not None:
+                    # check for conflicts between fmt and kwargs
+                    if (_fmt.lower() != 'none'
+                            and prop_name in _kwargs
+                            and val != 'None'):
+                        # Technically ``plot(x, y, 'o', ls='--')`` is a conflict
+                        # because 'o' implicitly unsets the linestyle
+                        # (linestyle='None').
+                        # We'll gracefully not warn in this case because an
+                        # explicit set via kwargs can be seen as intention to
+                        # override an implicit unset.
+                        # Note: We don't val.lower() != 'none' because val is not
+                        # necessarily a string (can be a tuple for colors). This
+                        # is safe, because *val* comes from _process_plot_format()
+                        # which only returns 'None'.
+                        _api.warn_external(
+                            f"{prop_name} is redundantly defined by the "
+                            f"'{prop_name}' keyword argument and the fmt string "
+                            f'"{_fmt}" (-> {prop_name}={val!r}). The keyword '
+                            f"argument will take precedence.")
+                    kw[prop_name] = val
+            return kw
+        
+        if not no_fmt:
+            kw = check_conflicts(linestyle, marker, color, fmt, kwargs)
         else:
-            x, y = index_of(xy[-1])
+            kw = {}
 
-        if self.axes.xaxis is not None:
-            self.axes.xaxis.update_units(x)
-        if self.axes.yaxis is not None:
-            self.axes.yaxis.update_units(y)
+        # for prop_name, val in zip(('linestyle', 'marker', 'color'),
+        #                           (linestyle, marker, color)):
+        #     if val is not None:
+        #         # check for conflicts between fmt and kwargs
+        #         if (fmt.lower() != 'none'
+        #                 and prop_name in kwargs
+        #                 and val != 'None'):
+        #             # Technically ``plot(x, y, 'o', ls='--')`` is a conflict
+        #             # because 'o' implicitly unsets the linestyle
+        #             # (linestyle='None').
+        #             # We'll gracefully not warn in this case because an
+        #             # explicit set via kwargs can be seen as intention to
+        #             # override an implicit unset.
+        #             # Note: We don't val.lower() != 'none' because val is not
+        #             # necessarily a string (can be a tuple for colors). This
+        #             # is safe, because *val* comes from _process_plot_format()
+        #             # which only returns 'None'.
+        #             _api.warn_external(
+        #                 f"{prop_name} is redundantly defined by the "
+        #                 f"'{prop_name}' keyword argument and the fmt string "
+        #                 f'"{fmt}" (-> {prop_name}={val!r}). The keyword '
+        #                 f"argument will take precedence.")
+        #         kw[prop_name] = val
+
+        def split_data(_xy):
+            """
+            Get reasonable x and y data
+            """
+            if len(_xy) == 2:
+                _x = _check_1d(_xy[0])
+                _y = _check_1d(_xy[1])
+            else:
+                _x, _y = index_of(_xy[-1])
+            return _x, _y
+        
+        x, y = split_data(xy)
+
+        def check_axis(axis_name, axis):
+            if axis_name == 'x' and self.axes.xaxis is not None:
+                self.axes.xaxis.update_units(axis)
+            elif axis_name == 'y' and self.axes.yaxis is not None:
+                self.axes.yaxis.update_units(axis)
+
+        check_axis('x', x)
+        check_axis('y', y)
 
         if x.shape[0] != y.shape[0]:
             raise ValueError(f"x and y must have same first dimension, but "
@@ -503,10 +548,19 @@ class _process_plot_var_args:
         if x.ndim > 2 or y.ndim > 2:
             raise ValueError(f"x and y can be no greater than 2D, but have "
                              f"shapes {x.shape} and {y.shape}")
-        if x.ndim == 1:
-            x = x[:, np.newaxis]
-        if y.ndim == 1:
-            y = y[:, np.newaxis]
+        
+        def expand_dim(ax):
+            if ax.ndim == 1:
+                ax = ax[:, np.newaxis]
+            return ax
+        
+        x = expand_dim(x)
+        y = expand_dim(y)
+
+        # if x.ndim == 1:
+        #     x = x[:, np.newaxis]
+        # if y.ndim == 1:
+        #     y = y[:, np.newaxis]
 
         if self.command == 'plot':
             make_artist = self._makeline
@@ -515,8 +569,14 @@ class _process_plot_var_args:
             make_artist = self._makefill
 
         ncx, ncy = x.shape[1], y.shape[1]
-        if ncx > 1 and ncy > 1 and ncx != ncy:
-            raise ValueError(f"x has {ncx} columns but y has {ncy} columns")
+
+        def check_column(_ncx, _ncy):     
+            if _ncx > 1 and _ncy > 1 and _ncx != _ncy:
+                raise ValueError(f"x has {_ncx} columns but y has {_ncy} columns")
+
+        check_column(ncx, ncy)
+        # if ncx > 1 and ncy > 1 and ncx != ncy:
+        #     raise ValueError(f"x has {ncx} columns but y has {ncy} columns")
 
         label = kwargs.get('label')
         n_datasets = max(ncx, ncy)
