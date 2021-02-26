@@ -199,7 +199,7 @@ implement coverage: git diff a9d34c6d7f54474a6f0747e49e704c66a8a39990 9d6f070331
 add test: git show d89b93433d8c2d19c05526cf22f0882f586c61a6
 
 
-Number of test cases added: <!-- TODO -->
+Number of test cases added: 15
 
 ## Refactoring
 
@@ -253,24 +253,25 @@ Another improvement might be to componentize the second half of the function, as
 | ^ |The use of the practices and tools selected are regularly inspected.|Yes|
 | ^ |The practices and tools are being adapted to the team’s context|Yes|
 | ^ |The use of the practices and tools is supported by the team.|Yes|
-| ^ |Procedures are in place to handle feedback on the team’s way of working.|?|
+| ^ |Procedures are in place to handle feedback on the team’s way of working.|No|
 | ^ |The practices and tools support team communication and collaboration.|Yes|
 |In Place|The practices and tools are being used by the whole team to perform their work|Yes|
 | ^ |All team members have access to the practices and tools required to do their work.|Yes|
 | ^ |The whole team is involved in the inspection and adaptation of the way-of-working.|Yes|
-|Working Well|Team members are making progress as planned by using and adapting the way-of-working to suit their current context.||
-| ^ |The team naturally applies the practices without thinking about them.||
-| ^ |The tools naturally support the way that the team works.||
-| ^ |The team continually tunes their use of the practices and tools.||
-|Retired|The team's way of working is no longer being used.||
-| ^ |Lessons learned are shared for future use.||
+|Working Well|Team members are making progress as planned by using and adapting the way-of-working to suit their current context.|No|
+| ^ |The team naturally applies the practices without thinking about them.|No|
+| ^ |The tools naturally support the way that the team works.|No|
+| ^ |The team continually tunes their use of the practices and tools.|No|
+|Retired|The team's way of working is no longer being used.|No|
+| ^ |Lessons learned are shared for future use.|No|
 
 Current state according to the Essence standard: In Use
 
 Was the self-assessment unanimous? Any doubts about certain items?
-Yes, we thought some of the points where hard to apply to our specific context. It seems like this is mainly directed to groups in the industry and since we are are student it does not always apply perfectly. Since our group is so small and we have the
+Yes, we thought some of the points where hard to apply to our specific context. It seems like this is mainly directed to groups in the industry and since we are are student it does not always apply perfectly. Since our group is so small and we have the benefit of knowing quite well how the overall team progress is. This results in the team agreeing to the self-assessment unanimously.
 
 How have you improved so far?
-We have improved the way that we worked as a team since the first project. One area of improvement is with communication about the assignments. The workflow with git and Github has become smoother and smoother where
+We have improved the way that we worked as a team since the first project. One area of improvement is with communication about the assignments. The workflow with git and Github has become smoother and smoother where suitable commits are the norm and issues are used to track requirements.
 
 Where is potential for improvement?
+We think that there is still room to improve the workflow, the way we work with git could probably be even more effective. 
