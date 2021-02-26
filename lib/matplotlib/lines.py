@@ -18,6 +18,7 @@ from .markers import MarkerStyle
 from .path import Path
 from .transforms import Bbox, BboxTransformTo, TransformedPath
 from ._enums import JoinStyle, CapStyle
+from matplotlib.coverage import Coverage
 
 # Imported here for backward compatibility, even though they don't
 # really belong.
@@ -78,8 +79,11 @@ def segment_hits(cx, cy, x, y, radius):
     Return the indices of the segments in the polyline with coordinates (*cx*,
     *cy*) that are within a distance *radius* of the point (*x*, *y*).
     """
+    cov = Coverage(2, "segment_hits")
     # Process single points specially
     if len(x) <= 1:
+        cov.log(0)
+        cov.report()
         res, = np.nonzero((cx - x) ** 2 + (cy - y) ** 2 <= radius ** 2)
         return res
 
@@ -107,6 +111,8 @@ def segment_hits(cx, cy, x, y, radius):
     line_hits = line_hits & candidates
     points, = point_hits.ravel().nonzero()
     lines, = line_hits.ravel().nonzero()
+    cov.log(1)
+    cov.report()
     return np.concatenate((points, lines))
 
 
