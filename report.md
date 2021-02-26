@@ -164,7 +164,7 @@ Number of test cases added: two per team member (P) or at least four (P+).
 ### _mathtext.py - subsuper
 lines 2606 - 2864
 
-We could split the function into multiple subfuctions that does exactly what it did before. It is not really necessary but it would make it easier to read the function and reduce the cyclomatic complexity. The drawbacks could be reduced speed due to additional method calls.  
+We could split the function into multiple subfuctions that does exactly what it did before. It is not really necessary but it would make it easier to read the function and reduce the cyclomatic complexity. The drawbacks could be reduced speed due to additional method calls.
 
 1. (2617 - 2695) Make the if else block statement about toks be a separate function. Since this block is only handling toks, it should be fine to move it.
 2. (2752 - 2854) Make this block statement into another separate function. Since the block is handling the kerning of the last letter and is quite big it should also be fine to move it.
@@ -172,7 +172,9 @@ We could split the function into multiple subfuctions that does exactly what it 
 The subsuper function would then need to call these functions, give appropriate parameters, and get the output if needed.
 
 ### colors.py - _to_rgba_no_colorcycle
-*lines 206 - 333*
+lines 206 - 333
+
+This function contains a pattern (line 230-234, 236-240...) that is repeating 4 times which contains a regex matching process and some logic thats dependent on the match. This pattern can be extracted to a separate function to reduce the complexity of this function quite a lot. This new function would presumably take the regex pattern as an argument and have a unified set of logic to handle the different cases of RGB strings. The naming and docs of this function would have to be clear though so that it does not introduce any confusion on what it's doing.
 
 
 ### backend_bases.py - key_press_handler
