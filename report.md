@@ -246,8 +246,14 @@ A side effect of that however is that it gets callable from outside the function
 
 Another improvement might be to componentize the second half of the function, as some of the functionality might be reusable for other functions.
 
-### - _plot_args
-<!-- TODO -->
+### _base.py - _plot_args
+lines 409 - 539
+
+A basic idea is to split this method. 
+A sub method for checking conflicts between argument `fmt` and keyword arguments(`kwargs`) can be created. It is because this part is too long (lines 465 - 487) and has a high complexity. 
+There are also some code which process x and y data in a similar way, for example, lines 465-468 and lines 506-509. Some small methods can be created to deal with x or y in one line code.
+The branch which is possible to raise ValueError('third arg must be a format string') can be removed because the method which calls `_plot_args` have tried to convert the third argument to `str` or raise an error. Thus, a redundant condition can be deleted. 
+
 
 ## Self-assessment: Way of working
 
