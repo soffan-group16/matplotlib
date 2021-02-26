@@ -192,12 +192,28 @@ Test cases added:
 
 [Report of new coverage](coverage-reports/key_press_handler.reportparsed)
 
-<!-- test: _plot_args() -->
-git show 446956a76dbb4adac210ce193222379b6d5072ca
-<!-- test: version() -->
-implement coverage: git diff a9d34c6d7f54474a6f0747e49e704c66a8a39990 9d6f07033163a610aec7aed429202ce7f3cbe75c
-add test: git show d89b93433d8c2d19c05526cf22f0882f586c61a6
+### `_plot_args` tests ###
+**Requirements:**
+- If the shapes of x and y do not match, it should not work. A ValueError with a message should be raised.
+- If the dimension of data is larger than or equal to 3, it should not work. A valueError with a message should be raised.
 
+`git show 446956a76dbb4adac210ce193222379b6d5072ca`
+
+[Report of old coverage](coverage-reports/_plot_args.reportparsedold)
+
+[Report of new coverage](coverage-reports/_plot_args.reportparsed)
+
+### `git_versions_from_keywords` tests ###
+**Requirements:**
+- If git version is >= 1.8.3 and there is a tag prefix 'v' in a tag, this method should return the code version correctly.
+- If git version is >= 1.8.3 but there is not a tag prefix 'v' in a tag, this method should return an unknown version.
+- If the argument `verbose` equals `True`, this method should be able to print more useful messages.
+
+`git show d89b93433d8c2d19c05526cf22f0882f586c61a6`
+
+[Report of old coverage](coverage-reports/git_versions_from_keywords.reportparsedold)
+
+[Report of new coverage](coverage-reports/git_versions_from_keywords.reportparsed)
 
 Number of test cases added: 15
 
