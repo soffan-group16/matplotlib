@@ -1,0 +1,4 @@
+branch count: 2
+branch hits: {0, 1}
+branch misses: set()
+branch hit percentage: 1.0
