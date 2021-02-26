@@ -524,18 +524,24 @@ def _create_lookup_table(N, data, gamma=1.0):
     -----
     This function is internally used for `.LinearSegmentedColormap`.
     """
-
+    cov = Coverage(7, "_create_lookup_table")
     if callable(data):
+        cov.log(0)
         xind = np.linspace(0, 1, N) ** gamma
         lut = np.clip(np.array(data(xind), dtype=float), 0, 1)
+        cov.report()
         return lut
 
     try:
         adata = np.array(data)
     except Exception as err:
+        cov.log(1)
+        cov.report()
         raise TypeError("data must be convertible to an array") from err
     shape = adata.shape
     if len(shape) != 2 or shape[1] != 3:
+        cov.log(2)
+        cov.report()
         raise ValueError("data must be nx3 format")
 
     x = adata[:, 0]
@@ -543,15 +549,21 @@ def _create_lookup_table(N, data, gamma=1.0):
     y1 = adata[:, 2]
 
     if x[0] != 0. or x[-1] != 1.0:
+        cov.log(3)
+        cov.report()
         raise ValueError(
             "data mapping points must start with x=0 and end with x=1")
     if (np.diff(x) < 0).any():
+        cov.log(4)
+        cov.report()
         raise ValueError("data mapping points must have x in increasing order")
     # begin generation of lookup table
     if N == 1:
+        cov.log(5)
         # convention: use the y = f(x=1) value for a 1-element lookup table
         lut = np.array(y0[-1])
     else:
+        cov.log(6)
         x = x * (N - 1)
         xind = (N - 1) * np.linspace(0, 1, N) ** gamma
         ind = np.searchsorted(x, xind)[1:-1]
@@ -563,6 +575,7 @@ def _create_lookup_table(N, data, gamma=1.0):
             [y0[-1]],
         ])
     # ensure that the lut is confined to values between 0 and 1 by clipping it
+    cov.report()
     return np.clip(lut, 0.0, 1.0)
 
 
