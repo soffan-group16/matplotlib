@@ -86,6 +86,9 @@ function: _plot_args, file: lib/matplotlib/axes\_base.py <!--JA: counted 27 --><
     #### `_plot_args` ####
     > In Matplotlib, multiple data sets can be plotted together. _plot_args is a private method dealing with a single data set. It analyses what the arguments represent because there are a lot of different cases. Thus, there is a high complexity.
 
+    #### to_rgba_array ####
+    > This function changes matplotlib's color interpretation into RGBA colors. The function takes in an array of the colors and returns an array of RGBA translated color.
+
     #### `_pcolorargs` ####
     > This function handles the verification and occasionally creation of the necessary arguments for the `pcolor` function which draws a colored plot, for example a heat map. The user can give the `pcolor` function varying number of arguments to specify the looks of the plot on different levels and `_pcolorargs` fills in what the user is not specifying with default values and veryfining that the arguments are correct. Since users are unpredictable, many cases need to be handled which is the reason to the high CC.
 
