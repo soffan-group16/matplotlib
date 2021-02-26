@@ -225,47 +225,116 @@ def _to_rgba_no_colorcycle(c, alpha=None):
                     c = _colors_full_map[c.lower()]
                 except KeyError:
                     pass
-    if isinstance(c, str):
+    
+    def match_color(_c, _alpha):   
         # hex color in #rrggbb format.
-        match = re.match(r"\A#[a-fA-F0-9]{6}\Z", c)
+        _regex = r"\A#[a-fA-F0-9]{6}\Z"
+        match = re.match(_regex, _c)
         if match:
             return (tuple(int(n, 16) / 255
-                          for n in [c[1:3], c[3:5], c[5:7]])
-                    + (alpha if alpha is not None else 1.,))
+                    for n in [_c[1:3], _c[3:5], _c[5:7]])
+                + (_alpha if _alpha is not None else 1.,))
+
         # hex color in #rgb format, shorthand for #rrggbb.
-        match = re.match(r"\A#[a-fA-F0-9]{3}\Z", c)
+        _regex = r"\A#[a-fA-F0-9]{3}\Z"
+        match = re.match(_regex, _c)
         if match:
             return (tuple(int(n, 16) / 255
-                          for n in [c[1]*2, c[2]*2, c[3]*2])
-                    + (alpha if alpha is not None else 1.,))
+                    for n in [_c[1]*2, _c[2]*2, _c[3]*2])
+                + (_alpha if _alpha is not None else 1.,))
+        
         # hex color with alpha in #rrggbbaa format.
-        match = re.match(r"\A#[a-fA-F0-9]{8}\Z", c)
+        _regex = r"\A#[a-fA-F0-9]{8}\Z"
+        match = re.match(_regex, _c)
         if match:
             color = [int(n, 16) / 255
-                     for n in [c[1:3], c[3:5], c[5:7], c[7:9]]]
-            if alpha is not None:
-                color[-1] = alpha
+                for n in [_c[1:3], _c[3:5], _c[5:7], _c[7:9]]]
+            if _alpha is not None:
+                color[-1] = _alpha
             return tuple(color)
+
         # hex color with alpha in #rgba format, shorthand for #rrggbbaa.
-        match = re.match(r"\A#[a-fA-F0-9]{4}\Z", c)
+        _regex = r"\A#[a-fA-F0-9]{4}\Z"
+        match = re.match(_regex, _c)
         if match:
             color = [int(n, 16) / 255
-                     for n in [c[1]*2, c[2]*2, c[3]*2, c[4]*2]]
-            if alpha is not None:
-                color[-1] = alpha
+                    for n in [_c[1]*2, _c[2]*2, _c[3]*2, _c[4]*2]]
+            if _alpha is not None:
+                color[-1] = _alpha
             return tuple(color)
-        # string gray.
+        return None
+    
+    def match_gray(_c, _orig_c, _alpha):
+        """
+        If c is not a color, it may be a float: gray value.
+        """
         try:
-            c = float(c)
+            _c = float(_c)
         except ValueError:
             pass
         else:
-            if not (0 <= c <= 1):
+            if not (0 <= _c <= 1):
                 raise ValueError(
-                    f"Invalid string grayscale value {orig_c!r}. "
+                    f"Invalid string grayscale value {_orig_c!r}. "
                     f"Value must be within 0-1 range")
-            return c, c, c, alpha if alpha is not None else 1.
-        raise ValueError(f"Invalid RGBA argument: {orig_c!r}")
+            return _c, _c, _c, _alpha if _alpha is not None else 1.
+        raise ValueError(f"Invalid RGBA argument: {_orig_c!r}")
+
+
+
+    if isinstance(c, str): 
+        matched_color = match_color(c, alpha)
+        if matched_color:
+            return matched_color
+        # string gray.
+        matched_gray = match_gray(c, orig_c, alpha)
+        if matched_gray:
+            return matched_gray
+        
+    # if isinstance(c, str):
+    #     # hex color in #rrggbb format.
+    #     match = re.match(r"\A#[a-fA-F0-9]{6}\Z", c)
+    #     if match:
+    #         return (tuple(int(n, 16) / 255
+    #                       for n in [c[1:3], c[3:5], c[5:7]])
+    #                 + (alpha if alpha is not None else 1.,))
+    #     # hex color in #rgb format, shorthand for #rrggbb.
+    #     match = re.match(r"\A#[a-fA-F0-9]{3}\Z", c)
+    #     if match:
+    #         return (tuple(int(n, 16) / 255
+    #                       for n in [c[1]*2, c[2]*2, c[3]*2])
+    #                 + (alpha if alpha is not None else 1.,))
+    #     # hex color with alpha in #rrggbbaa format.
+    #     match = re.match(r"\A#[a-fA-F0-9]{8}\Z", c)
+    #     if match:
+    #         color = [int(n, 16) / 255
+    #                  for n in [c[1:3], c[3:5], c[5:7], c[7:9]]]
+    #         if alpha is not None:
+    #             color[-1] = alpha
+    #         return tuple(color)
+    #     # hex color with alpha in #rgba format, shorthand for #rrggbbaa.
+    #     match = re.match(r"\A#[a-fA-F0-9]{4}\Z", c)
+    #     if match:
+    #         color = [int(n, 16) / 255
+    #                  for n in [c[1]*2, c[2]*2, c[3]*2, c[4]*2]]
+    #         if alpha is not None:
+    #             color[-1] = alpha
+    #         return tuple(color)
+
+        # # string gray.
+        # try:
+        #     c = float(c)
+        # except ValueError:
+        #     pass
+        # else:
+        #     if not (0 <= c <= 1):
+        #         raise ValueError(
+        #             f"Invalid string grayscale value {orig_c!r}. "
+        #             f"Value must be within 0-1 range")
+        #     return c, c, c, alpha if alpha is not None else 1.
+        # raise ValueError(f"Invalid RGBA argument: {orig_c!r}")
+
+
     # turn 2-D array into 1-D array
     if isinstance(c, np.ndarray):
         if c.ndim == 2 and c.shape[0] == 1:
