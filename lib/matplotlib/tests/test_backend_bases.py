@@ -232,7 +232,7 @@ def test_default_key_press_handler_change_yscale():
     canvas = FigureCanvasBase(fig)
     coord = 1,1
     ax = canvas.inaxes(coord)
-    assert ax.get_yscale == "linear"
+    assert ax.get_yscale() == "linear"
     cid = canvas.mpl_connect("key_press_event",key_press_handler)
     start_event = KeyEvent("key_press_event",canvas,"l",coord[0],coord[1])
     canvas.callbacks.process("key_press_event", start_event)
@@ -247,10 +247,10 @@ def test_default_key_press_handler_change_xscale():
     canvas = FigureCanvasBase(fig)
     coord = 1,1
     ax = canvas.inaxes(coord)
-    assert ax.get_xscale == "linear"
+    assert ax.get_xscale() == "linear"
     cid = canvas.mpl_connect("key_press_event",key_press_handler)
     start_event = KeyEvent("key_press_event",canvas,"k",coord[0],coord[1])
     canvas.callbacks.process("key_press_event", start_event)
     assert ax.get_xscale() == "log"
     canvas.callbacks.process("key_press_event", start_event)
-    assert ax.get_yscale() == "linear"
+    assert ax.get_xscale() == "linear"
