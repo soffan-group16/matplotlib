@@ -81,7 +81,7 @@ function: _plot_args, file: lib/matplotlib/axes\_base.py <!--JA: counted 27 --><
     > Converts a color to RGBA format, the function converts a vast ammount of different color formats to rgba, to identify and handle every case a lot of branching is needed.
 
     #### `run` ####
-    > PlotDirective class is a directive for including a Matplotlib plot in a Sphinx document and `run` is the method to run this class.
+    > PlotDirective class is a directive for including a Matplotlib plot in a Sphinx document and `run` is the method to run this class. Many options and configs lead to a high CCN.
 
     #### `_plot_args` ####
     > In Matplotlib, multiple data sets can be plotted together. _plot_args is a private method dealing with a single data set. It analyses what the arguments represent because there are a lot of different cases. Thus, there is a high complexity.
