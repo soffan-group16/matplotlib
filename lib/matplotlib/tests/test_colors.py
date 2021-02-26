@@ -4,6 +4,7 @@ import itertools
 from io import BytesIO
 import numpy as np
 from PIL import Image
+from numpy.testing._private.utils import assert_raises
 import pytest
 import base64
 
@@ -28,6 +29,13 @@ from matplotlib.testing.decorators import image_comparison
 def test_create_lookup_table(N, result):
     data = [(0.0, 1.0, 1.0), (0.5, 0.2, 0.2), (1.0, 0.0, 0.0)]
     assert_array_almost_equal(mcolors._create_lookup_table(N, data), result)
+
+
+def test_create_lookup_table_exceptions():
+    N = 2
+    data = [1.0, 1.0, 1.0]
+    with assert_raises(ValueError):
+        mcolors._create_lookup_table(N, data)
 
 
 def test_resample():
