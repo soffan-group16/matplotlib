@@ -43,6 +43,7 @@ from matplotlib.path import Path
 from matplotlib.dates import UTC
 from matplotlib import _path
 from . import _backend_pdf_ps
+from ..coverage import Coverage
 
 _log = logging.getLogger(__name__)
 
@@ -247,37 +248,53 @@ def _datetime_to_pdf(d):
 
 
 def pdfRepr(obj):
+    cov = Coverage(15, "pdfRepr")
     """Map Python objects to PDF syntax."""
 
     # Some objects defined later have their own pdfRepr method.
     if hasattr(obj, 'pdfRepr'):
+        cov.log(0)
+        cov.report()
         return obj.pdfRepr()
 
     # Floats. PDF does not have exponential notation (1.0e-10) so we
     # need to use %f with some precision.  Perhaps the precision
     # should adapt to the magnitude of the number?
     elif isinstance(obj, (float, np.floating)):
+        cov.log(1)
         if not np.isfinite(obj):
+            cov.log(2)
+            cov.report()
             raise ValueError("Can only output finite numbers in PDF")
         r = b"%.10f" % obj
+        cov.log(3)
+        cov.report()
         return r.rstrip(b'0').rstrip(b'.')
 
     # Booleans. Needs to be tested before integers since
     # isinstance(True, int) is true.
     elif isinstance(obj, bool):
+        cov.log(4)
+        cov.report()
         return [b'false', b'true'][obj]
 
     # Integers are written as such.
     elif isinstance(obj, (int, np.integer)):
+        cov.log(5)
+        cov.report()
         return b"%d" % obj
 
     # Unicode strings are encoded in UTF-16BE with byte-order mark.
     elif isinstance(obj, str):
         try:
+            cov.log(6)
+            cov.report()
             # But maybe it's really ASCII?
             s = obj.encode('ASCII')
             return pdfRepr(s)
         except UnicodeEncodeError:
+            cov.log(7)
+            cov.report()
             s = codecs.BOM_UTF16_BE + obj.encode('UTF-16BE')
             return pdfRepr(s)
 
@@ -286,6 +303,8 @@ def pdfRepr(obj):
     # simpler to escape them all. TODO: cut long strings into lines;
     # I believe there is some maximum line length in PDF.
     elif isinstance(obj, bytes):
+        cov.log(8)
+        cov.report()
         return b'(' + _string_escape_regex.sub(_string_escape, obj) + b')'
 
     # Dictionaries. The keys must be PDF names, so if we find strings
@@ -293,6 +312,8 @@ def pdfRepr(obj):
     # anything, so the caller must ensure that PDF names are
     # represented as Name objects.
     elif isinstance(obj, dict):
+        cov.log(9)
+        cov.report()
         return fill([
             b"<<",
             *[Name(key).pdfRepr() + b" " + pdfRepr(obj[key])
@@ -302,21 +323,31 @@ def pdfRepr(obj):
 
     # Lists.
     elif isinstance(obj, (list, tuple)):
+        cov.log(10)
+        cov.report()
         return fill([b"[", *[pdfRepr(val) for val in obj], b"]"])
 
     # The null keyword.
     elif obj is None:
+        cov.log(11)
+        cov.report()
         return b'null'
 
     # A date.
     elif isinstance(obj, datetime):
+        cov.log(12)
+        cov.report()
         return pdfRepr(_datetime_to_pdf(obj))
 
     # A bounding box
     elif isinstance(obj, BboxBase):
+        cov.log(13)
+        cov.report()
         return fill([pdfRepr(val) for val in obj.bounds])
 
     else:
+        cov.log(14)
+        cov.report()
         raise TypeError("Don't know a PDF representation for {} objects"
                         .format(type(obj)))
 
