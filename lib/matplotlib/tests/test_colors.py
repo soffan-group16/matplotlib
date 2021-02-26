@@ -1159,6 +1159,9 @@ def test_conversions():
     # alpha is properly set.
     assert mcolors.to_rgba((1, 1, 1), .5) == (1, 1, 1, .5)
     assert mcolors.to_rgba(".1", .5) == (.1, .1, .1, .5)
+    # alpha is properly overridden with hex color
+    assert mcolors.to_rgba("#cccc", .5) == (0.8, 0.8, 0.8, 0.5)
+    assert mcolors.to_rgba("#cccccccc", .5) == (0.8, 0.8, 0.8, 0.5)
     # builtin round differs between py2 and py3.
     assert mcolors.to_hex((.7, .7, .7)) == "#b2b2b2"
     # hex roundtrip.
