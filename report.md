@@ -83,6 +83,9 @@ function: _plot_args, file: lib/matplotlib/axes\_base.py <!--JA: counted 27 --><
     #### `run` ####
     > PlotDirective class is a directive for including a Matplotlib plot in a Sphinx document and `run` is the method to run this class.
 
+    #### `_plot_args` ####
+    > In Matplotlib, multiple data sets can be plotted together. _plot_args is a private method dealing with a single data set. It analyses what the arguments represent because there are a lot of different cases. Thus, there is a high complexity.
+
 4. If your programming language uses exceptions: Are they taken into account by the tool? If you think of an exception as another possible branch (to the catch block or the end of the function), how is the CC affected?
 
     > We think that the tool counts the try except statements as well. If the except raises an error it would be handled as a return point.
