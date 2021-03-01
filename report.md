@@ -142,7 +142,9 @@ This shows an example of instrumented code but not the instrumentation for all f
 Test cases added:
 
 ### `_to_rgba_no_colorcycle` tests ###
-**Requirement:** The alpha value of the hex color value should be overwritten by the alpha argument value.
+**Requirements:**
+- The alpha value of the hex color value with format `#rrggbbaa` should be overwritten by the alpha argument value.
+- The alpha value of the hex color value with format `#rgba` should be overwritten by the alpha argument value.
 
 `git show 568c871ea5ce16242c3c0ce817f178d2538c6e3e`
 
@@ -249,10 +251,10 @@ Another improvement might be to componentize the second half of the function, as
 ### _base.py - _plot_args
 lines 409 - 539
 
-A basic idea is to split this method. 
-A sub method for checking conflicts between argument `fmt` and keyword arguments(`kwargs`) can be created. It is because this part is too long (lines 465 - 487) and has a high complexity. 
+A basic idea is to split this method.
+A sub method for checking conflicts between argument `fmt` and keyword arguments(`kwargs`) can be created. It is because this part is too long (lines 465 - 487) and has a high complexity.
 There are also some code which process x and y data in a similar way, for example, lines 465-468 and lines 506-509. Some small methods can be created to deal with x or y in one line code.
-The branch which is possible to raise ValueError('third arg must be a format string') can be removed because the method which calls `_plot_args` have tried to convert the third argument to `str` or raise an error. Thus, a redundant condition can be deleted. 
+The branch which is possible to raise ValueError('third arg must be a format string') can be removed because the method which calls `_plot_args` have tried to convert the third argument to `str` or raise an error. Thus, a redundant condition can be deleted.
 
 
 ## Self-assessment: Way of working
@@ -296,7 +298,7 @@ How have you improved so far?
 We have improved the way that we worked as a team since the first project. One area of improvement is with communication about the assignments. The workflow with git and Github has become smoother and smoother where suitable commits are the norm and issues are used to track requirements.
 
 Where is potential for improvement?
-We think that there is still room to improve the workflow, the way we work with git could probably be even more effective. 
+We think that there is still room to improve the workflow, the way we work with git could probably be even more effective.
 
 ## What's more
 
@@ -319,3 +321,8 @@ In the `refactor` branch:
 
 **diff**:
 `git show 1f3387e22655314abad1575212e0e6aed23936da`
+
+## For P+
+- We have written 16 new test cases.
+- We used the issue tracker and systematic commit messages.
+- We are proud of our coverage tool and believe that this could count as extraordinary.
