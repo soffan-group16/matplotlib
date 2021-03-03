@@ -1,0 +1,50 @@
+================================================================================================= FAILURES =================================================================================================
+______________________________________________________________________________________ test_bbox_frozen_copies_minpos ______________________________________________________________________________________
+
+    def test_bbox_frozen_copies_minpos():
+        bbox = mtransforms.Bbox.from_extents(0.0, 0.0, 1.0, 1.0, minpos=1.0)
+        frozen = bbox.frozen()
+>       assert_array_equal(frozen.minpos, bbox.minpos)
+
+lib/matplotlib/tests/test_transforms.py:466:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+x = array([inf, inf]), y = array([1., 1.]), func = <function assert_array_compare.<locals>.<lambda> at 0x117154af0>, hasval = '+inf'
+
+    def func_assert_same_pos(x, y, func=isnan, hasval='nan'):
+        """Handling nan/inf.
+
+        Combine results of running func on x and y, checking that they are True
+        at the same locations.
+
+        """
+        x_id = func(x)
+        y_id = func(y)
+        # We include work-arounds here to handle three types of slightly
+        # pathological ndarray subclasses:
+        # (1) all() on `masked` array scalars can return masked arrays, so we
+        #     use != True
+        # (2) __eq__ on some ndarray subclasses returns Python booleans
+        #     instead of element-wise comparisons, so we cast to bool_() and
+        #     use isinstance(..., bool) checks
+        # (3) subclasses with bare-bones __array_function__ implementations may
+        #     not implement np.all(), so favor using the .all() method
+        # We are not committed to supporting such subclasses, but it's nice to
+        # support them if possible.
+        if bool_(x_id == y_id).all() != True:
+            msg = build_err_msg([x, y],
+                                err_msg + '\nx and y %s location mismatch:'
+                                % (hasval), verbose=verbose, header=header,
+                                names=('x', 'y'), precision=precision)
+>           raise AssertionError(msg)
+E           AssertionError:
+E           Arrays are not equal
+E
+E           x and y +inf location mismatch:
+E            x: array([inf, inf])
+E            y: array([1., 1.])
+
+/usr/local/lib/python3.9/site-packages/numpy/testing/_private/utils.py:740: AssertionError
+========================================================================================= short test summary info ==========================================================================================
+FAILED lib/matplotlib/tests/test_transforms.py::test_bbox_frozen_copies_minpos - AssertionError:
+======================================================================================= 1 failed, 43 passed in 3.85s =======================================================================================
