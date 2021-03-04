@@ -213,13 +213,7 @@ class Axis(maxis.XAxis):
 
         renderer.close_group('pane3d')
 
-    @artist.allow_rasterization
-    def draw(self, renderer):
-        self.label._transform = self.axes.transData
-        renderer.open_group('axis3d', gid=self.get_gid())
-
-        ticks = self._update_ticks()
-
+    def _draw_labels(self, renderer):
         info = self._axinfo
         index = info['i']
 
@@ -239,13 +233,6 @@ class Axis(maxis.XAxis):
         pep = np.asarray(
             proj3d.proj_trans_points([edgep1, edgep2], self.axes.M))
         centpt = proj3d.proj_transform(*centers, self.axes.M)
-        self.line.set_data(pep[0], pep[1])
-        self.line.draw(renderer)
-
-        # Grid points where the planes meet
-        xyz0 = np.tile(minmax, (len(ticks), 1))
-        xyz0[:, index] = [tick.get_loc() for tick in ticks]
-
         # Draw labels
         # The transAxes transform is used because the Text object
         # rotates the text relative to the display coordinate system.
@@ -345,6 +332,52 @@ class Axis(maxis.XAxis):
         self.offsetText.set_ha(align)
         self.offsetText.draw(renderer)
 
+    @artist.allow_rasterization
+    def draw(self, renderer):
+        self.label._transform = self.axes.transData
+        renderer.open_group('axis3d', gid=self.get_gid())
+
+        ticks = self._update_ticks()
+
+        info = self._axinfo
+        index = info['i']
+
+        mins, maxs, centers, deltas, tc, highs = self._get_coord_info(renderer)
+
+        mins, maxs = np.array([
+            self.axes.get_xbound(),
+            self.axes.get_ybound(),
+            self.axes.get_zbound(),
+        ]).T
+
+        vals = mins[0], maxs[0], mins[1], maxs[1], mins[2], maxs[2]
+        tc = self.axes.tunit_cube(vals, self.axes.M)
+        avgz = [tc[p1][2] + tc[p2][2] + tc[p3][2] + tc[p4][2]
+                for p1, p2, p3, p4 in self._PLANES]
+        highs = np.array([avgz[2*i] < avgz[2*i+1] for i in range(3)])
+
+        # Determine grid lines
+        minmax = np.where(highs, maxs, mins)
+        maxmin = np.where(highs, mins, maxs)
+
+        # Draw main axis line
+        juggled = info['juggled']
+        edgep1 = minmax.copy()
+        edgep1[juggled[0]] = maxmin[juggled[0]]
+
+        edgep2 = edgep1.copy()
+        edgep2[juggled[1]] = maxmin[juggled[1]]
+        pep = np.asarray(
+            proj3d.proj_trans_points([edgep1, edgep2], self.axes.M))
+        self.line.set_data(pep[0], pep[1])
+        self.line.draw(renderer)
+
+        # Grid points where the planes meet
+        xyz0 = np.tile(minmax, (len(ticks), 1))
+        xyz0[:, index] = [tick.get_loc() for tick in ticks]
+
+        self._draw_labels(renderer)
+
         if self.axes._draw_grid and len(ticks):
             # Grid lines go from the end of one plane through the plane
             # intersection (at xyz0) to the end of the other plane.  The first
@@ -383,6 +416,10 @@ class Axis(maxis.XAxis):
 
             # Get position of label
             default_offset = 8.  # A rough estimate
+            reltoinches = self.figure.dpi_scale_trans.inverted()
+            ax_inches = reltoinches.transform(self.axes.bbox.size)
+            ax_points_estimate = sum(72. * ax_inches)
+            deltas_per_point = 48 / ax_points_estimate
             labeldeltas = (
                 (tick.get_pad() + default_offset) * deltas_per_point * deltas)
 
