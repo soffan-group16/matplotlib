@@ -14,7 +14,7 @@ We chose the same project as the one in Assignment 3. With the knowledge we lear
 Similar to Assignment 3 we followed the instructions written with the install document and the contribution document as well. 
 
 ## Effort spent
-
+<!-- TODO -->
 For each team member, how much time was spent in
 
 1. plenary discussions/meetings;
@@ -43,6 +43,8 @@ Title: *Bbox.frozen() does not copy minposx/minposy*
 
 URL: https://github.com/matplotlib/matplotlib/issues/19296
 
+Our PR: https://github.com/matplotlib/matplotlib/pull/19641
+
 ### Description
 The class Bbox is a representation of a bounding box and has a method `frozen` which returns a static independent copy of an object that should not be affected by changes to the original object. This method does however not copy the `minpos` attribute of this object which is needed in some edge cases.
 
@@ -51,9 +53,12 @@ Changes were only made in the Bbox class by overriding a parent method. This aff
 
 ### Requirements for the new feature or requirements affected by functionality being refactored
  <!-- Requirements related to the functionality are identified and described in a systematic way. Each requirement has a name (ID), title, and description. The description can be one paragraph per requirement. -->
-**Name:** Bbox frozen implementation (**ID: 1**)
+ This issue is easy to solve and it can be summarized as one requirement. Our plan is that we can override a method and test it.
 
-**Title:** Implement method `Bbox::frozen()`
+**[Requirement ID: 1]**
+
+**Title:** Copy `minpos` property of `Bbox` in `frozen()`
+<!-- Implement method `Bbox::frozen()` -->
 
 **Description:** 
 
@@ -72,7 +77,13 @@ Test function `test_bbox_frozen_copies_minpos()` should be traced to requirement
 
 *Optional (point 4): the patch is clean.*
 
+Yes, it is.
+
 *Optional (point 5): considered for acceptance (passes all automated checks).*
+
+All automated checks except those about doc have passed. This patch has been merged to the original project in this pull request:
+
+https://github.com/matplotlib/matplotlib/pull/19641
 
 ### Test results
 *Overall results with link to a copy or excerpt of the logs (before/after
@@ -87,23 +98,48 @@ refactoring).*
 #### Key changes/classes affected
 
 *Optional (point 1): Architectural overview.*
-
+<!-- UML diagram to insert -->
 *Optional (point 2): relation to design pattern(s).*
+<!-- TODO -->
 
-## Overview of issue #
+## Overview of issue #18052
 
-Title:
+Title: *the limits of axes are inexact with mplot3d*
 
-URL:
+URL: https://github.com/matplotlib/matplotlib/issues/18052
 
 ### Description
+In 3D case, after the bound of an axis is set manually, for example, by `set_xlim()`, it will still be expanded automatically. That is different from the 2D situation.
 
 ### Scope (functionality and code affected)
 
 ### Requirements for the new feature or requirements affected by functionality being refactored
 
+*"Historically, axis3d has suffered from having hard-coded constants that precluded user adjustments." -- Matplotlib document*
+
+Thus, some hard-coded method in axis3d.py need to be refactored, and those make some requirements. We can modify some render process in these method to get proper visualization.
+
+**[Requirement ID: 2]**
+
+**Title:** Refactor autoscaled coordinates of 3D Axis
+
+**Description:**
+
+In a 3D plot, the method `Axis::_get_coord_info()` (in `axis3d.py`) expands the bounds of axes, `mins` and `maxs`, by `deltas` automatically. The bounds should not be autoscaled if a user calls `Axes::set_xlim()` (inherited from `_AxesBase`) to explicitly give the bounds. The method `_get_coord_info()` should be refactored.
+
+**[Requirement ID: 3]**
+
+**Title:** Draw labels in a proper position
+
+**Description:**
+
+The variable `delta` can influence the position of the labels. As some refactoring may modify the autoscaling process related to `delta`, the labels should be drawn in another way. In a word, the variable `delta` should be passed to the renderer which is responsible for drawing labels.
 
 *Optional (point 3): trace tests to requirements.*
+
+Test functions <!--TODO--> should be traced to requirement: **ID=2**.
+
+Test functions <!--TODO--> should be traced to requirement: **ID=3**.
 
 ### Code changes
 
@@ -148,3 +184,22 @@ With this fulfilled we believe that we are on the Essence standard state of: In 
 *Optional (point 6): How would you put your work in context with best software engineering practice?*
 
 *Optional (point 7): Is there something special you want to mention here?*
+
+### Checklist (P: 8/8)
+- [x] Onboarding experience
+- [ ] Time spent
+- [ ] Non-trivial issue
+- [x] Requirements
+- [ ] Patch showed and documented
+- [ ] Automated test with log
+- [ ] UML diagram
+- [x] Overall experience
+
+### Checklist (P+: ≥4/7)
+- [ ] System overview
+- [ ] Design patterns
+- [ ] Tests traced to requirements
+- [ ] Clean patch
+- [ ] Accepted patch
+- [ ] Critical arguement
+- [ ] Something extraordinary
