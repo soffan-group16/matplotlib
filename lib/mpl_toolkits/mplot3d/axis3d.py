@@ -177,7 +177,19 @@ class Axis(maxis.XAxis):
         else:
             return len(text) > 4
 
-    def _get_coord_info(self, renderer):
+
+    def _get_coord_info_without_deltas(self):
+        mins, maxs = np.array([
+            self.axes.get_xbound(),
+            self.axes.get_ybound(),
+            self.axes.get_zbound(),
+        ]).T
+        centers = (maxs + mins) / 2.
+        deltas = (maxs - mins) / 12.
+
+        return self._coord_info_calc(mins,maxs,centers,deltas)
+
+    def _get_coord_info(self):
         mins, maxs = np.array([
             self.axes.get_xbound(),
             self.axes.get_ybound(),
@@ -188,6 +200,9 @@ class Axis(maxis.XAxis):
         mins = mins - deltas / 4.
         maxs = maxs + deltas / 4.
 
+        return self._coord_info_calc(mins,maxs,centers,deltas)
+
+    def _coord_info_calc(self, mins, maxs, centers, deltas):
         vals = mins[0], maxs[0], mins[1], maxs[1], mins[2], maxs[2]
         tc = self.axes.tunit_cube(vals, self.axes.M)
         avgz = [tc[p1][2] + tc[p2][2] + tc[p3][2] + tc[p4][2]
@@ -199,7 +214,7 @@ class Axis(maxis.XAxis):
     def draw_pane(self, renderer):
         renderer.open_group('pane3d', gid=self.get_gid())
 
-        mins, maxs, centers, deltas, tc, highs = self._get_coord_info(renderer)
+        mins, maxs, centers, deltas, tc, highs = self._get_coord_info_without_deltas()
 
         info = self._axinfo
         index = info['i']
@@ -217,7 +232,7 @@ class Axis(maxis.XAxis):
         info = self._axinfo
         index = info['i']
 
-        mins, maxs, centers, deltas, tc, highs = self._get_coord_info(renderer)
+        mins, maxs, centers, deltas, _, highs = self._get_coord_info()
 
         # Determine grid lines
         minmax = np.where(highs, maxs, mins)
@@ -233,6 +248,7 @@ class Axis(maxis.XAxis):
         pep = np.asarray(
             proj3d.proj_trans_points([edgep1, edgep2], self.axes.M))
         centpt = proj3d.proj_transform(*centers, self.axes.M)
+
         # Draw labels
         # The transAxes transform is used because the Text object
         # rotates the text relative to the display coordinate system.
@@ -342,19 +358,7 @@ class Axis(maxis.XAxis):
         info = self._axinfo
         index = info['i']
 
-        mins, maxs, centers, deltas, tc, highs = self._get_coord_info(renderer)
-
-        mins, maxs = np.array([
-            self.axes.get_xbound(),
-            self.axes.get_ybound(),
-            self.axes.get_zbound(),
-        ]).T
-
-        vals = mins[0], maxs[0], mins[1], maxs[1], mins[2], maxs[2]
-        tc = self.axes.tunit_cube(vals, self.axes.M)
-        avgz = [tc[p1][2] + tc[p2][2] + tc[p3][2] + tc[p4][2]
-                for p1, p2, p3, p4 in self._PLANES]
-        highs = np.array([avgz[2*i] < avgz[2*i+1] for i in range(3)])
+        mins, maxs, centers, deltas, tc, highs = self._get_coord_info_without_deltas()
 
         # Determine grid lines
         minmax = np.where(highs, maxs, mins)
