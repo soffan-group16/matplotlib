@@ -48,9 +48,19 @@ The class Bbox is a representation of a bounding box and has a method `frozen` w
 Changes were only made in the Bbox class by overriding a parent method. This affects every class containing a `Bbox` which is all axes. However the fix will only be noticed in a few edge cases.
 
 ### Requirements for the new feature or requirements affected by functionality being refactored
-The `frozen` method of the `Bbox` class should return a copy of a `Bbox` object containing both the bounding `points` and `minpos`.
+ <!-- Requirements related to the functionality are identified and described in a systematic way. Each requirement has a name (ID), title, and description. The description can be one paragraph per requirement. -->
+**Name:** Bbox frozen implementation (**ID: 1**)
+
+**Title:** Implement method `Bbox::frozen()`
+
+**Description:** 
+
+The method `frozen()` of class `Bbox` is inherited from its parent class `BboxBase`. The function of this method is to return a frozen copy which will not be updated when its children change. As the class `Bbox` contains a property `minpos` that `BboxBase` does not have, the method `frozen()` should be overrided in `Bbox` to copy both the bounding `points` and `minpos`.
 
 *Optional (point 3): trace tests to requirements.*
+
+Test function `test_bbox_frozen_copies_minpos()` should be traced to requirement: **ID=1**.
+
 
 ### Code changes
 
@@ -89,17 +99,9 @@ URL:
 ### Scope (functionality and code affected)
 
 ### Requirements for the new feature or requirements affected by functionality being refactored
- <!-- Requirements related to the functionality are identified and described in a systematic way. Each requirement has a name (ID), title, and description. The description can be one paragraph per requirement. -->
- **Name:** Bbox frozen implementation (**ID: 1**)
 
-**Title:** Implement method `Bbox::frozen()`
-
-**Description:** 
-
-The method `frozen()` of class `Bbox` is inherited from its parent class `BboxBase`. The function of this method is to return a frozen copy which will not be updated when its children change. As the class `Bbox` contains a property `minpos` that `BboxBase` does not have, the method `frozen()` should be overrided in `Bbox` to copy this property.
 
 *Optional (point 3): trace tests to requirements.*
-Test function `test_bbox_frozen_copies_minpos()` should be traced to requirement: **ID=1**.
 
 ### Code changes
 
