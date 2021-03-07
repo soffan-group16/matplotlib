@@ -161,6 +161,12 @@ refactoring).*
 
 ### UML class diagram and its description
 
+UML diagram: https://lucid.app/lucidchart/2984241b-ec6f-4f19-b36e-015a08427598/edit?shared=true&page=0_0#
+
+UML diagram: https://lucid.app/lucidchart/invitations/accept/8513f637-f73e-4b0a-90d6-7e390dcf5cef
+
+<!--TODO: Fix UML diagram and give description-->
+
 #### Key changes/classes affected
 
 *Optional (point 1): Architectural overview.*
