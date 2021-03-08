@@ -11,7 +11,7 @@ A Python library that is used to visualize data and create graphs.
 ## Onboarding experience
 We chose the same project as the one in Assignment 3. With the knowledge we learned from that assignment, setting up the development suite was easy this time around.
 
-Similar to Assignment 3 we followed the instructions written with the install document and the contribution document as well.
+Similar to Assignment 3 we followed the instructions written in the [install document](INSTALL.rst) which is clear enough to get us running.
 
 ## Effort spent
 <!-- TODO -->
