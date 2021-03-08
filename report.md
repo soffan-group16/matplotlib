@@ -75,6 +75,10 @@ Test function `test_bbox_frozen_copies_minpos()` should be traced to requirement
 
 `git diff 9c98ab0992915cf7c2be030c6b418eeefd0b0f25 7c535fb07d4a64c6ca9440a06a2c62ccba6d09ae`
 
+There are two main changes done by the patches. The first is the introduction of a unit test that replicates the bug that was found as described here: [issue #19296](https://github.com/matplotlib/matplotlib/issues/19296). The issue describes a strange behaviour when retrieving the minimum positions of a copy of a bounding box in log scale.  
+
+The second change is the fix itself to the problem. We discovered that the inherited function did not get the correct value even though it was set correctly but instead took the initialization value. A fix to this was to introduce an overriding function in the bounding box class to retrieve the correct data and return it.
+
 *Optional (point 4): the patch is clean.*
 
 Yes, it is.
