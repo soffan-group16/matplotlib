@@ -171,7 +171,7 @@ For this fix, we found that there are two possible ways to solve it. The first w
 
 The second path, which is what we have decided to go forward with, would be to fix the issue by preserving `_get_coord_info`. We refactored the `draw` function to not handle the labels and instead let `_draw_labels` to handle it. We did this as the labels require the existing logic to be properly shown but the other parts of the graph requries the new logic to get the expected outcome. We then also refactored `_get_coord_info` to handle the different cases. This resulted in `_get_coord_info` and `_get_coord_info_without_deltas` being called depending on the situation. These two function would then call `_get_coord_info_calc` which used to be in `_get_coord_info` before being refactored. The function `_get_coord_info_calc` handles in creating a 3D space where graph would be drawn on and requires data from the caller to create the correct graph.
 
-Both of these changes affect other parts of the codebase, mainly in two areas. The first is that they both cause errors to occur on some unit test as they have expected the buggy output. The second would be in causing weird rendering behaviour with the axis or spines of the graph. When rendering the graph the X-axis would be a different color compared to the expected color found in the Y-axis and Z-axis. 
+Both of these changes affect other parts of the codebase, mainly in two areas. The first is that they both cause errors to occur on some unit test as they have expected the buggy output. The second would be in causing weird rendering behaviour with the axis or spines of the graph. When rendering the graph the X-axis would be a different color compared to the expected color found in the Y-axis and Z-axis.
 
 We have discussed these topics with the Matplotlib community regarding the different possible solution and the X-axis oddity. The discussion can be found [here](https://github.com/matplotlib/matplotlib/issues/18052).
 
@@ -180,12 +180,14 @@ We have discussed these topics with the Matplotlib community regarding the diffe
 *Optional (point 5): considered for acceptance (passes all automated checks).*
 
 ### Test results
-*Overall results with link to a copy or excerpt of the logs (before/after
-refactoring).*
+Since the fix for this issue required changes to the API a lot of the tests needed to be corrected after we introduced our fix. However, after that were done, the whole test suite ran fine.
 
-- [Before]()
-- [Added failing test]()
-- [After]()
+- [Before](test-reports/mac-2-before-change.txt)
+  - This is a run of the whole test suite before any changes.
+- [Added fix](test-reports/mac-2-deltas-removed.txt)
+  - This is a run of the whole test suite after our API-breaking fix have been introduced. As can be seen in the report, roughly half of the tests now fail.
+- [After](test-reports/mac-2-after-updated-tests.txt)
+  - This is a run from after the tests have been corrected.
 
 ### UML class diagram and its description
 
