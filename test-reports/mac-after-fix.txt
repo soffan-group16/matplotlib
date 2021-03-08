@@ -1,0 +1,251 @@
+====================================================================================================== FAILURES =======================================================================================================
+_________________________________________________________________________________________________ test_pdflatex[pdf] __________________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_backend_pgf/pgf_pdflatex-expected.pdf', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_backend_pgf/pgf_pdflatex.pdf'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 11.669):
+E               result_images/test_backend_pgf/pgf_pdflatex_pdf.png
+E               result_images/test_backend_pgf/pgf_pdflatex-expected_pdf.png
+E               result_images/test_backend_pgf/pgf_pdflatex_pdf-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+____________________________________________________________________________________________________ test_rcupdate ____________________________________________________________________________________________________
+
+    @needs_xelatex
+    @needs_pdflatex
+    @pytest.mark.style('default')
+    @pytest.mark.backend('pgf')
+    def test_rcupdate():
+        rc_sets = [{'font.family': 'sans-serif',
+                    'font.size': 30,
+                    'figure.subplot.left': .2,
+                    'lines.markersize': 10,
+                    'pgf.rcfonts': False,
+                    'pgf.texsystem': 'xelatex'},
+                   {'font.family': 'monospace',
+                    'font.size': 10,
+                    'figure.subplot.left': .1,
+                    'lines.markersize': 20,
+                    'pgf.rcfonts': False,
+                    'pgf.texsystem': 'pdflatex',
+                    'pgf.preamble': ('\\usepackage[utf8x]{inputenc}'
+                                     '\\usepackage[T1]{fontenc}'
+                                     '\\usepackage{sfmath}')}]
+        tol = [6, 0]
+        for i, rc_set in enumerate(rc_sets):
+            with mpl.rc_context(rc_set):
+                for substring, pkg in [('sfmath', 'sfmath'), ('utf8x', 'ucs')]:
+                    if (substring in mpl.rcParams['pgf.preamble']
+                            and not _has_tex_package(pkg)):
+                        pytest.skip(f'needs {pkg}.sty')
+                create_figure()
+>               compare_figure('pgf_rcupdate%d.pdf' % (i + 1), tol=tol[i])
+
+lib/matplotlib/tests/test_backend_pgf.py:138:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+fname = 'pgf_rcupdate2.pdf', savefig_kwargs = {}, tol = 0
+
+    def compare_figure(fname, savefig_kwargs={}, tol=0):
+        actual = os.path.join(result_dir, fname)
+        plt.savefig(actual, **savefig_kwargs)
+
+        expected = os.path.join(result_dir, "expected_%s" % fname)
+        shutil.copyfile(os.path.join(baseline_dir, fname), expected)
+        err = compare_images(expected, actual, tol=tol)
+        if err:
+>           raise ImageComparisonFailure(err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: Error: Image files did not match.
+E             RMS Value: 13.166575390337284
+E             Expected:
+E               /Users/mwesslen/Repos/matplotlib/result_images/test_backend_pgf/expected_pgf_rcupdate2_pdf.png
+E             Actual:
+E               /Users/mwesslen/Repos/matplotlib/result_images/test_backend_pgf/pgf_rcupdate2_pdf.png
+E             Difference:
+E               /Users/mwesslen/Repos/matplotlib/result_images/test_backend_pgf/pgf_rcupdate2_pdf-failed-diff.png
+E             Tolerance:
+E               0
+
+lib/matplotlib/tests/test_backend_pgf.py:39: ImageComparisonFailure
+_________________________________________________________________________________________________ test_mixedmode[pdf] _________________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_backend_pgf/pgf_mixedmode-expected.pdf', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_backend_pgf/pgf_mixedmode.pdf')
+tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 0.867):
+E               result_images/test_backend_pgf/pgf_mixedmode_pdf.png
+E               result_images/test_backend_pgf/pgf_mixedmode-expected_pdf.png
+E               result_images/test_backend_pgf/pgf_mixedmode_pdf-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+______________________________________________________________________________________ test_interactive_backend[toolbar2-tkagg] _______________________________________________________________________________________
+
+backend = 'tkagg', toolbar = 'toolbar2'
+
+    @pytest.mark.parametrize("backend", _get_testable_interactive_backends())
+    @pytest.mark.parametrize("toolbar", ["toolbar2", "toolmanager"])
+    @pytest.mark.flaky(reruns=3)
+    def test_interactive_backend(backend, toolbar):
+        if backend == "macosx":
+            if toolbar == "toolmanager":
+                pytest.skip("toolmanager is not implemented for macosx.")
+
+>       proc = subprocess.run(
+            [sys.executable, "-c",
+             inspect.getsource(_test_interactive_impl)
+             + "\n_test_interactive_impl()",
+             json.dumps({"toolbar": toolbar})],
+            env={**os.environ, "MPLBACKEND": backend, "SOURCE_DATE_EPOCH": "0"},
+            timeout=_test_timeout,
+            stdout=subprocess.PIPE, universal_newlines=True)
+
+lib/matplotlib/tests/test_backends_interactive.py:165:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/subprocess.py:503: in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/subprocess.py:1130: in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/subprocess.py:1978: in _communicate
+    self._check_timeout(endtime, orig_timeout, stdout, stderr)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <Popen: returncode: -9 args: ['/usr/local/opt/python@3.9/bin/python3.9', '-c...>, endtime = 290.386021084, orig_timeout = 10, stdout_seq = [], stderr_seq = None, skip_check_and_raise = False
+
+    def _check_timeout(self, endtime, orig_timeout, stdout_seq, stderr_seq,
+                       skip_check_and_raise=False):
+        """Convenience for checking if a timeout has expired."""
+        if endtime is None:
+            return
+        if skip_check_and_raise or _time() > endtime:
+>           raise TimeoutExpired(
+                    self.args, orig_timeout,
+                    output=b''.join(stdout_seq) if stdout_seq else None,
+                    stderr=b''.join(stderr_seq) if stderr_seq else None)
+E           subprocess.TimeoutExpired: Command '['/usr/local/opt/python@3.9/bin/python3.9', '-c', 'def _test_interactive_impl():\n    import importlib.util\n    import io\n    import json\n    import sys\n    from unittest import TestCase\n\n    import matplotlib as mpl\n    from matplotlib import pyplot as plt, rcParams\n    from matplotlib.backend_bases import FigureCanvasBase\n\n    rcParams.update({\n        "webagg.open_in_browser": False,\n        "webagg.port_retries": 1,\n    })\n    if len(sys.argv) >= 2:  # Second argument is json-encoded rcParams.\n        rcParams.update(json.loads(sys.argv[1]))\n    backend = plt.rcParams["backend"].lower()\n    assert_equal = TestCase().assertEqual\n    assert_raises = TestCase().assertRaises\n\n    if backend.endswith("agg") and not backend.startswith(("gtk3", "web")):\n        # Force interactive framework setup.\n        plt.figure()\n\n        # Check that we cannot switch to a backend using another interactive\n        # framework, but can switch to a backend using cairo instead of agg,\n        # or a non-interactive backend.  In the first case, we use tkagg as\n        # the "other" interactive backend as it is (essentially) guaranteed\n        # to be present.  Moreover, don\'t test switching away from gtk3 (as\n        # Gtk.main_level() is not set up at this point yet) and webagg (which\n        # uses no interactive framework).\n\n        if backend != "tkagg":\n            with assert_raises(ImportError):\n                mpl.use("tkagg", force=True)\n\n        def check_alt_backend(alt_backend):\n            mpl.use(alt_backend, force=True)\n            fig = plt.figure()\n            assert_equal(\n                type(fig.canvas).__module__,\n                "matplotlib.backends.backend_{}".format(alt_backend))\n\n        if importlib.util.find_spec("cairocffi"):\n            check_alt_backend(backend[:-3] + "cairo")\n        check_alt_backend("svg")\n\n    mpl.use(backend, force=True)\n\n    fig, ax = plt.subplots()\n    assert_equal(\n        type(fig.canvas).__module__,\n        "matplotlib.backends.backend_{}".format(backend))\n\n    ax.plot([0, 1], [2, 3])\n\n    timer = fig.canvas.new_timer(1.)  # Test floats casting to int as needed.\n    timer.add_callback(FigureCanvasBase.key_press_event, fig.canvas, "q")\n    # Trigger quitting upon draw.\n    fig.canvas.mpl_connect("draw_event", lambda event: timer.start())\n    fig.canvas.mpl_connect("close_event", print)\n\n    result = io.BytesIO()\n    fig.savefig(result, format=\'png\')\n\n    plt.show()\n\n    # Ensure that the window is really closed.\n    plt.pause(0.5)\n\n    # Test that saving works after interactive window is closed, but the figure\n    # is not deleted.\n    result_after = io.BytesIO()\n    fig.savefig(result_after, format=\'png\')\n\n    if not backend.startswith(\'qt5\') and sys.platform == \'darwin\':\n        # FIXME: This should be enabled everywhere once Qt5 is fixed on macOS\n        # to not resize incorrectly.\n        assert_equal(result.getvalue(), result_after.getvalue())\n\n_test_interactive_impl()', '{"toolbar": "toolbar2"}']' timed out after 10 seconds
+
+/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/subprocess.py:1174: TimeoutExpired
+_____________________________________________________________________________________ test_interactive_backend[toolmanager-tkagg] _____________________________________________________________________________________
+
+backend = 'tkagg', toolbar = 'toolmanager'
+
+    @pytest.mark.parametrize("backend", _get_testable_interactive_backends())
+    @pytest.mark.parametrize("toolbar", ["toolbar2", "toolmanager"])
+    @pytest.mark.flaky(reruns=3)
+    def test_interactive_backend(backend, toolbar):
+        if backend == "macosx":
+            if toolbar == "toolmanager":
+                pytest.skip("toolmanager is not implemented for macosx.")
+
+>       proc = subprocess.run(
+            [sys.executable, "-c",
+             inspect.getsource(_test_interactive_impl)
+             + "\n_test_interactive_impl()",
+             json.dumps({"toolbar": toolbar})],
+            env={**os.environ, "MPLBACKEND": backend, "SOURCE_DATE_EPOCH": "0"},
+            timeout=_test_timeout,
+            stdout=subprocess.PIPE, universal_newlines=True)
+
+lib/matplotlib/tests/test_backends_interactive.py:165:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/subprocess.py:503: in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/subprocess.py:1130: in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/subprocess.py:1978: in _communicate
+    self._check_timeout(endtime, orig_timeout, stdout, stderr)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <Popen: returncode: -9 args: ['/usr/local/opt/python@3.9/bin/python3.9', '-c...>, endtime = 334.100710935, orig_timeout = 10, stdout_seq = [], stderr_seq = None, skip_check_and_raise = False
+
+    def _check_timeout(self, endtime, orig_timeout, stdout_seq, stderr_seq,
+                       skip_check_and_raise=False):
+        """Convenience for checking if a timeout has expired."""
+        if endtime is None:
+            return
+        if skip_check_and_raise or _time() > endtime:
+>           raise TimeoutExpired(
+                    self.args, orig_timeout,
+                    output=b''.join(stdout_seq) if stdout_seq else None,
+                    stderr=b''.join(stderr_seq) if stderr_seq else None)
+E           subprocess.TimeoutExpired: Command '['/usr/local/opt/python@3.9/bin/python3.9', '-c', 'def _test_interactive_impl():\n    import importlib.util\n    import io\n    import json\n    import sys\n    from unittest import TestCase\n\n    import matplotlib as mpl\n    from matplotlib import pyplot as plt, rcParams\n    from matplotlib.backend_bases import FigureCanvasBase\n\n    rcParams.update({\n        "webagg.open_in_browser": False,\n        "webagg.port_retries": 1,\n    })\n    if len(sys.argv) >= 2:  # Second argument is json-encoded rcParams.\n        rcParams.update(json.loads(sys.argv[1]))\n    backend = plt.rcParams["backend"].lower()\n    assert_equal = TestCase().assertEqual\n    assert_raises = TestCase().assertRaises\n\n    if backend.endswith("agg") and not backend.startswith(("gtk3", "web")):\n        # Force interactive framework setup.\n        plt.figure()\n\n        # Check that we cannot switch to a backend using another interactive\n        # framework, but can switch to a backend using cairo instead of agg,\n        # or a non-interactive backend.  In the first case, we use tkagg as\n        # the "other" interactive backend as it is (essentially) guaranteed\n        # to be present.  Moreover, don\'t test switching away from gtk3 (as\n        # Gtk.main_level() is not set up at this point yet) and webagg (which\n        # uses no interactive framework).\n\n        if backend != "tkagg":\n            with assert_raises(ImportError):\n                mpl.use("tkagg", force=True)\n\n        def check_alt_backend(alt_backend):\n            mpl.use(alt_backend, force=True)\n            fig = plt.figure()\n            assert_equal(\n                type(fig.canvas).__module__,\n                "matplotlib.backends.backend_{}".format(alt_backend))\n\n        if importlib.util.find_spec("cairocffi"):\n            check_alt_backend(backend[:-3] + "cairo")\n        check_alt_backend("svg")\n\n    mpl.use(backend, force=True)\n\n    fig, ax = plt.subplots()\n    assert_equal(\n        type(fig.canvas).__module__,\n        "matplotlib.backends.backend_{}".format(backend))\n\n    ax.plot([0, 1], [2, 3])\n\n    timer = fig.canvas.new_timer(1.)  # Test floats casting to int as needed.\n    timer.add_callback(FigureCanvasBase.key_press_event, fig.canvas, "q")\n    # Trigger quitting upon draw.\n    fig.canvas.mpl_connect("draw_event", lambda event: timer.start())\n    fig.canvas.mpl_connect("close_event", print)\n\n    result = io.BytesIO()\n    fig.savefig(result, format=\'png\')\n\n    plt.show()\n\n    # Ensure that the window is really closed.\n    plt.pause(0.5)\n\n    # Test that saving works after interactive window is closed, but the figure\n    # is not deleted.\n    result_after = io.BytesIO()\n    fig.savefig(result_after, format=\'png\')\n\n    if not backend.startswith(\'qt5\') and sys.platform == \'darwin\':\n        # FIXME: This should be enabled everywhere once Qt5 is fixed on macOS\n        # to not resize incorrectly.\n        assert_equal(result.getvalue(), result_after.getvalue())\n\n_test_interactive_impl()', '{"toolbar": "toolmanager"}']' timed out after 10 seconds
+
+/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/subprocess.py:1174: TimeoutExpired
+------------------------------------------------------------------------------------------------ Captured stderr call -------------------------------------------------------------------------------------------------
+/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/_collections_abc.py:856: UserWarning: Treat the new Tool classes introduced in v1.5 as experimental for now; the API and rcParam may change in future versions.
+  self[key] = other[key]
+------------------------------------------------------------------------------------------------ Captured stderr call -------------------------------------------------------------------------------------------------
+/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/_collections_abc.py:856: UserWarning: Treat the new Tool classes introduced in v1.5 as experimental for now; the API and rcParam may change in future versions.
+  self[key] = other[key]
+------------------------------------------------------------------------------------------------ Captured stderr call -------------------------------------------------------------------------------------------------
+/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/_collections_abc.py:856: UserWarning: Treat the new Tool classes introduced in v1.5 as experimental for now; the API and rcParam may change in future versions.
+  self[key] = other[key]
+------------------------------------------------------------------------------------------------ Captured stderr call -------------------------------------------------------------------------------------------------
+/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/_collections_abc.py:856: UserWarning: Treat the new Tool classes introduced in v1.5 as experimental for now; the API and rcParam may change in future versions.
+  self[key] = other[key]
+________________________________________________________________________________________ test_interactive_thread_safety[tkagg] ________________________________________________________________________________________
+
+backend = 'tkagg'
+
+    @pytest.mark.parametrize("backend", _thread_safe_backends)
+    @pytest.mark.flaky(reruns=3)
+    def test_interactive_thread_safety(backend):
+>       proc = subprocess.run(
+            [sys.executable, "-c",
+             inspect.getsource(_test_thread_impl) + "\n_test_thread_impl()"],
+            env={**os.environ, "MPLBACKEND": backend, "SOURCE_DATE_EPOCH": "0"},
+            timeout=_test_timeout, check=True,
+            stdout=subprocess.PIPE, universal_newlines=True)
+
+lib/matplotlib/tests/test_backends_interactive.py:232:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/subprocess.py:503: in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/subprocess.py:1130: in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/subprocess.py:1978: in _communicate
+    self._check_timeout(endtime, orig_timeout, stdout, stderr)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <Popen: returncode: -9 args: ['/usr/local/opt/python@3.9/bin/python3.9', '-c...>, endtime = 374.629880457, orig_timeout = 10, stdout_seq = [], stderr_seq = None, skip_check_and_raise = False
+
+    def _check_timeout(self, endtime, orig_timeout, stdout_seq, stderr_seq,
+                       skip_check_and_raise=False):
+        """Convenience for checking if a timeout has expired."""
+        if endtime is None:
+            return
+        if skip_check_and_raise or _time() > endtime:
+>           raise TimeoutExpired(
+                    self.args, orig_timeout,
+                    output=b''.join(stdout_seq) if stdout_seq else None,
+                    stderr=b''.join(stderr_seq) if stderr_seq else None)
+E           subprocess.TimeoutExpired: Command '['/usr/local/opt/python@3.9/bin/python3.9', '-c', 'def _test_thread_impl():\n    from concurrent.futures import ThreadPoolExecutor\n    import json\n    import sys\n\n    from matplotlib import pyplot as plt, rcParams\n\n    rcParams.update({\n        "webagg.open_in_browser": False,\n        "webagg.port_retries": 1,\n    })\n    if len(sys.argv) >= 2:  # Second argument is json-encoded rcParams.\n        rcParams.update(json.loads(sys.argv[1]))\n\n    # Test artist creation and drawing does not crash from thread\n    # No other guarantees!\n    fig, ax = plt.subplots()\n    # plt.pause needed vs plt.show(block=False) at least on toolbar2-tkagg\n    plt.pause(0.5)\n\n    future = ThreadPoolExecutor().submit(ax.plot, [1, 3, 6])\n    future.result()  # Joins the thread; rethrows any exception.\n\n    fig.canvas.mpl_connect("close_event", print)\n    future = ThreadPoolExecutor().submit(fig.canvas.draw)\n    plt.pause(0.5)  # flush_events fails here on at least Tkagg (bpo-41176)\n    future.result()  # Joins the thread; rethrows any exception.\n    plt.close()\n    fig.canvas.flush_events()  # pause doesn\'t process events after close\n\n_test_thread_impl()']' timed out after 10 seconds
+
+/usr/local/Cellar/python@3.9/3.9.1_8/Frameworks/Python.framework/Versions/3.9/lib/python3.9/subprocess.py:1174: TimeoutExpired
+=============================================================================================== short test summary info ===============================================================================================
+FAILED lib/matplotlib/tests/test_backend_pgf.py::test_pdflatex[pdf] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 11.669):
+FAILED lib/matplotlib/tests/test_backend_pgf.py::test_rcupdate - matplotlib.testing.exceptions.ImageComparisonFailure: Error: Image files did not match.
+FAILED lib/matplotlib/tests/test_backend_pgf.py::test_mixedmode[pdf] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 0.867):
+FAILED lib/matplotlib/tests/test_backends_interactive.py::test_interactive_backend[toolbar2-tkagg] - subprocess.TimeoutExpired: Command '['/usr/local/opt/python@3.9/bin/python3.9', '-c', 'def _test_interactive_im...
+FAILED lib/matplotlib/tests/test_backends_interactive.py::test_interactive_backend[toolmanager-tkagg] - subprocess.TimeoutExpired: Command '['/usr/local/opt/python@3.9/bin/python3.9', '-c', 'def _test_interactive...
+FAILED lib/matplotlib/tests/test_backends_interactive.py::test_interactive_thread_safety[tkagg] - subprocess.TimeoutExpired: Command '['/usr/local/opt/python@3.9/bin/python3.9', '-c', 'def _test_thread_impl():\n ...
+==================================================================== 6 failed, 7867 passed, 182 skipped, 13 xfailed, 10 rerun in 802.12s (0:13:22) ====================================================================

@@ -11,7 +11,7 @@ A Python library that is used to visualize data and create graphs.
 ## Onboarding experience
 We chose the same project as the one in Assignment 3. With the knowledge we learned from that assignment, setting up the development suite was easy this time around.
 
-Similar to Assignment 3 we followed the instructions written with the install document and the contribution document as well. 
+Similar to Assignment 3 we followed the instructions written with the install document and the contribution document as well.
 
 ## Effort spent
 <!-- TODO -->
@@ -60,7 +60,7 @@ Changes were only made in the Bbox class by overriding a parent method. This aff
 **Title:** Copy `minpos` property of `Bbox` in `frozen()`
 <!-- Implement method `Bbox::frozen()` -->
 
-**Description:** 
+**Description:**
 
 The method `frozen()` of class `Bbox` is inherited from its parent class `BboxBase`. The function of this method is to return a frozen copy which will not be updated when its children change. As the class `Bbox` contains a property `minpos` that `BboxBase` does not have, the method `frozen()` should be overrided in `Bbox` to copy both the bounding `points` and `minpos`.
 
@@ -75,7 +75,7 @@ Test function `test_bbox_frozen_copies_minpos()` should be traced to requirement
 
 `git diff 9c98ab0992915cf7c2be030c6b418eeefd0b0f25 7c535fb07d4a64c6ca9440a06a2c62ccba6d09ae`
 
-There are two main changes done by the patches. The first is the introduction of a unit test that replicates the bug that was found as described here: [issue #19296](https://github.com/matplotlib/matplotlib/issues/19296). The issue describes a strange behaviour when retrieving the minimum positions of a copy of a bounding box in log scale.  
+There are two main changes done by the patches. The first is the introduction of a unit test that replicates the bug that was found as described here: [issue #19296](https://github.com/matplotlib/matplotlib/issues/19296). The issue describes a strange behaviour when retrieving the minimum positions of a copy of a bounding box in log scale.
 
 The second change is the fix itself to the problem. We discovered that the inherited function did not get the correct value even though it was set correctly but instead took the initialization value. A fix to this was to introduce an overriding function in the bounding box class to retrieve the correct data and return it.
 
@@ -90,12 +90,14 @@ All automated checks except those about doc have passed. This patch has been mer
 https://github.com/matplotlib/matplotlib/pull/19641
 
 ### Test results
-*Overall results with link to a copy or excerpt of the logs (before/after
-refactoring).*
+For this small change one test was enough to cover the requirement. Apart from a few tests that are flaky in a macOS environment the test suite runs fine both before and after the change.
 
 - [Before](test-reports/mac-before-test.txt)
+  - These are the tests that were failing before we did any changes. They have to do with a macOS specific bug that is addressed among the issues of matplotlib and are flaky.
 - [Added failing test](test-reports/mac-with-frozen-test.txt)
-- [After]()
+  - This is a run of only our added test before we introduced the fix.
+- [After](test-reports/mac-after-fix.txt)
+  - This is a run of the complete test suite after we added the fix. As can be seen here it's the same flaky tests (one more this time) that fail as in the beginning and our added test runs fine.
 
 ### UML class diagram and its description
 
@@ -187,9 +189,9 @@ One of the most valuable take-aways is learning to read code from other develope
 
 ### How did you grow as a team, using the Essence standard to evaluate yourself?
 
-We think that we have improved as a team. For example in regards to the Essence standard we think that we have fulfilled "Procedures are in place to handle feedback on the team’s way of working." as we have discussions after receiving such feedback. We would discuss on how to improve our work and how to fulfill the requirements that are left.  
+We think that we have improved as a team. For example in regards to the Essence standard we think that we have fulfilled "Procedures are in place to handle feedback on the team’s way of working." as we have discussions after receiving such feedback. We would discuss on how to improve our work and how to fulfill the requirements that are left.
 
-With this fulfilled we believe that we are on the Essence standard state of: In Place. From what we have experience we belive that the team is that our team members are using our way of working to accomplish the task at hand. 
+With this fulfilled we believe that we are on the Essence standard state of: In Place. From what we have experience we belive that the team is that our team members are using our way of working to accomplish the task at hand.
 
 *Optional (point 6): How would you put your work in context with best software engineering practice?*
 
