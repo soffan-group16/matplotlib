@@ -1,0 +1,915 @@
+============================================================================================= test session starts =============================================================================================
+platform darwin -- Python 3.9.1, pytest-6.2.2, py-1.10.0, pluggy-0.13.1
+rootdir: /Users/mwesslen/Repos/matplotlib, configfile: pytest.ini
+plugins: flake8-1.0.7, rerunfailures-9.1.1, cov-2.11.1, xdist-2.2.1, timeout-1.4.2, forked-1.3.0
+collected 102 items
+
+lib/mpl_toolkits/tests/test_mplot3d.py ................F.FF.FFFFFFFFFFFFFFFFF..FF.F.FFFFFF.................FF............FFFFFF....FFFF.....F                                                           [100%]
+
+================================================================================================== FAILURES ===================================================================================================
+_______________________________________________________________________________________________ test_bar3d[png] _______________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/bar3d-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/bar3d.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 17.577):
+E               result_images/test_mplot3d/bar3d.png
+E               result_images/test_mplot3d/bar3d-expected.png
+E               result_images/test_mplot3d/bar3d-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+___________________________________________________________________________________________ test_bar3d_shaded[png] ____________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/bar3d_shaded-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/bar3d_shaded.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.436):
+E               result_images/test_mplot3d/bar3d_shaded.png
+E               result_images/test_mplot3d/bar3d_shaded-expected.png
+E               result_images/test_mplot3d/bar3d_shaded-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+__________________________________________________________________________________________ test_bar3d_notshaded[png] __________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/bar3d_notshaded-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/bar3d_notshaded.png')
+tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 16.436):
+E               result_images/test_mplot3d/bar3d_notshaded.png
+E               result_images/test_mplot3d/bar3d_notshaded-expected.png
+E               result_images/test_mplot3d/bar3d_notshaded-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+_____________________________________________________________________________________________ test_contour3d[png] _____________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/contour3d-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/contour3d.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 19.291):
+E               result_images/test_mplot3d/contour3d.png
+E               result_images/test_mplot3d/contour3d-expected.png
+E               result_images/test_mplot3d/contour3d-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+____________________________________________________________________________________________ test_contourf3d[png] _____________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/contourf3d-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/contourf3d.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.191):
+E               result_images/test_mplot3d/contourf3d.png
+E               result_images/test_mplot3d/contourf3d-expected.png
+E               result_images/test_mplot3d/contourf3d-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+__________________________________________________________________________________________ test_contourf3d_fill[png] __________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/contourf3d_fill-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/contourf3d_fill.png')
+tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.212):
+E               result_images/test_mplot3d/contourf3d_fill.png
+E               result_images/test_mplot3d/contourf3d_fill-expected.png
+E               result_images/test_mplot3d/contourf3d_fill-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+____________________________________________________________________________________________ test_tricontour[png] _____________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/tricontour-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/tricontour.png'), tol = 0.02
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.197):
+E               result_images/test_mplot3d/tricontour.png
+E               result_images/test_mplot3d/tricontour-expected.png
+E               result_images/test_mplot3d/tricontour-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+______________________________________________________________________________________________ test_lines3d[png] ______________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/lines3d-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/lines3d.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.351):
+E               result_images/test_mplot3d/lines3d.png
+E               result_images/test_mplot3d/lines3d-expected.png
+E               result_images/test_mplot3d/lines3d-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+___________________________________________________________________________________________ test_mixedsubplots[png] ___________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/mixedsubplot-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/mixedsubplot.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 13.658):
+E               result_images/test_mplot3d/mixedsubplot.png
+E               result_images/test_mplot3d/mixedsubplot-expected.png
+E               result_images/test_mplot3d/mixedsubplot-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+_____________________________________________________________________________________________ test_scatter3d[png] _____________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/scatter3d-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/scatter3d.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 16.852):
+E               result_images/test_mplot3d/scatter3d.png
+E               result_images/test_mplot3d/scatter3d-expected.png
+E               result_images/test_mplot3d/scatter3d-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+__________________________________________________________________________________________ test_scatter3d_color[png] __________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/scatter3d_color-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/scatter3d_color.png')
+tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 16.849):
+E               result_images/test_mplot3d/scatter3d_color.png
+E               result_images/test_mplot3d/scatter3d_color-expected.png
+E               result_images/test_mplot3d/scatter3d_color-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+__________________________________________________________________________________________ test_plot_3d_from_2d[png] __________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/plot_3d_from_2d-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/plot_3d_from_2d.png')
+tol = 0.015
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.653):
+E               result_images/test_mplot3d/plot_3d_from_2d.png
+E               result_images/test_mplot3d/plot_3d_from_2d-expected.png
+E               result_images/test_mplot3d/plot_3d_from_2d-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+_____________________________________________________________________________________________ test_surface3d[png] _____________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/surface3d-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/surface3d.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 16.148):
+E               result_images/test_mplot3d/surface3d.png
+E               result_images/test_mplot3d/surface3d-expected.png
+E               result_images/test_mplot3d/surface3d-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+_________________________________________________________________________________________ test_surface3d_shaded[png] __________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/surface3d_shaded-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/surface3d_shaded.png')
+tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 16.176):
+E               result_images/test_mplot3d/surface3d_shaded.png
+E               result_images/test_mplot3d/surface3d_shaded-expected.png
+E               result_images/test_mplot3d/surface3d_shaded-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+______________________________________________________________________________________________ test_text3d[png] _______________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/text3d-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/text3d.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 21.875):
+E               result_images/test_mplot3d/text3d.png
+E               result_images/test_mplot3d/text3d-expected.png
+E               result_images/test_mplot3d/text3d-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+_____________________________________________________________________________________________ test_trisurf3d[png] _____________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/trisurf3d-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/trisurf3d.png'), tol = 0.03
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 16.708):
+E               result_images/test_mplot3d/trisurf3d.png
+E               result_images/test_mplot3d/trisurf3d-expected.png
+E               result_images/test_mplot3d/trisurf3d-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+_________________________________________________________________________________________ test_trisurf3d_shaded[png] __________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/trisurf3d_shaded-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/trisurf3d_shaded.png')
+tol = 0.03
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 16.708):
+E               result_images/test_mplot3d/trisurf3d_shaded.png
+E               result_images/test_mplot3d/trisurf3d_shaded-expected.png
+E               result_images/test_mplot3d/trisurf3d_shaded-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+____________________________________________________________________________________________ test_wireframe3d[png] ____________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/wireframe3d-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/wireframe3d.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.731):
+E               result_images/test_mplot3d/wireframe3d.png
+E               result_images/test_mplot3d/wireframe3d-expected.png
+E               result_images/test_mplot3d/wireframe3d-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+______________________________________________________________________________________ test_wireframe3dzerocstride[png] _______________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/wireframe3dzerocstride-expected.png'
+actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/wireframe3dzerocstride.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.955):
+E               result_images/test_mplot3d/wireframe3dzerocstride.png
+E               result_images/test_mplot3d/wireframe3dzerocstride-expected.png
+E               result_images/test_mplot3d/wireframe3dzerocstride-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+______________________________________________________________________________________ test_wireframe3dzerorstride[png] _______________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/wireframe3dzerorstride-expected.png'
+actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/wireframe3dzerorstride.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.969):
+E               result_images/test_mplot3d/wireframe3dzerorstride.png
+E               result_images/test_mplot3d/wireframe3dzerorstride-expected.png
+E               result_images/test_mplot3d/wireframe3dzerorstride-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+_____________________________________________________________________________________________ test_quiver3d[png] ______________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/quiver3d-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/quiver3d.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 19.435):
+E               result_images/test_mplot3d/quiver3d.png
+E               result_images/test_mplot3d/quiver3d-expected.png
+E               result_images/test_mplot3d/quiver3d-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+__________________________________________________________________________________________ test_quiver3d_masked[png] __________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/quiver3d_masked-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/quiver3d_masked.png')
+tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 19.698):
+E               result_images/test_mplot3d/quiver3d_masked.png
+E               result_images/test_mplot3d/quiver3d_masked-expected.png
+E               result_images/test_mplot3d/quiver3d_masked-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+______________________________________________________________________________________ test_poly3dcollection_closed[png] ______________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/poly3dcollection_closed-expected.png'
+actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/poly3dcollection_closed.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 15.847):
+E               result_images/test_mplot3d/poly3dcollection_closed.png
+E               result_images/test_mplot3d/poly3dcollection_closed-expected.png
+E               result_images/test_mplot3d/poly3dcollection_closed-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+______________________________________________________________________________________ test_poly3dcollection_alpha[png] _______________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/poly3dcollection_alpha-expected.png'
+actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/poly3dcollection_alpha.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 15.847):
+E               result_images/test_mplot3d/poly3dcollection_alpha.png
+E               result_images/test_mplot3d/poly3dcollection_alpha-expected.png
+E               result_images/test_mplot3d/poly3dcollection_alpha-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+_____________________________________________________________________________________ test_add_collection3d_zs_array[png] _____________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/add_collection3d_zs_array-expected.png'
+actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/add_collection3d_zs_array.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.143):
+E               result_images/test_mplot3d/add_collection3d_zs_array.png
+E               result_images/test_mplot3d/add_collection3d_zs_array-expected.png
+E               result_images/test_mplot3d/add_collection3d_zs_array-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+____________________________________________________________________________________ test_add_collection3d_zs_scalar[png] _____________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/add_collection3d_zs_scalar-expected.png'
+actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/add_collection3d_zs_scalar.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.251):
+E               result_images/test_mplot3d/add_collection3d_zs_scalar.png
+E               result_images/test_mplot3d/add_collection3d_zs_scalar-expected.png
+E               result_images/test_mplot3d/add_collection3d_zs_scalar-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+__________________________________________________________________________________________ test_axes3d_labelpad[png] __________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/axes3d_labelpad-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/axes3d_labelpad.png')
+tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 26.689):
+E               result_images/test_mplot3d/axes3d_labelpad.png
+E               result_images/test_mplot3d/axes3d_labelpad-expected.png
+E               result_images/test_mplot3d/axes3d_labelpad-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+____________________________________________________________________________________________ test_axes3d_cla[png] _____________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/axes3d_cla-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/axes3d_cla.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 24.760):
+E               result_images/test_mplot3d/axes3d_cla.png
+E               result_images/test_mplot3d/axes3d_cla-expected.png
+E               result_images/test_mplot3d/axes3d_cla-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+__________________________________________________________________________________________ test_axes3d_rotated[png] ___________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/axes3d_rotated-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/axes3d_rotated.png')
+tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 19.493):
+E               result_images/test_mplot3d/axes3d_rotated.png
+E               result_images/test_mplot3d/axes3d_rotated-expected.png
+E               result_images/test_mplot3d/axes3d_rotated-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+___________________________________________________________________________________________ test_axes3d_ortho[png] ____________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/axes3d_ortho-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/axes3d_ortho.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 24.953):
+E               result_images/test_mplot3d/axes3d_ortho.png
+E               result_images/test_mplot3d/axes3d_ortho-expected.png
+E               result_images/test_mplot3d/axes3d_ortho-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+_________________________________________________________________________________________ test_axes3d_isometric[png] __________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/axes3d_isometric-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/axes3d_isometric.png')
+tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.154):
+E               result_images/test_mplot3d/axes3d_isometric.png
+E               result_images/test_mplot3d/axes3d_isometric-expected.png
+E               result_images/test_mplot3d/axes3d_isometric-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+_________________________________________________________________________________________ TestVoxels.test_simple[png] _________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/voxels-simple-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/voxels-simple.png')
+tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 15.638):
+E               result_images/test_mplot3d/voxels-simple.png
+E               result_images/test_mplot3d/voxels-simple-expected.png
+E               result_images/test_mplot3d/voxels-simple-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+_______________________________________________________________________________________ TestVoxels.test_edge_style[png] _______________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/voxels-edge-style-expected.png'
+actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/voxels-edge-style.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 17.038):
+E               result_images/test_mplot3d/voxels-edge-style.png
+E               result_images/test_mplot3d/voxels-edge-style-expected.png
+E               result_images/test_mplot3d/voxels-edge-style-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+______________________________________________________________________________________ TestVoxels.test_named_colors[png] ______________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/voxels-named-colors-expected.png'
+actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/voxels-named-colors.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 16.092):
+E               result_images/test_mplot3d/voxels-named-colors.png
+E               result_images/test_mplot3d/voxels-named-colors-expected.png
+E               result_images/test_mplot3d/voxels-named-colors-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+________________________________________________________________________________________ TestVoxels.test_rgb_data[png] ________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/voxels-rgb-data-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/voxels-rgb-data.png')
+tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 15.385):
+E               result_images/test_mplot3d/voxels-rgb-data.png
+E               result_images/test_mplot3d/voxels-rgb-data-expected.png
+E               result_images/test_mplot3d/voxels-rgb-data-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+_________________________________________________________________________________________ TestVoxels.test_alpha[png] __________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/voxels-alpha-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/voxels-alpha.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 16.112):
+E               result_images/test_mplot3d/voxels-alpha.png
+E               result_images/test_mplot3d/voxels-alpha-expected.png
+E               result_images/test_mplot3d/voxels-alpha-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+__________________________________________________________________________________________ TestVoxels.test_xyz[png] ___________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/voxels-xyz-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/voxels-xyz.png'), tol = 0.01
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 24.023):
+E               result_images/test_mplot3d/voxels-xyz.png
+E               result_images/test_mplot3d/voxels-xyz-expected.png
+E               result_images/test_mplot3d/voxels-xyz-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+____________________________________________________________________________________________ test_minor_ticks[png] ____________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/minor_ticks-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/minor_ticks.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 26.554):
+E               result_images/test_mplot3d/minor_ticks.png
+E               result_images/test_mplot3d/minor_ticks-expected.png
+E               result_images/test_mplot3d/minor_ticks-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+_______________________________________________________________________________________ test_errorbar3d_errorevery[png] _______________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/errorbar3d_errorevery-expected.png'
+actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/errorbar3d_errorevery.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 17.367):
+E               result_images/test_mplot3d/errorbar3d_errorevery.png
+E               result_images/test_mplot3d/errorbar3d_errorevery-expected.png
+E               result_images/test_mplot3d/errorbar3d_errorevery-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+____________________________________________________________________________________________ test_errorbar3d[png] _____________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/errorbar3d-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/errorbar3d.png'), tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.607):
+E               result_images/test_mplot3d/errorbar3d.png
+E               result_images/test_mplot3d/errorbar3d-expected.png
+E               result_images/test_mplot3d/errorbar3d-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+______________________________________________________________________________________________ test_stem3d[png] _______________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/stem3d-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/stem3d.png'), tol = 0.0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 37.470):
+E               result_images/test_mplot3d/stem3d.png
+E               result_images/test_mplot3d/stem3d-expected.png
+E               result_images/test_mplot3d/stem3d-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+__________________________________________________________________________________________ test_computed_zorder[png] __________________________________________________________________________________________
+
+expected = '/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/computed_zorder-expected.png', actual = PosixPath('/Users/mwesslen/Repos/matplotlib/result_images/test_mplot3d/computed_zorder.png')
+tol = 0
+
+    def _raise_on_image_difference(expected, actual, tol):
+        __tracebackhide__ = True
+
+        err = compare_images(expected, actual, tol, in_decorator=True)
+        if err:
+            for key in ["actual", "expected", "diff"]:
+                err[key] = os.path.relpath(err[key])
+>           raise ImageComparisonFailure(
+                ('images not close (RMS %(rms).3f):'
+                    '\n\t%(actual)s\n\t%(expected)s\n\t%(diff)s') % err)
+E           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 10.255):
+E               result_images/test_mplot3d/computed_zorder.png
+E               result_images/test_mplot3d/computed_zorder-expected.png
+E               result_images/test_mplot3d/computed_zorder-failed-diff.png
+
+lib/matplotlib/testing/decorators.py:139: ImageComparisonFailure
+=========================================================================================== short test summary info ===========================================================================================
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_bar3d[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 17.577):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_bar3d_shaded[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.436):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_bar3d_notshaded[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 16.436):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_contour3d[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 19.291):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_contourf3d[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.191):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_contourf3d_fill[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.212):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_tricontour[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.197):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_lines3d[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.351):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_mixedsubplots[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 13.658):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_scatter3d[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 16.852):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_scatter3d_color[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 16.849):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_plot_3d_from_2d[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.653):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_surface3d[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 16.148):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_surface3d_shaded[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 16.176):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_text3d[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 21.875):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_trisurf3d[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 16.708):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_trisurf3d_shaded[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 16.708):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_wireframe3d[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.731):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_wireframe3dzerocstride[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.955):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_wireframe3dzerorstride[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.969):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_quiver3d[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 19.435):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_quiver3d_masked[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 19.698):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_poly3dcollection_closed[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 15.847):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_poly3dcollection_alpha[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 15.847):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_add_collection3d_zs_array[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.143):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_add_collection3d_zs_scalar[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.251):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_axes3d_labelpad[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 26.689):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_axes3d_cla[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 24.760):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_axes3d_rotated[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 19.493):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_axes3d_ortho[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 24.953):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_axes3d_isometric[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.154):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::TestVoxels::test_simple[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 15.638):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::TestVoxels::test_edge_style[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 17.038):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::TestVoxels::test_named_colors[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 16.092):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::TestVoxels::test_rgb_data[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 15.385):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::TestVoxels::test_alpha[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 16.112):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::TestVoxels::test_xyz[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 24.023):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_minor_ticks[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 26.554):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_errorbar3d_errorevery[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 17.367):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_errorbar3d[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 18.607):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_stem3d[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 37.470):
+FAILED lib/mpl_toolkits/tests/test_mplot3d.py::test_computed_zorder[png] - matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 10.255):
+======================================================================================= 42 failed, 60 passed in 34.46s ========================================================================================
