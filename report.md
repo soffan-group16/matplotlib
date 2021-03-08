@@ -67,7 +67,7 @@ you took care of and where you spent your time, if that time exceeds
   - analyzing code/output: 2h
   - writing documentation: 3h
   - writing code: 2h
-  - running tests: not yet
+  - running tests: 0.5h
 
 ## Overview of issue #19296
 
@@ -174,7 +174,7 @@ Thus, some hard-coded method in axis3d<span>.py need to be refactored, and those
 
 **Description:**
 
-In a 3D plot, the limits of axis are auto-expanded, even if they are set manually and exactly. The reason is that the method `Axis::_get_coord_info()` (in `axis3d.py`) expands the bounds of axes, `mins` and `maxs`, by `deltas` automatically, which should be refactored.
+In a 3D plot, the limits of axis are auto-expanded, even if they are set manually and exactly. Some hard-coded addition to the limits should be removed. Limits fetched from the method `_get_coord_info()` in class `axis3d.Axis` should be exact with the user's settings.
 
 #### [Requirement ID: 4]
 
