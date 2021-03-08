@@ -108,10 +108,6 @@ For this small change one test was enough to cover the requirement. Apart from a
 
 *Optional (point 1): Architectural overview.*
 <!-- UML diagram to insert -->
-![UML diagram before](report_images/matplotlib-uml-Before.svg)
-*UML diagram of the affected classes before changes. The `^ function()` syntax expresses that the class overrides an inherited function*
-![UML diagram after](report_images/matplotlib-uml-After.svg)
-*UML diagram of the affected classes after the changes. The `^ function()` syntax expresses that the class overrides an inherited function*
 
 *Optional (point 2): relation to design pattern(s).*
 <!-- TODO -->
@@ -190,12 +186,12 @@ Since the fix for this issue required changes to the API a lot of the tests need
   - This is a run from after the tests have been corrected.
 
 ### UML class diagram and its description
+![UML diagram before](report_images/matplotlib-uml-Before.svg)
+*UML diagram of the affected classes before changes. The `^ function()` syntax expresses that the class overrides an inherited function*
+![UML diagram after](report_images/matplotlib-uml-After.svg)
+*UML diagram of the affected classes after the changes. The `^ function()` syntax expresses that the class overrides an inherited function*
 
-UML diagram: https://lucid.app/lucidchart/2984241b-ec6f-4f19-b36e-015a08427598/edit?shared=true&page=0_0#
-
-UML diagram: https://lucid.app/lucidchart/invitations/accept/8513f637-f73e-4b0a-90d6-7e390dcf5cef
-
-<!--TODO: Fix UML diagram and give description-->
+<!--TODO: Fix UML diagram description-->
 
 #### Key changes/classes affected
 
