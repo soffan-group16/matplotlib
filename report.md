@@ -53,20 +53,23 @@ Changes were only made in the Bbox class by overriding a parent method. This aff
 
 ### Requirements for the new feature or requirements affected by functionality being refactored
  <!-- Requirements related to the functionality are identified and described in a systematic way. Each requirement has a name (ID), title, and description. The description can be one paragraph per requirement. -->
- This issue is easy to solve and it can be summarized as one requirement. Our plan is that we can override a method and test it.
+ This issue is easy to solve. Our plan is that we can override a method and test it.
 
 **[Requirement ID: 1]**
-
-**Title:** Copy `minpos` property of `Bbox` in `frozen()`
-<!-- Implement method `Bbox::frozen()` -->
+**Title:** Prevent an `Artist` from autoscaling if unnecessary
 
 **Description:**
+In some functions, some `Artist` objects are autoscaled for some unnecessary reasons, especially because of hard coding. Some subclasses of `Artist` are `Axis`, `Axes` and so on. There should be a proper way to control the data limit of `Artist` object.
 
-The method `frozen()` of class `Bbox` is inherited from its parent class `BboxBase`. The function of this method is to return a frozen copy which will not be updated when its children change. As the class `Bbox` contains a property `minpos` that `BboxBase` does not have, the method `frozen()` should be overrided in `Bbox` to copy both the bounding `points` and `minpos`.
+**[Requirement ID: 2]**
+**Title:** Store all boundings information for log scaling
+
+**Description:**
+The `dataLim` property of an `Artist` can be stored by calling its method `frozen()`. The `frozen()` method of class `Bbox` is inherited from its parent class `BboxBase`, which however doe not copy the variable `minpos` in `Bbox`. As storing `minpos` is mandatory for storing a log scale, the method `frozen()` should be overrided in `Bbox` to copy it.
 
 *Optional (point 3): trace tests to requirements.*
 
-Test function `test_bbox_frozen_copies_minpos()` should be traced to requirement: **ID=1**.
+Test function `test_bbox_frozen_copies_minpos()` should be traced to requirement: **ID=2**.
 
 
 ### Code changes
@@ -125,27 +128,33 @@ In 3D case, after the bound of an axis is set manually, for example, by `set_xli
 
 Thus, some hard-coded method in axis3d.py need to be refactored, and those make some requirements. We can modify some render process in these method to get proper visualization.
 
-**[Requirement ID: 2]**
+**[Requirement ID: 3]**
 
-**Title:** Refactor autoscaled coordinates of 3D Axis
+**Title:** Render exact limits of axes in 3d plot
 
 **Description:**
 
-In a 3D plot, the method `Axis::_get_coord_info()` (in `axis3d.py`) expands the bounds of axes, `mins` and `maxs`, by `deltas` automatically. The bounds should not be autoscaled if a user calls `Axes::set_xlim()` (inherited from `_AxesBase`) to explicitly give the bounds. The method `_get_coord_info()` should be refactored.
+In a 3D plot, the limits of axis are auto-expanded, even if they are set manually and exactly. The reason is that the method `Axis::_get_coord_info()` (in `axis3d.py`) expands the bounds of axes, `mins` and `maxs`, by `deltas` automatically, which should be refactored.
 
-**[Requirement ID: 3]**
+**[Requirement ID: 4]**
 
 **Title:** Draw labels in a proper position
 
 **Description:**
 
-The variable `delta` can influence the position of the labels. As some refactoring may modify the autoscaling process related to `delta`, the labels should be drawn in another way. In a word, the variable `delta` should be passed to the renderer which is responsible for drawing labels.
+The position of the labels should be coordinated with the axis. The renderer for drawing labels should control the distance between the axis and the labels. Or the labels can interfere with the axes. In fact, the variable `delta` can influence the position of the labels. As some refactoring may modify the autoscaling process related to `delta`, the labels should be drawn in another way.
+
+**[Requirement ID: 5]**
+
+**Title:** Render grid lines under the axis
+
+**Description:**
+
+In a 3d plot, the order of rendering `Artist`s really affects the final visualization. To make the axis visible, if it coincides with one grid line, the grid line should be rendered first to make it under the axis.
 
 *Optional (point 3): trace tests to requirements.*
 
-Test functions <!--TODO--> should be traced to requirement: **ID=2**.
-
-Test functions <!--TODO--> should be traced to requirement: **ID=3**.
+Test functions <!--TODO--> should be traced to requirement: **ID=(TODO)**.
 
 ### Code changes
 
