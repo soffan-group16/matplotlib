@@ -142,8 +142,22 @@ For this small change one test was enough to cover the requirement. Apart from a
   - This is a run of the complete test suite after we added the fix. As can be seen here it's the same flaky tests (one more this time) that fail as in the beginning and our added test runs fine.
 
 ### UML class diagram and its description
-<!-- UML diagram to insert -->
+<div align="center">
+<img src="report_images/matplotlib-uml0-Before.svg"
+width = "100" alt="UML diagram before"/>
+</div>
+
+*Figure1. UML diagram of the affected classes before changes. The `^ function()` syntax expresses that the class overrides an inherited function*
+
+<div align="center">
+<img src="report_images/matplotlib-uml0-After.svg"
+width = "100" alt="UML diagram after"/>
+</div>
+
+*Figure2. UML diagram of the affected classes after the changes. The `^ function()` syntax expresses that the class overrides an inherited function*
+
 #### Key changes/classes affected
+The refactoring mainly happens in the class `Bbox`. After the changes, the method `frozen()` is added to override the corresponding method in the parent class `BboxBase`, and to copy the _minpos property.
 
 <!-- *Optional (point 1): Architectural overview.*
 *Optional (point 2): relation to design pattern(s).* -->
