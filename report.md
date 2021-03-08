@@ -43,13 +43,13 @@ Title: *Bbox.frozen() does not copy minposx/minposy*
 
 URL: https://github.com/matplotlib/matplotlib/issues/19296
 
-Our PR: https://github.com/matplotlib/matplotlib/pull/19641
+Our PR (**which got approved**): https://github.com/matplotlib/matplotlib/pull/19641
 
 ### Description
-The class Bbox is a representation of a bounding box and has a method `frozen` which returns a static independent copy of an object that should not be affected by changes to the original object. This method does however not copy the `minpos` attribute of this object which is needed in some edge cases.
+The class Bbox is a representation of a bounding box and has a method `frozen` which returns a static independent copy of an object that should not be affected by changes to the original object. This method does however not copy the `minpos` attribute of this object which is needed in some cases where the graph is log scaled.
 
 ### Scope (functionality and code affected)
-Changes were only made in the Bbox class by overriding a parent method. This affects every class containing a `Bbox` which is all axes. However the fix will only be noticed in a few edge cases.
+Changes were only made in the Bbox class by overriding a parent method. This affects every class containing a `Bbox` which is all axes. However the fix will only be noticed in a few cases where the graph has some log scaling.
 
 ### Requirements for the new feature or requirements affected by functionality being refactored
  <!-- Requirements related to the functionality are identified and described in a systematic way. Each requirement has a name (ID), title, and description. The description can be one paragraph per requirement. -->
