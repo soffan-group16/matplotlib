@@ -176,15 +176,15 @@ Thus, some hard-coded method in axis3d<span>.py need to be refactored, and those
 
 In a 3D plot, the limits of axis are auto-expanded, even if they are set manually and exactly. The reason is that the method `Axis::_get_coord_info()` (in `axis3d.py`) expands the bounds of axes, `mins` and `maxs`, by `deltas` automatically, which should be refactored.
 
-**[Requirement ID: 4]**
+#### [Requirement ID: 4]
 
 **Title:** Draw labels in a proper position
 
 **Description:**
 
-The position of the labels should be coordinated with the axis. The renderer for drawing labels should control the distance between the axis and the labels. Or the labels can interfere with the axes. In fact, the variable `delta` can influence the position of the labels. As some refactoring may modify the autoscaling process related to `delta`, the labels should be drawn in another way.
+The position of the labels should be coordinated with the axis of the graph. The rendering of the label is affected by the `delta` variable. Modifications to the code should preserve the labels position but fix the graph when autoscaling is turned off.
 
-**[Requirement ID: 5]**
+#### [Requirement ID: 5]
 
 **Title:** Render grid lines under the axis
 
@@ -260,7 +260,7 @@ With this fulfilled we believe that we are on the Essence standard state of: In 
 - [x] Time spent
 - [x] Non-trivial issue
 - [x] Requirements
-- [ ] Patch showed and documented
+- [x] Patch showed and documented
 - [x] Automated test with log
 - [x] UML diagram
 - [x] Overall experience
