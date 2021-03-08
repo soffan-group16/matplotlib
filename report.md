@@ -14,8 +14,7 @@ We chose the same project as the one in Assignment 3. With the knowledge we lear
 Similar to Assignment 3 we followed the instructions written in the [install document](INSTALL.rst) which is clear enough to get us running.
 
 ## Effort spent
-<!-- TODO -->
-For each team member, how much time was spent in
+<!-- For each team member, how much time was spent in
 
 1. plenary discussions/meetings;
 
@@ -35,7 +34,40 @@ For each team member, how much time was spent in
 
 For setting up tools and libraries (step 4), enumerate all dependencies
 you took care of and where you spent your time, if that time exceeds
-30 minutes.
+30 minutes. -->
+
+- **Markus**
+  - plenary discussions/meetings: 6h
+  - reading documentation/code: 6h
+  - configuration and setup: 0.5h
+  - analyzing code/output: 3h
+  - writing documentation: 3h
+  - writing code: 3h
+  - running tests: 2h
+- **Justin**
+  - plenary discussions/meetings: 6h
+  - reading documentation/code: 6h
+  - configuration and setup: 0.5h
+  - analyzing code/output: 2h
+  - writing documentation: 4h
+  - writing code: 2h
+  - running tests: 1h
+- **David**
+  - plenary discussions/meetings: 6h
+  - reading documentation/code: 6h
+  - configuration and setup: 0.5h
+  - analyzing code/output: 4h
+  - writing documentation: 3h
+  - writing code: 2h
+  - running tests: 1h
+- **Jiarui**
+  - plenary discussions/meetings: 6h
+  - reading documentation/code: 7h
+  - configuration and setup: 0.5h
+  - analyzing code/output: 2h
+  - writing documentation: 3h
+  - writing code: 2h
+  - running tests: not yet
 
 ## Overview of issue #19296
 
