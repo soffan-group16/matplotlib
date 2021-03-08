@@ -108,6 +108,11 @@ For this small change one test was enough to cover the requirement. Apart from a
 
 *Optional (point 1): Architectural overview.*
 <!-- UML diagram to insert -->
+![UML diagram before](report_images/matplotlib-uml-Before.svg)
+*UML diagram of the affected classes before changes. The `^ function()` syntax expresses that the class overrides an inherited function*
+![UML diagram after](report_images/matplotlib-uml-After.svg)
+*UML diagram of the affected classes after the changes. The `^ function()` syntax expresses that the class overrides an inherited function*
+
 *Optional (point 2): relation to design pattern(s).*
 <!-- TODO -->
 
