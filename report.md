@@ -223,9 +223,10 @@ Both of these changes affect other parts of the codebase, mainly in two areas. T
 
 We have discussed these topics with the Matplotlib community regarding the different possible solution and the X-axis oddity. The discussion can be found [here](https://github.com/matplotlib/matplotlib/issues/18052).
 
-<!-- *Optional (point 4): the patch is clean.*
+*Optional (point 4): the patch is clean.*
+Yes, it is.
 
-*Optional (point 5): considered for acceptance (passes all automated checks).* -->
+<!-- *Optional (point 5): considered for acceptance (passes all automated checks).* -->
 
 ### Test results
 Since the fix for this issue required changes to the API a lot of the tests needed to be corrected after we introduced our fix. However, after that were done, the whole test suite ran fine.
@@ -243,13 +244,13 @@ Since the fix for this issue required changes to the API a lot of the tests need
 ![UML diagram after](report_images/matplotlib-uml-After.svg)
 *Figure2. UML diagram of the affected classes after the changes. The `^ function()` syntax expresses that the class overrides an inherited function*
 
-<!--TODO: Reference UML diagrams-->
-
 #### Key changes/classes affected
-<!-- TODO: description -- >
+The changes are mostly done in the class `axis3d.Axis`. Method `_get_coord_info_without_deltas()` is created based on `_get_coord_info()` to prevent autoscaling. `_coord_info_calc()` is extracted from `_get_coord_info()`. And `draw_labels()` is extracted from `draw()` for drawing labels because variable `deltas` for autoscaling is needed.
 
-<!-- *Optional (point 1): Architectural overview.*
-*Optional (point 2): relation to design pattern(s).* -->
+<!-- TODO:
+*Optional (point 1): Architectural overview.*
+*Optional (point 2): relation to design pattern(s).* 
+-->
 
 ## Overall experience
 
