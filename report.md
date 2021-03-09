@@ -14,27 +14,6 @@ We chose the same project as the one in Assignment 3. With the knowledge we lear
 Similar to Assignment 3 we followed the instructions written in the [install document](INSTALL.rst) which is clear enough to get us running.
 
 ## Effort spent
-<!-- For each team member, how much time was spent in
-
-1. plenary discussions/meetings;
-
-2. discussions within parts of the group;
-
-3. reading documentation;
-
-4. configuration and setup;
-
-5. analyzing code/output;
-
-6. writing documentation;
-
-7. writing code;
-
-8. running code?
-
-For setting up tools and libraries (step 4), enumerate all dependencies
-you took care of and where you spent your time, if that time exceeds
-30 minutes. -->
 
 - **Markus**
   - plenary discussions/meetings: 6h
@@ -86,7 +65,6 @@ This issue turned out to be pretty easy to solve after some research but we deci
 Changes were only made in the Bbox class by overriding a parent method. This affects every class containing a `Bbox` which is all axes. However the fix will only be noticed in a few cases where the graph has some log scaling.
 
 ### Requirements for the new feature or requirements affected by functionality being refactored
-<!-- Requirements related to the functionality are identified and described in a systematic way. Each requirement has a name (ID), title, and description. The description can be one paragraph per requirement. -->
 
 #### [Requirement ID: 1]
 **Title:** A log scaled `Axes` should have a manual way of being prevented from auto scaling
@@ -95,21 +73,12 @@ Changes were only made in the Bbox class by overriding a parent method. This aff
 
 In some cases `Axes` objects are autoscaled even if the user did not intend them to be. This can be prevented by manually setting the `dataLim` of the `Axes`. This should work in same way on both log-scaled and lin-scaled `Axes`.
 
-<!-- In some functions, some `Artist` objects are autoscaled for some unnecessary reasons, especially because of hard coding. Some subclasses of `Artist` are `Axis`, `Axes` and so on. There should be a proper way to control the data limit of `Artist` object. -->
-
 #### [Requirement ID: 2]
 **Title:** All data in a bounding box should be copied when calling `frozen()`
 
 **Description:**
 
 The `dataLim` property of an `Axes` can be copied by calling its method `frozen()`. This method should always copy all properties of the `dataLim`.
-
-<!-- The `frozen()` method of the class `Bbox` is inherited from its parent class `BboxBase`, which however does not copy the variable `minpos` in `Bbox`. As storing `minpos` is mandatory for storing a log scale, the method `frozen()` should be overrided in `Bbox` to copy it. -->
-
-<!-- *Optional (point 3): trace tests to requirements.*
-
-Test function `test_bbox_frozen_copies_minpos()` should be traced to requirement: **ID=2**. -->
-
 
 ### Code changes
 
@@ -120,16 +89,6 @@ Test function `test_bbox_frozen_copies_minpos()` should be traced to requirement
 There are two main changes done by the patches. The first is the introduction of a unit test that replicates the bug that was found as described here: [issue #19296](https://github.com/matplotlib/matplotlib/issues/19296). The issue describes a strange behavior when retrieving the minimum positions of a copy of a bounding box in log scale.
 
 The second change is the fix itself to the problem. We discovered that the inherited function did not get the correct value even though it was set correctly but instead took the initialization value. A fix to this was to introduce an overriding function in the bounding box class to retrieve the correct data and return it.
-
-<!-- *Optional (point 4): the patch is clean.*
-
-Yes, it is.
-
-*Optional (point 5): considered for acceptance (passes all automated checks).*
-
-All automated checks except those about doc have passed. This patch has been merged to the original project in this pull request:
-
-https://github.com/matplotlib/matplotlib/pull/19641 -->
 
 ### Test results
 For this small change one test was enough to cover the requirements. Apart from a few tests that are flaky in a macOS environment the test suite runs fine both before and after the change.
@@ -160,9 +119,6 @@ width = "150" alt="UML diagram after"/>
 #### Key changes/classes affected
 The refactoring mainly happens in the class `Bbox`. After the changes, the method `frozen()` is added to override the corresponding method in the parent class `BboxBase`, and to copy the `_minpos` property.
 
-<!-- *Optional (point 1): Architectural overview.*
-*Optional (point 2): relation to design pattern(s).* -->
-
 ## Overview of issue #18052
 
 Title: *the limits of axes are inexact with mplot3d*
@@ -180,10 +136,6 @@ For this issue the majority of the code changes occurred in the `Axis` class in 
 We also applied changes and refactored the existing `draw` function in the `Axis` class to two separate draw functions. After our change labels and grid/axis lines are rendered in separate methods rather than in the same. Figure 3 and 4 show UML diagrams of the involved classes before and after our changes.
 
 ### Requirements for the new feature or requirements affected by functionality being refactored
-
-<!-- *"Historically, axis3d has suffered from having hard-coded constants that precluded user adjustments." -- Matplotlib document*
-
-Thus, some hard-coded method in axis3d<span>.py need to be refactored, and those make some requirements. We can modify some render process in these method to get proper visualization. -->
 
 #### [Requirement ID: 3]
 **Title:** Render exact limits of axes in 3d plot
@@ -208,9 +160,6 @@ The position of the labels should be coordinated with the axis of the graph. The
 
 In a 3d plot, the order of rendering `Artist`s really affects the final visualization. To make the axis visible, if it coincides with one grid line, the grid line should be rendered first to make it under the axis.
 
-<!-- *Optional (point 3): trace tests to requirements.* -->
-
-
 ### Code changes
 
 #### Patch
@@ -219,16 +168,11 @@ In a 3d plot, the order of rendering `Artist`s really affects the final visualiz
 
 For this fix, we found that there are two possible ways to solve it. The first would be a change to the `_get_coord_info` logic by removing parts of the calculation involving `mins` and `maxs`. This would produce the correct output when the user specifies a boundary to the 3D graph. The issue with this approach is that it changes the behavior of `_get_coord_info` which could cause unforeseen issues.
 
-The second path, which is what we have decided to go forward with, would be to fix the issue by preserving `_get_coord_info`. We refactored the `draw` function to not handle the labels and instead let `_draw_labels` handle it. We did this as the labels require the existing logic to be properly shown but the other parts of the graph requires the new logic to get the expected outcome. We then also refactored `_get_coord_info` to handle the different cases. This resulted in `_get_coord_info` and `_get_coord_info_without_deltas` being called depending on the situation. These two function would then call `_get_coord_info_calc` which used to be in `_get_coord_info` before being refactored. The function `_get_coord_info_calc` handles in creating a 3D space where graph would be drawn on and requires data from the caller to create the correct graph. See Figure 3 and 4 further down for a UML diagram on these changes.
+The second path, which is what we have decided to go forward with, would be to fix the issue by preserving `_get_coord_info`. We refactored the `draw` function to not handle the labels and instead let `_draw_labels` handle it. We did this as the labels require the existing logic to be properly shown but the other parts of the graph requires the new logic to get the expected outcome. We then also refactored `_get_coord_info` to handle the different cases. This resulted in `_get_coord_info` and `_get_coord_info_without_deltas` being called depending on the situation. These two function would then call `_get_coord_info_calc` which contains the calculations performed in `_get_coord_info` before being refactored. The function `_get_coord_info_calc` handles in creating a 3D space where graph would be drawn on and requires data from the caller to create the correct graph. See Figure 3 and 4 further down for a UML diagram on these changes.
 
 Both of these changes affect other parts of the codebase, mainly in two areas. The first is that they both cause errors to occur on some unit test as they have expected the buggy output. This was however fixed by modifying all failing unit tests with correct expected output data. The second would be in causing weird rendering behavior with the axis or spines of the graph. When rendering the graph the X-axis would be a different color compared to the expected color found in the Y-axis and Z-axis.
 
 We have discussed this last topic regarding the X-axis oddity with the Matplotlib community. The discussion can be found [here](https://github.com/matplotlib/matplotlib/issues/18052).
-
-<!-- *Optional (point 4): the patch is clean.*
-Yes, it is. -->
-
-<!-- *Optional (point 5): considered for acceptance (passes all automated checks).* -->
 
 ### Test results
 Since the fix for this issue required changes to the API a lot of the tests needed to be corrected after we introduced our fix. However, after that were done, the whole test suite ran fine. To change all the test we had to regenerate all the expected output images for all failing unit tests, inspect them to see that the behavior was correct and add them to the test suite.
@@ -258,11 +202,6 @@ Since the fix for this issue required changes to the API a lot of the tests need
 #### Key changes/classes affected
 The changes are mostly done in the class `axis3d.Axis`. Method `_get_coord_info_without_deltas()` is created based on `_get_coord_info()` to prevent autoscaling. `_coord_info_calc()` is extracted from `_get_coord_info()`. And `draw_labels()` is extracted from `draw()` for drawing labels because variable `deltas` for autoscaling is needed.
 
-<!-- TODO:
-*Optional (point 1): Architectural overview.*
-*Optional (point 2): relation to design pattern(s).*
--->
-
 ## Overall experience
 
 ### What are your main take-aways from this project? What did you learn?
@@ -276,26 +215,3 @@ One of the most valuable take-aways is learning to read code from other develope
 We think that we have improved as a team. For example in regards to the Essence standard we think that we have fulfilled "Procedures are in place to handle feedback on the team’s way of working." as we have discussions after receiving such feedback. We would discuss on how to improve our work and how to fulfill the requirements that are left.
 
 With this fulfilled we believe that we are on the Essence standard state of: In Place. From what we have experience we believe that the team is that our team members are using our way of working to accomplish the task at hand.
-
-<!-- *Optional (point 6): How would you put your work in context with best software engineering practice?*
-
-*Optional (point 7): Is there something special you want to mention here?* -->
-
-<!-- ### Checklist (P: 8/8)
-- [x] Onboarding experience
-- [x] Time spent
-- [x] Non-trivial issue
-- [x] Requirements
-- [x] Patch showed and documented
-- [x] Automated test with log
-- [x] UML diagram
-- [x] Overall experience
-
-### Checklist (P+: ≥4/7)
-- [ ] System overview
-- [ ] Design patterns
-- [ ] Tests traced to requirements
-- [x] Clean patch
-- [x] Accepted patch
-- [ ] Critical argument
-- [ ] Something extraordinary -->
