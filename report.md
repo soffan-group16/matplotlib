@@ -173,9 +173,9 @@ URL: https://github.com/matplotlib/matplotlib/issues/18052
 In 3D case, after the bound of an axis is set manually, for example, by `set_xlim()`, it will still be expanded automatically. That is different from the 2D situation.
 
 ### Scope (functionality and code affected)
-For this issue the majority of the code changes occurred in the Axis class in the mplot3d toolkit. We did modifications and refactoring to the `_get_coord_info` function, which makes it possible to get the functionality of the function without the added delta padding while still preserving the old function. Which is needed to correctly render the labels.
+For this issue the majority of the code changes occurred in the Axis class in the mplot3d toolkit. We did modifications and refactoring to the `_get_coord_info` method. This makes it possible to still apply the calculations in the method without the adding the delta padding, while still preserving the old function which is still used to correctly render the labels.
 
- We also applied changes and refactored the two existing `draw` functions in the Axis class. Now rendering the labels and grid/axis lines seperat
+ We also applied changes and refactored the two existing `draw` functions in the Axis class. After our change labels and grid/axis lines are rendered in separate methods rather than in the same. Figure 1 and 2 show UML diagrams of the involved classes before and after our changes.
 
 ### Requirements for the new feature or requirements affected by functionality being refactored
 
