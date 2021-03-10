@@ -194,7 +194,7 @@ Since the fix for this issue required changes to the API a lot of the tests need
 
 
 <div align="left">
-<img src = "report_images/matplotlib-uml-Before.svg" width="800" alt="UML diagram after"/>
+<img src = "report_images/matplotlib-uml-After.svg" width="800" alt="UML diagram after"/>
 </div>
 
 *Figure4. UML diagram of the affected classes after the changes. The `^ function()` syntax expresses that the class overrides an inherited function*
