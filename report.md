@@ -194,7 +194,7 @@ Since the fix for this issue required changes to the API a lot of the tests need
 
 
 <div align="left">
-<img src = "report_images/matplotlib-uml-Before.svg" width="800" alt="UML diagram after"/>
+<img src = "report_images/matplotlib-uml-After.svg" width="800" alt="UML diagram after"/>
 </div>
 
 *Figure4. UML diagram of the affected classes after the changes. The `^ function()` syntax expresses that the class overrides an inherited function*
@@ -215,3 +215,197 @@ One of the most valuable take-aways is learning to read code from other develope
 We think that we have improved as a team. For example in regards to the Essence standard we think that we have fulfilled "Procedures are in place to handle feedback on the team’s way of working." as we have discussions after receiving such feedback. We would discuss on how to improve our work and how to fulfill the requirements that are left.
 
 With this fulfilled we believe that we are on the Essence standard state of: In Place. From what we have experience we believe that the team is that our team members are using our way of working to accomplish the task at hand.
+
+# Optional points for P+
+
+## [Point 1] Architectural overview 
+<!-- The architecture and purpose of the system are presented in an overview of about 1–1.5 pages; consider using a diagram. -->
+
+Matplotlib is a popular plotting library in Python community. It has been used by about 322k users and contributed by 1063 contributors so far. Our work is basically based on its sub-module, `mpl_toolkits.mplot3d`. 
+
+*`mpl_toolkits.mplot3d` provides some basic 3D plotting (scatter, surf, line, mesh) tools. Not the fastest or most feature complete 3D library out there, but it ships with Matplotlib and thus may be a lighter weight solution for some use cases. -- matplotlib documentation*
+
+Some tutorials are given in the documentation but there is still a lack of further explanation about its code architecture. In folder `mplot3d`, there are mainly four scripts, `axes3d.py`, `axis3d.py`, `art3d.py` and `proj3d.py`.
+
+### [ `mplot3d.axes3d` ]
+In matplotlib, an `axes` can be roughly regarded as a canvas or a `subplot`.
+In 2D cases, users can `import matplotlib.pyplot as plt` and call `plt.axes()` to generate an `Axes` object. In 3D cases, the difference is that users may `from mpl_toolkits.mplot3d import Axes3D`, which is derived from `Axes` class. Generally, users often use some code like 
+
+    fig = plt.figure(1)
+    ax = fig.gca(projection='3d')
+
+The first row generates a `figure.Figure` object and the second row creates an `Axes3D` object in this figure, so as to draw something. A `Figure` is two-dimensional but it can show 3D objects. An `Axes3D` contains some 3D components and illustrates their projection. Here is a diagram which shows the relationship between `Figure`, `Axes3D` and other components.
+
+<div align="left">
+<img src = "report_images/Picture1.jpg" width="50%" alt="Axes3D"/></div>
+
+*Figure5. Some key classes in `mplot3d` and `pyplot`*
+
+Some crucial properties and methods related to our work:
+
+* `Axes3D.autoscale()` controls the value of properties `_autoscaleXon`, `_autoscaleYon`, `_autoscaleZon`, which determines the autoscaling process of `Axis3D`: x-, y- and z-axis.
+  
+* `Axes3D.autoscale_view()`: According to the value of the properties like `_autoscaleXon`, this method will autoscale the corresponding `Axis3D` by calling `set_xbound()`.
+
+* `Axes3D.set_xlim3d()` is the 3D version of `Axes.set_xlim()`. It deals with the bounds given by users and autoscaling cases. `xlim3d` is set as an alias of `xlim` and the following code works. 
+
+      ax.set_xlim(0, 1)
+
+### [ `mplot3d.axis3d` ]
+This module includes the classes and their methods about the axis in 3D axes subplot. The class `axis3d.Axis` is derived from the class `axis.XAxis`, and its derived classes for three dimensions are `axis3d.XAxis`, `axis3d.YAxis` and `axis3d.ZAxis`, respectively.
+
+Some key properties and methods of an `axis3d.Axis` object:
+
+* `axes`: The `axes3d.Axes` object to which it belongs.
+* `_axinfo`: Some information about appearance will be stored in this property, depending on which dimension the axis is in.
+* `_get_coord_info()`: This methods gets bound information from the `axes` property and influences the limit of the axis.
+* `draw()` and `draw_pane()`: Given a renderer, the corresponding `Artist` can be drawed by this `Axis` object.
+
+There are also some "getter" and "setter" methods with respect to axis-related artists, that is `Tick` and `Label`s.
+
+### [ `mplot3d.art3d` ]
+The module `art3d` mostly copes with 2D objects for 3D visualization. Some classes are `Text3D`, `Line3D` and so on. In addition, relevant `Collection` subclasses are added in this module. Basically, a `Collection` makes it easier for users to add a bunch of `Artist`s which are of the same class into an `Axes` and render them in a similar way. For example, in Figure 5, the surface is a `art3d.Poly3DCollection`, which is composed of multiple polygons.
+
+### [ `mplot3d.proj3d` ]
+This part is related to some calculation tasks, and it helps to compute 3D projection. For instance, `_line2d_seg_dist()` computes the distance between a point a line. In a word, it is almost all about math.
+
+## [Point 2] Relation to design pattern(s)
+
+There exist some design patterns in `mplot3d` module. Here are some examples. Our refactoring influences 3D `Axis` and `Axes`, mainly about limits and bounds. This involves a lot of interaction with the properties and methods of the two classes `Axes`, `Axis` and their subclasses.
+
+Name: Factory Pattern
+
+Problem:
+
+As an actual requirement, there should different kinds of `Axes`, which probably makes a lot of subclasses of `Axes`. However, for plotting a single `Figure`, not so many subclasses are needed. For instance, in the following code, it generates an `axes._subplots.Axes3DSubplot` object, which is a derived class of `Axes3D`, as shown in Figure 6.
+
+    from mpl_toolkits.mplot3d import Axes3D
+    import matplotlib.pyplot as plt
+    fig = plt.figure()
+    ax = fig.gca(projection = '3d')
+    plt.show()
+
+<div align="left">
+<img src = "report_images/Picture2.svg" width="30%" alt="UML diagram after"/>
+</div>
+
+*Figure6. UML diagram including `Axes3DSubplot`*
+
+Design:
+
+If the code `import matplotlib.axes._subplots.Axes3DSubplot` is run, an error will be raised because this class is missing. The reason is that a function `axes._subplot.subplot_class_factory()` is responsible for creating this subclass. As a class is dynamically generated if necessary, the complexity of architecture decreases. In `_subplot.py`:
+
+    Subplot = subplot_class_factory(Axes)
+    # Axes as an argument is a class derived from `Axes`
+
+Name: Bridge Pattern
+
+Problem: 
+
+There are different kinds of "axis" because of different ticks, labels and gridlines, which may cause the amount of axis classes too high.
+
+Design:
+
+In fact, the `Axis` class is like a bridge between different objects, as it contains some reference of this objects. This design pattern effectively controls the number of subclasses.
+
+Name: Wrapper (Decorator) Pattern
+
+Problem: 
+
+There is a strong relationship between `Axes` and `Axis`. Especially in 3D case, there are more `Axis`s in one `Axes`, so the communication between classes is a problem. API could be very verbose and in a great number.
+
+Design: 
+
+A class `_base._axis_method_wrapper` can wrap a method of `Axis` and send it to `Axes` as a method. In this way, a method of a certain `Axis` of an `Axes` is easier to call, and it is easier to refactor the code as this wrapper can produce an interface with only one line of code. An example: In `axis3d`:
+    
+    get_zticks = _axis_method_wrapper("zaxis", "get_ticklocs")
+
+A user can use the following interface to get a property of an `Axis` object:
+
+    zticks = ax.get_zticks()
+
+It is much more friendly.
+
+## [Point 3] Trace tests to requirements.
+
+**Issue #19296:**
+
+Our new test function `test_bbox_frozen_copies_minpos()` should be traced to requirement: **ID=1** and **ID=2**. A passed test will ensure these requirements are fulfilled.
+
+Document: This test function tests if `minpos` property is copied in method `Bbox::frozen()`, which overrides the corresponding method in the parent class. If it passes, the requirements above should have been implemented.
+
+**Issue #18052:**
+
+The requirements **ID=3** and **ID=4** should be considered together. We have updated some stale test cases for that. In total, 44 tests in folder: `mpl_toolkits/mplot3d/tests/test_mplot3d.py` are updated. These tests compare the result image with some existing images by using a decorator `@mpl3d_image_comparison`. If the deviation can be tolerated, the test passes.
+
+Here are some examples from 44 test functions.
+
+`test_add_collection3d_zs_array` and `test_add_collection3d_zs_scalar`:
+
+A `Collection` of lines are plotted into an `Axis3D`. The test function calls `set_xlim()`, `set_ylim()` and `set_zlim()`. The limits of axes should be exact with the set value, and the position of labels should be in place. (requirement ID=3, 4)
+
+`test_axes3d_cla`:
+
+Nothing is plotted in the axes and all `Axis` is switched off. In this case, the labels should still be in place and the limit of each axis should be [0, 1], as the default value. (ID=3, 4)
+
+`test_axes3d_isometric`:
+
+Some test cases like this one do not change too much. But as we removed the variable `deltas` in the code for autoscaling, the scale of each axis should shrink a little. Except this point, it remains the same. (ID=3)
+
+`test_axes3d_labelpad`:
+
+What's more, this function adds text labels, which should also be in place. And the limit of each axis is [0, 1] as well. (ID=3, 4)
+
+`test_axes3d_rotated` and `axes3d_ortho.png`:
+
+The refactoring should be robust to the direction of projection. Different angles of view are considered. (ID=3, 4)
+
+`test_bar3d`, `test_bar3d_shaded` and `test_bar3d_notshaded`:
+
+Different types of 3D bars are plotted in `Axes`. No labels. (ID=3)
+
+`test_contour3d`, `test_contourf3d` and `test_contourf3d_fill`:
+
+Plot contour figures with `contour()` method. No labels are given, but the limit of axis should be exact with the gridline. (ID=3)
+
+`test_mixedsubplot`:
+
+In this figure, there should be two `Axes` objects. The 2D axes should be autoscaled but the 3D axes should not. (ID=3)
+
+`test_minor_ticks`:
+
+Some minor ticks are added to all three `Axis` object. In this case, minor labels should behave properly as well. (ID=3, 4)
+
+Some other tests are about "quiver", "scatter", "stem", "text", "surface" and so on. All of these tests can be traced to at least either of requirements ID=3 and 4.
+
+## [Point 4] The patch is clean.
+
+Yes, our patches are clean.
+
+## [Point 5] Considered for acceptance (passes all automated checks).
+For issue #19296, all automated checks on Github except those about documentation have passed. And our patch has been merged to the original project in this pull request: https://github.com/matplotlib/matplotlib/pull/19641 .
+
+## [Point 6] How would you put your work in context with best software engineering practice? 
+*"You can argue critically about the benefits, drawbacks, and limitations of your work carried out, in the context of current software engineering practice, such as the SEMAT kernel (covering alphas other than Team/Way of Working)."*
+
+Reference to Essence: 
+    
+    http://semat.org/quick-reference-guide
+
+Besides `6.Team` and `7.Way-of-Working`, there are 5 alphas in SEMAT kernel: `1.Stakeholders`, `2.Opportunity`, `3.Requirements`, `4.Software System`, `5.Work`.
+
+This assignment is the last one in this course and we have really learned a lot, as we selected a really popular and complicated project, `Matplotlib`.
+
+In this way, our stakeholders are the develope group of `Matplotlib` and a lot of other contributors. In addition to the meeting in our team, we also discuss with several stakeholders on Github issue pages. They provided many recommendations and we discuss about our analysis of the source code. Finally, one of our patches is accepted and merged into the master branch, of which we are proud.
+
+Obviously, the `Stakeholder` groups are identified and their responsibilities are clearly defined (as reviewers). Thus, the `Recognized` part of the essence is satisfied. We also feel that the stakeholders involve actively, because they assist our team gladly and response in good time. So the `Involved` alpha state is also great, which are benefits. The limitation is that we cannot get feedback from users now and we cannot easily check if the system fulfills our expectation because it is an open-source project rather than a product for business use.
+
+As far as `Opportunities`, this library is widely used and some users open issues because some bugs bring inconvenience to their use. We find two issues that are confirmed to be bugs, which means the `Identified` state of `Opportunities` is positive. Some programmers have discussed the issues and have proposed some ideas, consequently the `Solution Needed` state is also optimistic, which also belongs to our benefits. However, the drawback is that the `Viable` and `Addressed` states of one issue had not been fulfilled before we began to engage in it, which finally makes it a partially-solved issue. A lesson is that solving a difficult issue in limited time may not be feasible. Actually, it is a old library which leaves some unreasonable code.
+
+The `Requirements` that we proposed are not discussed with stakeholders, which is a drawback. But by reading the issue, the requirements should be `Conceived` and `Bounded`. We think our description of requirements should be `Acceptable`, and one issue we solved can fulfill `Fulfilled` state. However, our solution to another issue is not good enough because we only solve a part of the requirements but also cause other effects.
+
+`Software System` alpha is a limitation of our work because we only refactor some code and run tests, neglecting its usage in a system.
+
+In terms of `Work` alpha, we `Intiated`, `Prepared` and `Started` successfully, and we make it `Under Control`. But we have not `Conclude` or `Closed` our work because the the requirements are not fully fulfilled and there is still further discussion on Github. However, we can conclude the lessons we learned and give a self-evaluation of our work.
+
+Finally, the most important thing is that through this work, we are familiar with the software development process and gain experience.
